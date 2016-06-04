@@ -1,8 +1,40 @@
 import Vue from 'vue'
-import App from './App'
+var VueRouter = require('vue-router')
+var VueResource = require('vue-resource')
+import { configRouter } from './config/routes'
+require('es6-promise').polyfill()
 
-/* eslint-disable no-new */
-new Vue({
-  el: 'body',
-  components: { App }
+// install router
+Vue.use(VueRouter)
+Vue.use(VueResource)
+
+// create router
+const router = new VueRouter({
+  history: true,
+  saveScrollPosition: true,
+  linkActiveClass: 'active'
 })
+
+// configure router
+configRouter(router)
+
+// boostrap the app
+const app = Vue.extend(require('./App.vue'))
+router.start(app, '#app');
+(function () {
+  Vue.http.interceptors.push({
+
+    request: function (request) {
+      console.log(request.headers)
+      return request
+    },
+
+    response: function (response) {
+      return response
+    }
+
+  })
+})()
+
+// just for debugging
+window.router = router
