@@ -25,8 +25,8 @@ function post (api, data) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   }).then(function (response) {
-    if (response.data.hasOwnProperty('code') && response.data.code === Const.ERROR.ERROR_TOKEN_INVALID) {
-      Log.d(response)
+    if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
+      return Promise.reject(JSON.stringify(response.data))
     }
     return response.data
   }, function (error) {

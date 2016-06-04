@@ -10,7 +10,7 @@ export default {
     return Api.COMMON.login(name, password).then(function (response) {
       window.router.go('/')
     }, function (error) {
-      window.alert('登录失败')
+      window.alert(error)
       Log.e(error)
     })
   }
