@@ -2,7 +2,7 @@
  * Created by Cheney Yang <yangcheng0816@gmail.com> on 16/6/3.
  */
 import Const from './const'
-import Log from './Log'
+import Log from './log'
 import Vue from 'vue'
 
 export default {
@@ -18,7 +18,7 @@ export default {
 
 function post (api, data) {
   var url = Const.NET.END_POINT + api
-  Log.d(url + transformObjectToUrlencodedData(data))
+  Log.d(url + '?' + transformObjectToUrlencodedData(data))
 
   return Vue.http.post(url, transformObjectToUrlencodedData(data), {
     headers: {
@@ -28,7 +28,7 @@ function post (api, data) {
     if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
       return Promise.reject(JSON.stringify(response.data))
     }
-    return response.data
+    return response.data.data
   }, function (error) {
     Log.e(error)
     return {

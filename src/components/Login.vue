@@ -9,8 +9,6 @@
 
       <div class="login-box-body">
         <p class="login-box-msg">登陆</p>
-        <!--<form onsubmit="Javascript:if (this.username.value==''||this.password.value=='')-->
-        <!--{alert('账号,密码都要输入完全,^_^!');return false;}">-->
         <div class="form-group has-feedback">
           <input type="text" name="username" class="form-control" placeholder="用户名" v-model="name"/>
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -19,7 +17,6 @@
           <input type="password" name="password" class="form-control" placeholder="密码" v-model="password"/>
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
-        <!--<p th:if="${error} != null" class="text-red">用户名或者密码错误</p>-->
         <div class="row">
           <div class="col-xs-4 col-xs-offset-4">
             <button type="button" onclick="Javascript:history.back(-1);"
@@ -41,7 +38,6 @@
           </div>
           <!-- /.col -->
         </div>
-        <!--</form>-->
 
       </div>
       <!-- /.login-box-body -->
@@ -52,7 +48,6 @@
 </template>
 <script>
   import loginService from '../services/login'
-//  import Log from '../core/Log'
 
   module.exports = {
     methods: {

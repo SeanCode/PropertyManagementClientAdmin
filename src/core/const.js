@@ -28,7 +28,9 @@ export default {
   },
 
   DATA: {
-    KEY_COOKIE: 'admin_cookie',
-    KEY_ADMIN: 'admin_info'
+    KEY_PREFIX: 'cqupt.management.admin.data.',
+    KEY_COOKIE: 'cookie',
+    KEY_TOKEN: 'token',
+    KEY_ADMIN: 'admin'
   }
 }
