@@ -7,7 +7,8 @@ import Core from '../core/core'
 export default {
   login (name, password) {
     return Core.Api.COMMON.login(name, password).then(function (response) {
-      Core.Data.setAdmin(response['admin'])
+      //  Core.Data.setAdmin(response['admin'])
+      Core.Log.d(response)
       window.router.go('/')
     }, function (error) {
       window.alert(error)

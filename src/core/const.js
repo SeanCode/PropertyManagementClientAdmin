@@ -3,7 +3,7 @@
  */
 export default {
   NET: {
-    END_POINT: 'http://localhost:8080/api',
+    END_POINT: 'http://localhost:8080/api/private/v1',
     API: {
       ADMIN_LOGIN: '/admin/login'
     }
