@@ -51,7 +51,8 @@
           <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             <div class="btn-group">
-              <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>
+              <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i>
+              </button>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">Action</a></li>
                 <li><a href="#">Another action</a></li>
@@ -197,7 +198,8 @@
               <div class="box-tools pull-right">
                 <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">3</span>
                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle"><i class="fa fa-comments"></i></button>
+                <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle">
+                  <i class="fa fa-comments"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
               </div>
             </div><!-- /.box-header -->
@@ -210,7 +212,8 @@
                     <span class="direct-chat-name pull-left">Alexander Pierce</span>
                     <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
                   </div><!-- /.direct-chat-info -->
-                  <img class="direct-chat-img" src="/static/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
+                  <img class="direct-chat-img" src="/static/img/user1-128x128.jpg" alt="message user image">
+                  <!-- /.direct-chat-img -->
                   <div class="direct-chat-text">
                     Is this template really for free? That's unbelievable!
                   </div><!-- /.direct-chat-text -->
@@ -222,7 +225,8 @@
                     <span class="direct-chat-name pull-right">Sarah Bullock</span>
                     <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
                   </div><!-- /.direct-chat-info -->
-                  <img class="direct-chat-img" src="/static/img/user3-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
+                  <img class="direct-chat-img" src="/static/img/user3-128x128.jpg" alt="message user image">
+                  <!-- /.direct-chat-img -->
                   <div class="direct-chat-text">
                     You better believe it!
                   </div><!-- /.direct-chat-text -->
@@ -234,7 +238,8 @@
                     <span class="direct-chat-name pull-left">Alexander Pierce</span>
                     <span class="direct-chat-timestamp pull-right">23 Jan 5:37 pm</span>
                   </div><!-- /.direct-chat-info -->
-                  <img class="direct-chat-img" src="/static/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
+                  <img class="direct-chat-img" src="/static/img/user1-128x128.jpg" alt="message user image">
+                  <!-- /.direct-chat-img -->
                   <div class="direct-chat-text">
                     Working with AdminLTE on a great new app! Wanna join?
                   </div><!-- /.direct-chat-text -->
@@ -246,7 +251,8 @@
                     <span class="direct-chat-name pull-right">Sarah Bullock</span>
                     <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
                   </div><!-- /.direct-chat-info -->
-                  <img class="direct-chat-img" src="/static/img/user3-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
+                  <img class="direct-chat-img" src="/static/img/user3-128x128.jpg" alt="message user image">
+                  <!-- /.direct-chat-img -->
                   <div class="direct-chat-text">
                     I would love to.
                   </div><!-- /.direct-chat-text -->
@@ -420,56 +426,70 @@
           <div class="table-responsive">
             <table class="table no-margin">
               <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Item</th>
-                  <th>Status</th>
-                  <th>Popularity</th>
-                </tr>
+              <tr>
+                <th>Order ID</th>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Popularity</th>
+              </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                  <td>Call of Duty IV</td>
-                  <td><span class="label label-success">Shipped</span></td>
-                  <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
-                </tr>
-                <tr>
-                  <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                  <td>Samsung Smart TV</td>
-                  <td><span class="label label-warning">Pending</span></td>
-                  <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
-                </tr>
-                <tr>
-                  <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                  <td>iPhone 6 Plus</td>
-                  <td><span class="label label-danger">Delivered</span></td>
-                  <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
-                </tr>
-                <tr>
-                  <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                  <td>Samsung Smart TV</td>
-                  <td><span class="label label-info">Processing</span></td>
-                  <td><div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div></td>
-                </tr>
-                <tr>
-                  <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                  <td>Samsung Smart TV</td>
-                  <td><span class="label label-warning">Pending</span></td>
-                  <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
-                </tr>
-                <tr>
-                  <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                  <td>iPhone 6 Plus</td>
-                  <td><span class="label label-danger">Delivered</span></td>
-                  <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
-                </tr>
-                <tr>
-                  <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                  <td>Call of Duty IV</td>
-                  <td><span class="label label-success">Shipped</span></td>
-                  <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
-                </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                <td>Call of Duty IV</td>
+                <td><span class="label label-success">Shipped</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                <td>Samsung Smart TV</td>
+                <td><span class="label label-warning">Pending</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                <td>iPhone 6 Plus</td>
+                <td><span class="label label-danger">Delivered</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                <td>Samsung Smart TV</td>
+                <td><span class="label label-info">Processing</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                <td>Samsung Smart TV</td>
+                <td><span class="label label-warning">Pending</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                <td>iPhone 6 Plus</td>
+                <td><span class="label label-danger">Delivered</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                <td>Call of Duty IV</td>
+                <td><span class="label label-success">Shipped</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div><!-- /.table-responsive -->
@@ -565,13 +585,15 @@
         </div><!-- /.box-body -->
         <div class="box-footer no-padding">
           <ul class="nav nav-pills nav-stacked">
-            <li><a href="#">United States of America <span class="pull-right text-red"><i class="fa fa-angle-down"></i> 12%</span></a></li>
+            <li><a href="#">United States of America <span class="pull-right text-red"><i class="fa fa-angle-down"></i> 12%</span></a>
+            </li>
             <li><a href="#">India <span class="pull-right text-green"><i class="fa fa-angle-up"></i> 4%</span></a></li>
-            <li><a href="#">China <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> 0%</span></a></li>
+            <li><a href="#">China <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> 0%</span></a>
+            </li>
           </ul>
         </div><!-- /.footer -->
       </div><!-- /.box -->
-      </div><!-- /.box -->
-    </div><!-- /.col -->
+    </div><!-- /.box -->
+  </div><!-- /.col -->
   </div><!-- /.row -->
 </template>

@@ -11,14 +11,14 @@
         </a>
         <ul class="treeview-menu">
           <li v-link-active v-for="child in item.children">
-            <a v-link="{ path: child.link }">
+            <a @click="updatePath({parent: item, child: child})" v-link="{ path: child.link }">
               <i class="fa {{ child.icon }}"></i> {{ child.name }}
             </a>
           </li>
         </ul>
       </li>
       <li v-else v-link-active>
-        <a v-link="{ path: item.link, exact: true }">
+        <a @click="updatePath({parent: item, child: undefined})" v-link="{ path: item.link, exact: true }">
           <i class="fa {{ item.icon }}"></i>
           <span>{{ item.name }}</span>
         </a>
@@ -28,10 +28,16 @@
 </template>
 
 <script>
-  module.exports = {
+  export default {
     data: function () {
       return {
         menu: this.$parent.$data.menu || []
+      }
+    },
+
+    methods: {
+      updatePath: function (path) {
+        this.$dispatch('path-msg', path)
       }
     }
   }

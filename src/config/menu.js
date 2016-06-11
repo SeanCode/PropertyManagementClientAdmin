@@ -66,7 +66,7 @@ module.exports = [
     children: [
       {
         name: '本月报表',
-        link: '/dashboard/stat/current_month',
+        link: '/dashboard/stat/month',
         icon: 'fa-circle-o'
       },
       {
@@ -81,12 +81,12 @@ module.exports = [
     icon: 'fa-cogs',
     children: [
       {
-        name: '权限管理',
-        link: '/dashboard/system/auth',
+        name: '管理员管理',
+        link: '/dashboard/system/admin',
         icon: 'fa-circle-o'
       },
       {
-        name: '水电气数据',
+        name: '水电气数据管理',
         link: '/dashboard/system/data',
         icon: 'fa-circle-o'
       }

@@ -14,6 +14,9 @@ export default {
         name: name,
         password: password
       }, {Authorization: hash}, true)
+    },
+    getAdminList: function () {
+      return post(Const.NET.API.ADMIN_LIST, {})
     }
   }
 }
@@ -21,6 +24,10 @@ export default {
 function post (api, data, requestHeaders, raw) {
   var url = Const.NET.END_POINT + api
   Log.d(url + '?' + transformObjectToUrlencodedData(data))
+
+  if (!requestHeaders) {
+    requestHeaders = {}
+  }
   requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded'
 
   return Vue.http.post(url, transformObjectToUrlencodedData(data), {
@@ -35,6 +42,23 @@ function post (api, data, requestHeaders, raw) {
     return error
   })
 }
+
+//  function get (api, params, requestHeaders, raw) {
+//  var url = Const.NET.END_POINT + api
+//  Log.d(url + '?' + transformObjectToUrlencodedData(params))
+//
+//  return Vue.http.get(url, {}, {
+//    params: params
+//  }).then(function (response) {
+//    if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
+//      return Promise.reject(JSON.stringify(response.data))
+//    }
+//    return raw ? response : response.data.data
+//  }, function (error) {
+//    Log.e(error)
+//    return error
+//  })
+//  }
 
 function transformObjectToUrlencodedData (obj) {
   var p = []

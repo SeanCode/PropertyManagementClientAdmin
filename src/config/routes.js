@@ -12,6 +12,10 @@ import ManageInstitution from '../components/pages/manage/Institution.vue'
 import PrintPayment from '../components/pages/print/Payment.vue'
 import PrintReport from '../components/pages/print/Report.vue'
 import PrintTemp from '../components/pages/print/Temp.vue'
+import StatisticsMonth from '../components/pages/statistics/Month.vue'
+import StatisticsAll from '../components/pages/statistics/All.vue'
+import SystemAdmin from '../components/pages/system/Admin.vue'
+import SystemData from '../components/pages/system/Data.vue'
 import Core from '../core/core'
 
 export function configRouter (router) {
@@ -50,6 +54,18 @@ export function configRouter (router) {
         },
         '/print/temp': {
           component: PrintTemp
+        },
+        '/stat/month': {
+          component: StatisticsMonth
+        },
+        '/stat/all': {
+          component: StatisticsAll
+        },
+        '/system/admin': {
+          component: SystemAdmin
+        },
+        '/system/data': {
+          component: SystemData
         },
         '*': {
           component: NotFound

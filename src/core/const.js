@@ -5,7 +5,8 @@ export default {
   NET: {
     END_POINT: 'http://localhost:8080/api/private/v1',
     API: {
-      ADMIN_LOGIN: '/admin/login'
+      ADMIN_LOGIN: '/admin/login',
+      ADMIN_LIST: '/admin/list'
     }
   },
 

@@ -222,7 +222,7 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">User</span>
+              <span class="hidden-xs">{{adminName}}</span>
               <strong class="caret"></strong>
             </a>
             <ul class="dropdown-menu">
@@ -267,3 +267,15 @@
     </nav>
   </header>
 </template>
+<script>
+  import Core from '../../core/core'
+
+  module.exports = {
+
+    data () {
+      return {
+        adminName: Core.Data.getAdminName()
+      }
+    }
+  }
+</script>

@@ -49,10 +49,10 @@
 <script>
   import loginService from '../services/login'
 
-  module.exports = {
+  export default {
     methods: {
       login: function () {
-        if (this.username === '' || this.password === '') {
+        if (this.name === '' || this.password === '') {
           window.alert('账号,密码都要输入完全,^_^!')
           return false
         }

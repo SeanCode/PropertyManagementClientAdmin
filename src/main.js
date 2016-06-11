@@ -1,8 +1,10 @@
 import Vue from 'vue'
+import { configRouter } from './config/routes'
+import Core from './core/core'
+require('es6-promise').polyfill()
+
 var VueRouter = require('vue-router')
 var VueResource = require('vue-resource')
-import { configRouter } from './config/routes'
-require('es6-promise').polyfill()
 
 // install router
 Vue.use(VueRouter)
@@ -21,15 +23,24 @@ configRouter(router)
 // boostrap the app
 const app = Vue.extend(require('./App.vue'))
 router.start(app, '#app');
+
+// add interceptor
 (function () {
   Vue.http.interceptors.push({
 
     request: function (request) {
-      console.log(request.headers)
+      var headers = request.headers
+
+      if (!headers.hasOwnProperty('Authorization')) {
+        headers['Authorization'] = 'Basic ' + Core.Data.getToken()
+      }
       return request
     },
 
     response: function (response) {
+      if (response.status !== 200) {
+        Core.Log.e(response.statusText)
+      }
       return response
     }
 

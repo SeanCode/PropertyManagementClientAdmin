@@ -24,6 +24,11 @@
       'app-sidebar': Sidebar,
       'app-content': Content,
       'app-footer': Footer
+    },
+    events: {
+      'path-msg': function (path) {
+        this.$broadcast('path-msg', path)
+      }
     }
   }
 </script>

@@ -11,6 +11,7 @@ export default {
   getToken: getToken,
   setAdmin: setAdmin,
   getAdmin: getAdmin,
+  getAdminName: getAdminName,
   isGuest: isGuest,
   logout: logout,
   getAll: getAll,
@@ -57,6 +58,10 @@ function getAdmin () {
     adminData = get(Const.DATA.KEY_ADMIN)
   }
   return adminData
+}
+
+function getAdminName () {
+  return getAdmin()['username']
 }
 
 function isGuest () {
