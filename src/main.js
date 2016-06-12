@@ -31,9 +31,10 @@ router.start(app, '#app');
     request: function (request) {
       var headers = request.headers
 
-      if (!headers.hasOwnProperty('Authorization')) {
-        headers['Authorization'] = 'Basic ' + Core.Data.getToken()
+      if (!request.headers.hasOwnProperty('Authorization')) {
+        request.headers['Authorization'] = 'Basic ' + Core.Data.getToken()
       }
+      console.log(headers)
       return request
     },
 

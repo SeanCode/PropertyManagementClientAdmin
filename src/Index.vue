@@ -11,7 +11,7 @@
   import Content from './components/layout/Content.vue'
   import Footer from './components/layout/Footer.vue'
 
-  module.exports = {
+  export default {
     name: 'Container',
     data: function () {
       return {

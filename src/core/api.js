@@ -3,6 +3,7 @@
  */
 import Const from './const'
 import Log from './log'
+import Data from './data'
 import Util from './util'
 import Vue from 'vue'
 
@@ -14,9 +15,11 @@ export default {
         name: name,
         password: password
       }, {Authorization: hash}, true)
-    },
+    }
+  },
+  ADMIN: {
     getAdminList: function () {
-      return post(Const.NET.API.ADMIN_LIST, {})
+      return get(Const.NET.API.ADMIN_LIST)
     }
   }
 }
@@ -25,9 +28,8 @@ function post (api, data, requestHeaders, raw) {
   var url = Const.NET.END_POINT + api
   Log.d(url + '?' + transformObjectToUrlencodedData(data))
 
-  if (!requestHeaders) {
-    requestHeaders = {}
-  }
+  requestHeaders = configureRequestHeaders(requestHeaders)
+
   requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded'
 
   return Vue.http.post(url, transformObjectToUrlencodedData(data), {
@@ -43,30 +45,43 @@ function post (api, data, requestHeaders, raw) {
   })
 }
 
-//  function get (api, params, requestHeaders, raw) {
-//  var url = Const.NET.END_POINT + api
-//  Log.d(url + '?' + transformObjectToUrlencodedData(params))
-//
-//  return Vue.http.get(url, {}, {
-//    params: params
-//  }).then(function (response) {
-//    if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
-//      return Promise.reject(JSON.stringify(response.data))
-//    }
-//    return raw ? response : response.data.data
-//  }, function (error) {
-//    Log.e(error)
-//    return error
-//  })
-//  }
+function get (api, params, requestHeaders, raw) {
+  var url = Const.NET.END_POINT + api
+  Log.d(url + '?' + transformObjectToUrlencodedData(params))
+
+  return Vue.http.get(url, {}, {
+    params: params,
+    headers: configureRequestHeaders(requestHeaders)
+  }).then(function (response) {
+    if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
+      return Promise.reject(JSON.stringify(response.data))
+    }
+    return raw ? response : response.data.data
+  }, function (error) {
+    Log.e(error)
+    return error
+  })
+}
 
 function transformObjectToUrlencodedData (obj) {
   var p = []
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      p.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+  if (obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        p.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+      }
     }
   }
   return p.join('&')
+}
+
+function configureRequestHeaders (requestHeaders) {
+  if (!requestHeaders) {
+    requestHeaders = {}
+  }
+  if (!requestHeaders.hasOwnProperty('Authorization')) {
+    requestHeaders['Authorization'] = 'Basic ' + Data.getToken()
+  }
+  return requestHeaders
 }
 
