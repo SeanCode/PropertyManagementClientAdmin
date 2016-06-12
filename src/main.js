@@ -5,10 +5,12 @@ require('es6-promise').polyfill()
 
 var VueRouter = require('vue-router')
 var VueResource = require('vue-resource')
+var VueTables = require('vue-tables')
 
 // install router
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(VueTables.client)
 
 // create router
 const router = new VueRouter({

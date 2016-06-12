@@ -82,6 +82,12 @@ export function configRouter (router) {
     if (Core.Data.isGuest() && Core.Config.ROUTE_LIST_GUEST_CAN_VISIT.indexOf(transition.to.path) === -1) {
       transition.abort()
       router.go('/login')
+    } else if (transition.to.path === '/logout') {
+      transition.abort()
+      Core.Data.clear()
+      setTimeout(function () {
+        router.go('/login')
+      }, 500)
     } else {
       transition.next()
     }

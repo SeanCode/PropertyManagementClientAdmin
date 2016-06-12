@@ -14,10 +14,14 @@
   import Core from '../../core/core'
 
   module.exports = {
-
     data () {
       return {
         adminName: Core.Data.getAdminName()
+      }
+    },
+    events: {
+      'login-msg': function () {
+        this.adminName = Core.Data.getAdminName()
       }
     }
   }

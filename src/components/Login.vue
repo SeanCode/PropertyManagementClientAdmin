@@ -14,7 +14,7 @@
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-          <input type="password" name="password" class="form-control" placeholder="密码" v-model="password"/>
+          <input type="password" name="password" class="form-control" placeholder="密码" v-model="password" @keyup.enter="login"/>
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="row">
@@ -47,7 +47,7 @@
 
 </template>
 <script>
-  import loginService from '../services/login'
+  import Core from '../core/core'
 
   export default {
     methods: {
@@ -56,7 +56,7 @@
           window.alert('账号,密码都要输入完全,^_^!')
           return false
         }
-        loginService.login(this.name, this.password)
+        login(this.name, this.password)
       }
     },
 
@@ -66,6 +66,17 @@
         password: ''
       }
     }
+  }
+
+  function login (name, password) {
+    Core.Api.COMMON.login(name, password).then(function (response) {
+      Core.Data.setAdmin(response.data.data['admin'])
+      Core.Data.setToken(Core.Util.Base64.encode(name + ':' + password))
+      window.router.go('/')
+    }, function (error) {
+      window.alert(error)
+      Core.Log.e(error)
+    })
   }
 </script>
 <style>

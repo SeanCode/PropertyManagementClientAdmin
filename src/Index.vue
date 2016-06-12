@@ -13,6 +13,12 @@
 
   export default {
     name: 'Container',
+    route: {
+      activate () {
+        console.log('activating index...')
+        this.$broadcast('login-msg')
+      }
+    },
     data: function () {
       return {
         menu: require('./config/menu.js') || []

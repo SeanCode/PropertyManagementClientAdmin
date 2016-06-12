@@ -28,12 +28,8 @@ function post (api, data, requestHeaders, raw) {
   var url = Const.NET.END_POINT + api
   Log.d(url + '?' + transformObjectToUrlencodedData(data))
 
-  requestHeaders = configureRequestHeaders(requestHeaders)
-
-  requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded'
-
   return Vue.http.post(url, transformObjectToUrlencodedData(data), {
-    headers: requestHeaders
+    headers: configurePostHeaders(requestHeaders)
   }).then(function (response) {
     if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
       return Promise.reject(JSON.stringify(response.data))
@@ -51,7 +47,7 @@ function get (api, params, requestHeaders, raw) {
 
   return Vue.http.get(url, {}, {
     params: params,
-    headers: configureRequestHeaders(requestHeaders)
+    headers: configureGetHeaders(requestHeaders)
   }).then(function (response) {
     if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
       return Promise.reject(JSON.stringify(response.data))
@@ -75,10 +71,21 @@ function transformObjectToUrlencodedData (obj) {
   return p.join('&')
 }
 
-function configureRequestHeaders (requestHeaders) {
+function configureGetHeaders (requestHeaders) {
   if (!requestHeaders) {
     requestHeaders = {}
   }
+  if (!requestHeaders.hasOwnProperty('Authorization')) {
+    requestHeaders['Authorization'] = 'Basic ' + Data.getToken()
+  }
+  return requestHeaders
+}
+
+function configurePostHeaders (requestHeaders) {
+  if (!requestHeaders) {
+    requestHeaders = {}
+  }
+  requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded'
   if (!requestHeaders.hasOwnProperty('Authorization')) {
     requestHeaders['Authorization'] = 'Basic ' + Data.getToken()
   }

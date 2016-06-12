@@ -229,10 +229,9 @@
               <!-- User image -->
               <li class="user-header">
                 <img src="/static/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
-
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  {{adminName}}
+                  <small>Member since Nov. 2016</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -256,14 +255,13 @@
                   <a href="#" class="btn btn-default btn-flat">个人中心</a>
                 </div>
                 <div class="pull-right">
-                  <input href="#" type="submit" class="btn btn-default btn-flat" value="退出"/>
+                  <a v-link="{ path: '/logout' }" class="btn btn-default btn-flat">退出</a>
                 </div>
               </li>
             </ul>
           </li>
         </ul>
       </div>
-
     </nav>
   </header>
 </template>
@@ -271,10 +269,17 @@
   import Core from '../../core/core'
 
   module.exports = {
-
     data () {
       return {
-        adminName: Core.Data.getAdminName()
+        adminName: ''
+      }
+    },
+    ready () {
+      this.adminName = Core.Data.getAdminName()
+    },
+    events: {
+      'login-msg': function () {
+        this.adminName = Core.Data.getAdminName()
       }
     }
   }
