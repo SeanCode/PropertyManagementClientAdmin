@@ -12,7 +12,7 @@ module.exports = [
     icon: 'fa-pencil',
     children: [
       {
-        name: '个人数据',
+        name: '业主数据',
         link: '/dashboard/sdq/input/personal',
         icon: 'fa-circle-o'
       },
@@ -28,7 +28,7 @@ module.exports = [
     icon: 'fa-sitemap',
     children: [
       {
-        name: '个人管理',
+        name: '业主管理',
         link: '/dashboard/sdq/manage/personal',
         icon: 'fa-circle-o'
       },

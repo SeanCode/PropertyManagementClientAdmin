@@ -15,7 +15,6 @@
     name: 'Container',
     route: {
       activate () {
-        console.log('activating index...')
         this.$broadcast('login-msg')
       }
     },

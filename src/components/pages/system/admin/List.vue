@@ -1,5 +1,5 @@
 <template>
-  <div class='col-md-4'>
+  <div class='col-md-12'>
     <div class='box box-info' id='box-groups'>
       <div class='box-header with-border'>
         <h3 class='box-title'>管理员列表</h3>
@@ -11,33 +11,133 @@
             <i class='fa fa-plus'></i>
           </button>
         </div>
-        <div class='box-body'>
-          <v-client-table :data='adminList' :columns='columns' :options='options'></v-client-table>
-        </div>
+        <v-client-table :data='adminList' :columns='columns' :options='options'
+                        class='admin-list-table'></v-client-table>
       </div>
     </div>
   </div>
 </template>
 <style>
+  .VueTables__limit {
+    display: none;
+  }
+
+  .admin-list-table {
+    padding-top: 10px;
+  }
+
+  .VueTables__highlight {
+    background: deeppink;
+    font-weight: normal;
+  }
+
+  .VueTables__sortable {
+    cursor: pointer;
+  }
+
+  .glyphicon {
+    text-align: center;
+    color: #3c8dbc;
+  }
+
+  th:nth-child(n+4),
+  td:nth-child(n+4) {
+    text-align: center;
+  }
+
+  .VueTables__dropdown-pagination {
+    margin-left: 10px;
+  }
+
+  .VueTables__date-filter {
+    border: 1px solid #ccc;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .VueTables__filter-placeholder {
+    color: #aaa;
+  }
+
+  .VueTables__list-filter {
+    width: 120px;
+  }
 </style>
 <script>
   import Core from '../../../../core/core'
 
+  //dirty code!!!
   export default {
+    name: 'List',
     methods: {
       refresh () {
         getAdminList(this)
-        console.log(this.adminList)
       },
       'add': function () {
         Core.Log.d('add')
+      },
+      'delete': function (param) {
+        console.log('param: ' + param)
+        window.alert('删除: ' + param + ' ?')
       }
     },
+    components: {},
     data () {
       return {
         adminList: [],
         columns: ['id', 'name', 'username'],
-        options: {}
+        options: {
+          compileTemplates: true,
+          highlightMatches: true,
+          filterByColumn: true,
+          filterable: ['name', 'username'],
+          texts: {
+            filter: 'Search:',
+            noResults: '未找到',
+            count: '共 {count} 条记录'
+          },
+          onRowClick: function (row) {
+            console.log('on row click')
+          },
+          headings: {
+            id: '编号',
+            name: '用户名',
+            username: '姓名',
+            input: '水电气录入',
+            check: '水电气数据审核',
+            statistics: '水电气统计',
+            owner: '业主管理',
+            node: '机构管理',
+            admin: '管理员管理',
+            portal: '门户管理',
+            delete: '删除'
+          },
+          templates: {
+            input: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 4 ? 'checked' : '') + '/>'
+            },
+            check: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 2 ? 'checked' : '') + '/>'
+            },
+            statistics: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 3 ? 'checked' : '') + '/>'
+            },
+            owner: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 2 ? 'checked' : '') + '/>'
+            },
+            node: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
+            },
+            admin: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 2 ? 'checked' : '') + '/>'
+            },
+            portal: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
+            },
+            delete: '<div @click="$parent.delete({id})"><i class="glyphicon glyphicon-erase"></i></div>'
+          }
+        }
       }
     },
     ready () {
@@ -51,9 +151,6 @@
     }, function (error) {
       window.alert(error)
       Core.Log.e(error)
-      return error
-    }).then(function (data) {
-      return data
     })
   }
 

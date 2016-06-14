@@ -9,7 +9,7 @@
       <ol class="breadcrumb">
         <li><a v-link="{ path: '/'}"><i class="fa fa-home"></i> 系统</a></li>
         <li v-bind:class="{ 'active': !child}">{{parent.name}}</li>
-        <li v-show="child" v-bind:class="{ 'active': child }">{{child.name}}</li>
+        <li v-show="child" v-bind:class="{ 'active': child }">{{child ? child.name : ''}}</li>
       </ol>
     </section>
 

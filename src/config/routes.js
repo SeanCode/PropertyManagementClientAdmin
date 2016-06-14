@@ -75,7 +75,8 @@ export function configRouter (router) {
   })
 
   router.redirect({
-    '/': '/dashboard/index'
+    '/': '/dashboard/index',
+    '/dashboard/': '/dashboard/index'
   })
 
   router.beforeEach(function (transition) {
