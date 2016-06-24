@@ -6,7 +6,9 @@ export default {
     END_POINT: 'http://localhost:8080/api/private/v1',
     API: {
       ADMIN_LOGIN: '/admin/login',
-      ADMIN_LIST: '/admin/list'
+      ADMIN_LIST: '/admin/list',
+      CONFIG_PRICE: '/config/price',
+      UPDATE_DEFAULT_PRICE: '/config/price-default-update'
     }
   },
 

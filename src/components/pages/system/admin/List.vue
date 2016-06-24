@@ -67,7 +67,7 @@
 <script>
   import Core from '../../../../core/core'
 
-  //dirty code!!!
+  // dirty code!!!
   export default {
     name: 'List',
     methods: {
@@ -105,12 +105,15 @@
             name: '用户名',
             username: '姓名',
             input: '水电气录入',
-            check: '水电气数据审核',
+            check: '水电气审核',
             statistics: '水电气统计',
-            owner: '业主管理',
+            owner: '个人管理',
             node: '机构管理',
             admin: '管理员管理',
-            portal: '门户管理',
+            article_add: '门户文章发表',
+            picture_add: '门户风采发表',
+            resource_manage: '门户资源管理',
+            banner: '门户轮播图管理',
             delete: '删除'
           },
           templates: {
@@ -132,10 +135,19 @@
             admin: function (row) {
               return '<input type="checkbox" ' + (row.privilege > 2 ? 'checked' : '') + '/>'
             },
-            portal: function (row) {
+            article_add: function (row) {
               return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
             },
-            delete: '<div @click="$parent.delete({id})"><i class="glyphicon glyphicon-erase"></i></div>'
+            picture_add: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
+            },
+            resource_manage: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
+            },
+            banner: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
+            },
+            delete: '<div @click="$parent.delete({id})"><i class="fa fa-trash" style="color: red; cursor: pointer;"></i></div>'
           }
         }
       }

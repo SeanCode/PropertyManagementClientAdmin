@@ -7,6 +7,9 @@ import Login from '../components/Login.vue'
 import Index from '../Index.vue'
 import InputPersonal from '../components/pages/input/Personal.vue'
 import InputInstitution from '../components/pages/input/Institution.vue'
+import CheckPending from '../components/pages/check/Pending.vue'
+import CheckList from '../components/pages/check/List.vue'
+import CheckHistory from '../components/pages/check/History.vue'
 import ManagePersonal from '../components/pages/manage/Personal.vue'
 import ManageInstitution from '../components/pages/manage/Institution.vue'
 import PrintPayment from '../components/pages/print/Payment.vue'
@@ -39,6 +42,15 @@ export function configRouter (router) {
         },
         '/sdq/input/institution': {
           component: InputInstitution
+        },
+        '/sdq/check/pending': {
+          component: CheckPending
+        },
+        '/sdq/check/list': {
+          component: CheckList
+        },
+        '/sdq/check/history': {
+          component: CheckHistory
         },
         '/sdq/manage/personal': {
           component: ManagePersonal

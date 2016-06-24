@@ -21,6 +21,18 @@ export default {
     getAdminList: function () {
       return get(Const.NET.API.ADMIN_LIST)
     }
+  },
+  CONFIG: {
+    getPrice: function () {
+      return get(Const.NET.API.CONFIG_PRICE)
+    },
+    updateDefaultPrice: function (water, ele, gas) {
+      return post(Const.NET.API.UPDATE_DEFAULT_PRICE, {
+        water: water,
+        ele: ele,
+        gas: gas
+      })
+    }
   }
 }
 

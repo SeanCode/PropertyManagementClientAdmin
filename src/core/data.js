@@ -7,6 +7,8 @@ import Const from './const'
 export default {
   set: set,
   get: get,
+  setPath: setPath,
+  getPath: getPath,
   setToken: setToken,
   getToken: getToken,
   setAdmin: setAdmin,
@@ -21,6 +23,7 @@ export default {
 //  cache data
 var adminData
 var tokenData
+var pathData
 
 function getKey (key) {
   return Const.DATA.KEY_PREFIX + key
@@ -34,6 +37,17 @@ function get (key) {
 function set (key, value) {
   key = getKey(key)
   return Store.set(key, value)
+}
+
+function setPath (path) {
+  pathData = path
+}
+
+function getPath () {
+  if (pathData) {
+    return pathData
+  }
+  return ''
 }
 
 function setToken (token) {

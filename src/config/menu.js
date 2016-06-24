@@ -12,7 +12,7 @@ module.exports = [
     icon: 'fa-pencil',
     children: [
       {
-        name: '业主数据',
+        name: '个人数据',
         link: '/dashboard/sdq/input/personal',
         icon: 'fa-circle-o'
       },
@@ -24,11 +24,32 @@ module.exports = [
     ]
   },
   {
+    name: '水电气审核',
+    icon: 'fa-check',
+    children: [
+      {
+        name: '待审核',
+        link: '/dashboard/sdq/check/pending',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '已审核',
+        link: '/dashboard/sdq/check/list',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '审核历史',
+        link: '/dashboard/sdq/check/history',
+        icon: 'fa-circle-o'
+      }
+    ]
+  },
+  {
     name: '水电气管理',
     icon: 'fa-sitemap',
     children: [
       {
-        name: '业主管理',
+        name: '个人管理',
         link: '/dashboard/sdq/manage/personal',
         icon: 'fa-circle-o'
       },
