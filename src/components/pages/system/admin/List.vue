@@ -49,6 +49,10 @@
     margin-left: 10px;
   }
 
+  .pagination {
+    float: right;
+  }
+
   .VueTables__date-filter {
     border: 1px solid #ccc;
     padding: 6px;
@@ -108,13 +112,15 @@
             check: '水电气审核',
             statistics: '水电气统计',
             owner: '个人管理',
-            node: '机构管理',
+            institution: '机构管理',
+            advanced: '高级管理',
             admin: '管理员管理',
             article_add: '门户文章发表',
             picture_add: '门户风采发表',
             resource_manage: '门户资源管理',
             banner: '门户轮播图管理',
-            delete: '删除'
+            delete: '删除',
+            ban: '锁定'
           },
           templates: {
             input: function (row) {
@@ -129,7 +135,10 @@
             owner: function (row) {
               return '<input type="checkbox" ' + (row.privilege > 2 ? 'checked' : '') + '/>'
             },
-            node: function (row) {
+            institution: function (row) {
+              return '<input type="checkbox" ' + (row.privilege > 2 ? 'checked' : '') + '/>'
+            },
+            advanced: function (row) {
               return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
             },
             admin: function (row) {
@@ -147,6 +156,7 @@
             banner: function (row) {
               return '<input type="checkbox" ' + (row.privilege > 1 ? 'checked' : '') + '/>'
             },
+            ban: '<div @click="$parent.delete({id})"><i class="fa fa-ban" style="color: red; cursor: pointer;"></i></div>',
             delete: '<div @click="$parent.delete({id})"><i class="fa fa-trash" style="color: red; cursor: pointer;"></i></div>'
           }
         }

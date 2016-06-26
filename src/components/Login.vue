@@ -3,7 +3,7 @@
     <div class="login-box">
 
       <div class="login-logo">
-        <p>重邮物业后台管理系统</p>
+        <p class="login-title">重邮物业后台管理系统</p>
       </div>
       <!-- /.login-logo -->
 
@@ -14,7 +14,8 @@
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-          <input type="password" name="password" class="form-control" placeholder="密码" v-model="password" @keyup.enter="login"/>
+          <input type="password" name="password" class="form-control" placeholder="密码" v-model="password"
+                 @keyup.enter="login"/>
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="row">
@@ -80,15 +81,16 @@
   }
 </script>
 <style>
-  body {
-    background-color: white;
-  }
 
   #copyright {
     text-align: center;
     margin: 20px auto 0;
     color: gray;
     font-size: 12px;
+  }
+
+  .login-title {
+    color: white
   }
 
   .login-logo p {

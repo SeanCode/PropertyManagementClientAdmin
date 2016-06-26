@@ -12,6 +12,7 @@ import CheckList from '../components/pages/check/List.vue'
 import CheckHistory from '../components/pages/check/History.vue'
 import ManagePersonal from '../components/pages/manage/Personal.vue'
 import ManageInstitution from '../components/pages/manage/Institution.vue'
+import ManageAdvanced from '../components/pages/manage/Advanced.vue'
 import PrintPayment from '../components/pages/print/Payment.vue'
 import PrintReport from '../components/pages/print/Report.vue'
 import PrintTemp from '../components/pages/print/Temp.vue'
@@ -57,6 +58,9 @@ export function configRouter (router) {
         },
         '/sdq/manage/institution': {
           component: ManageInstitution
+        },
+        '/sdq/manage/advanced': {
+          component: ManageAdvanced
         },
         '/print/payment': {
           component: PrintPayment

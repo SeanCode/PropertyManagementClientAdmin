@@ -8,7 +8,20 @@ export default {
       ADMIN_LOGIN: '/admin/login',
       ADMIN_LIST: '/admin/list',
       CONFIG_PRICE: '/config/price',
-      UPDATE_DEFAULT_PRICE: '/config/price-default-update'
+      CONFIG_UPDATE_DEFAULT_PRICE: '/config/price-default-update',
+      CONFIG_SAVE_SPECIFIC_PRICE: '/config/price-specific-save',
+      DEPARTMENT_LIST: '/department/list',
+      DEPARTMENT_TREE_LIST: '/department/tree-list',
+      DEPARTMENT_NAME_UPDATE: '/department/name-update',
+      DEPARTMENT_ADD: '/department/add',
+      DEPARTMENT_REMOVE: '/department/remove',
+      INSTITUTION_LIST: '/institution/list',
+      INSTITUTION_ADD: '/institution/add',
+      INSTITUTION_INFO_UPDATE: '/institution/info-update',
+      INSTITUTION_DELETE: '/institution/delete',
+      USER_LIST_BY_DEPARTMENT: '/user/list-by-department',
+      NODE_CHILDREN: '/node/children',
+      NODE_TREE_ROOT: '/node/tree-root'
     }
   },
 

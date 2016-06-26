@@ -18,7 +18,7 @@
           <i class="fa fa-pencil"></i>
         </button>
         <span class="badge bg-red">{{price.water}}元</span>
-        <div v-show="isWaterInputShowing" class="input-group input-group-sm">
+        <div v-show="isWaterInputShowing" class="input-group-top input-group-sm">
           <input type="text" v-model="price.water" class="form-control">
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-info btn-flat" @click="saveWater()">保存</button>
@@ -31,7 +31,7 @@
           <i class="fa fa-pencil"></i>
         </button>
         <span class="badge bg-red">{{price.ele}}元</span>
-        <div v-show="isEleInputShowing" class="input-group input-group-sm">
+        <div v-show="isEleInputShowing" class="input-group-top input-group-sm">
           <input type="text" v-model="price.ele" class="form-control">
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-info btn-flat" @click="saveEle()">保存</button>
@@ -44,7 +44,7 @@
           <i class="fa fa-pencil"></i>
         </button>
         <span class="badge bg-red">{{price.gas}}元</span>
-        <div v-show="isGasInputShowing" class="input-group input-group-sm">
+        <div v-show="isGasInputShowing" class="input-group-top input-group-sm">
           <input type="text" v-model="price.gas" class="form-control">
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-info btn-flat" @click="saveGas()">保存</button>
@@ -60,7 +60,7 @@
     margin-bottom: 8px;
   }
 
-  .input-group {
+  .input-group-top {
     margin-top: 8px;
   }
 
@@ -121,7 +121,7 @@
   }
 
   function getPriceConfig (context) {
-    Core.Api.CONFIG.getPrice().then(function (data) {
+    Core.Api.CONFIG.getPrice(0, 0).then(function (data) {
       context.price = data.config.price
     })
   }

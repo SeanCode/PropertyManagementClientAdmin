@@ -12,12 +12,12 @@ module.exports = [
     icon: 'fa-pencil',
     children: [
       {
-        name: '个人数据',
+        name: '个人录入',
         link: '/dashboard/sdq/input/personal',
         icon: 'fa-circle-o'
       },
       {
-        name: '机构数据',
+        name: '机构录入',
         link: '/dashboard/sdq/input/institution',
         icon: 'fa-circle-o'
       }
@@ -56,6 +56,11 @@ module.exports = [
       {
         name: '机构管理',
         link: '/dashboard/sdq/manage/institution',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '高级管理',
+        link: '/dashboard/sdq/manage/advanced',
         icon: 'fa-circle-o'
       }
     ]
@@ -107,7 +112,7 @@ module.exports = [
         icon: 'fa-circle-o'
       },
       {
-        name: '水电气数据管理',
+        name: '数据管理',
         link: '/dashboard/system/data',
         icon: 'fa-circle-o'
       }

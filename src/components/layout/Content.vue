@@ -16,7 +16,7 @@
     <!-- Main content -->
     <section class="content">
 
-      <router-view keep-alive></router-view>
+      <router-view></router-view>
 
     </section>
     <!-- /.content -->

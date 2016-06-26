@@ -6,6 +6,9 @@ require('es6-promise').polyfill()
 var VueRouter = require('vue-router')
 var VueResource = require('vue-resource')
 var VueTables = require('vue-tables')
+global.jQuery = require('jquery')
+var $ = global.jQuery
+window.$ = $
 
 // install router
 Vue.use(VueRouter)
@@ -49,6 +52,12 @@ router.start(app, '#app');
 
   })
 })()
+
+$.ajaxSetup({
+  headers: {
+    Authorization: 'Basic ' + Core.Data.getToken()
+  }
+})
 
 // just for debugging
 window.router = router

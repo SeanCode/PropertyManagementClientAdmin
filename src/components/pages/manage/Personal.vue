@@ -1,6 +1,28 @@
 <template>
   <div class="row">
-    <side></side>
+    <div class="col-md-3">
+      <div class="box box-info" id="box-groups">
+        <div class="box-header with-border">
+          <h3 class="box-title">部门与用户</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" @click="refresh()">
+              <i class="fa fa-refresh"></i>
+            </button>
+            <button class="btn btn-box-tool">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body" style="display: block;">
+          <div class="user-tree-box">
+            <ul id="userTree" class="ztree"></ul>
+          </div>
+        </div>
+        <!--  boxbody -->
+      </div>
+      <!-- boxinfo -->
+    </div>
     <div class="col-md-9" id="panel">
       <div class="box box-solid box-info">
         <div class="box-header with-border">
@@ -15,7 +37,6 @@
         <!-- /.box-header -->
         <div class="box-body" style="display: block;">
 
-
           <div class="table-responsive">
             <table class="table no-margin">
               <tr>
@@ -29,105 +50,29 @@
                 <th>备注</th>
                 <th>操作</th>
               </tr>
-              <tr v-for="u in user">
-                <td>{{u.name}}</td>
-                <td>{{u.bumen}}</td>
-                <td>{{u.phone}}</td>
-                <td>{{u.yikatong}}</td>
-                <td>{{u.idcard}}</td>
-                <td>{{u.mark}}</td>
-                <td>{{u.title}}</td>
-                <td>{{u.info}}</td>
+              <tr v-for="user in users">
+                <td>{{user.name}}</td>
+                <td>{{user.department}}</td>
+                <td>{{user.phone}}</td>
+                <td>{{user.school_card}}</td>
+                <td>{{user.id_card}}</td>
+                <td>{{user.important}}</td>
+                <td>{{user.title}}</td>
+                <td>{{user.remark}}</td>
                 <td><a class="label label-danger"
                        href="javascript:void(0);" @click="showUpdUser($index)">修改</a></td>
               </tr>
-
-
             </table>
           </div>
 
         </div>
         <!--  boxbody -->
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-upd-user" tabindex="-1"
-             role="dialog" aria-labelledby="changeuserl" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="changeuserl">修改用户信息</h4>
-              </div>
-              <div id="muser2" class="modal-body">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">姓名(*)</span> <input
-                      type="text" v-model="temp.name" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">部门(*)</span> <input
-                      type="text" v-model="temp.bumen" class="form-control"
-                      readonly="true">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">电话</span> <input
-                      type="text" v-model="temp.phone" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">一卡通</span> <input
-                      type="text" v-model="temp.yikatong" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">身份证</span> <input
-                      type="text" v-model="temp.idcard" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-														<span class="input-group-addon">标记用户 <input
-                              type="radio" v-model="temp.mark" value="是">是 <input
-                              type="radio" v-model="temp.mark" value="否">否
-														</span>
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">职称</span> <input
-                      type="text" v-model="temp.title" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-xs-6">
-													<textarea v-model="temp.info" class="form-control"
-                                    cols="30" rows="10" resize="none" placeholder="备注"></textarea>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-danger pull-left"
-                        data-toggle="collapse" data-target="#divdel"
-                        @click="delUser()">删除用户
-                </button>
-                <button class="btn btn-danger pull-left"
-                        data-toggle="collapse" data-target="#divdel"
-                        @click="delUserReal()">真实删除用户
-                </button>
-                <button class="btn btn-danger pull-left" @click="banchu()">搬出用户</button>
-
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="updUser()">确定
-                </button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-        </div>
-        <!-- /.modal -->
       </div>
       <!-- boxinfo -->
+
       <div class="box box-solid box-info">
         <div class="box-header with-border">
-
-          <h3 class="box-title">地址信息</h3>
+          <h3 class="box-title">节点信息</h3>
           <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="collapse">
               <i class="fa fa-minus"></i>
@@ -136,147 +81,44 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body" style="display: block;">
-
-
           <div class="table-responsive">
             <table class="table no-margin table200">
               <tr>
-                <th>地址名</th>
+                <th>节点名</th>
                 <th>地址编号</th>
-                <th>完整地址信息</th>
+                <th>完整地址</th>
                 <th>类型</th>
                 <th>房间面积(平方米)</th>
                 <th>物管价(元/每平方米)</th>
+                <th>其他费用</th>
                 <th>物管费(元)</th>
                 <th>所有权</th>
                 <th>租房合同</th>
-                <th>原户主</th>
-                <th>现户主</th>
-                <th>居住人</th>
                 <th>备注</th>
                 <th>操作</th>
               </tr>
               <tr>
                 <td>{{node.name}}</td>
                 <td>{{node.code}}</td>
-                <td>{{node.longname}}</td>
+                <td>{{node.path}}</td>
                 <td>{{node.type}}</td>
-                <td>{{node.price}}</td>
                 <td>{{node.area}}</td>
+                <td>{{node.price}}</td>
                 <td>{{node.fee}}</td>
-                <td>{{node.ower}}</td>
-                <td>{{node.hetong}}</td>
-                <td>{{node.oriower}}</td>
-                <td>{{node.curower}}</td>
-                <td>{{node.curpeople}}</td>
-                <td>{{node.info}}</td>
-                <td v-if="node.nid"><a class="label label-danger"
-                                       href="javascript:void(0);" @click="showUpdNode()">修改</a></td>
+                <td>{{node.area * node.price + node.fee}}</td>
+                <td>{{node.ownership}}</td>
+                <td>{{node.contract}}</td>
+                <td>{{node.remark}}</td>
+                <td v-show="node.id"><a class="label label-danger" href="javascript:void(0);"
+                                        @click="editNode()">修改</a></td>
               </tr>
             </table>
           </div>
           <!-- table-->
-
-
         </div>
         <!--  boxbody -->
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-upd-node" tabindex="-2"
-             role="dialog" aria-labelledby="cll1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="cll1">修改地址信息</h4>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">地址名</span> <input
-                      type="text" v-model="temp.name" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">地址编号</span> <input
-                      type="text" v-model="temp.code" class="form-control">
-                    </div>
-                    完整地址信息<input type="text" readonly="true"
-                                 class="form-control">
-                    <div class="input-group input-group-md">
-														<span class="input-group-addon">类型<input
-                              type="radio" v-model="temp.type" name="type" value="房间">房间<input
-                              type="radio" v-model="temp.type" name="type" value="一般">一般
-														</span>
-                    </div>
-
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">房间面积</span> <input
-                      type="number" v-model="temp.area" class="form-control"
-                      min="0" max="10000">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">物管费单价(元/平方米)</span> <input
-                      type="number" v-model="temp.price" class="form-control"
-                      min="0" max="1000">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">物管费</span> <input
-                      type="number" v-model="temp.fee" class="form-control"
-                      min="0" max="10000">
-                    </div>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">所有权</span> <input
-                      type="text" v-model="temp.ower" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">租房合同</span> <input
-                      type="text" v-model="temp.hetong" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">原户主</span> <input
-                      type="text" v-model="temp.oriower" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">现户主</span> <input
-                      type="text" v-model="temp.curower" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">居住人</span> <input
-                      type="text" v-model="temp.curpeople" class="form-control">
-                    </div>
-													<textarea v-model="temp.info" class="form-control"
-                                    cols="30" rows="10" resize="none" placeholder="备注"></textarea>
-                  </div>
-
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-danger pull-left"
-                        data-toggle="collapse" data-target="#divdel"
-                        @click="delNode()">删除地址
-                </button>
-                <button class="btn btn-danger pull-left"
-                        data-toggle="collapse" data-target="#divdel"
-                        @click="delNodeReal()">彻底删除地址
-                </button>
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="updNode()">确定
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
       </div>
       <!-- boxinfo -->
-
       <div class="box box-solid box-info">
         <div class="box-header with-border">
           <h3 class="box-title">主表信息</h3>
@@ -308,31 +150,29 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="m in meter">
-                <td>{{m.name}}</td>
-                <td>{{m.code}}</td>
-                <td>{{m.type}}</td>
-                <td>{{m.parent}}</td>
-                <td>{{m.zore}}</td>
-                <td>{{m.mingpai}}</td>
-                <td>{{m.provider}}</td>
-                <td>{{m.birthday}}</td>
-                <td>{{m.who}}</td>
-                <td>{{m.when}}</td>
-                <td>{{m.paid}}</td>
-                <td>{{m.info}}</td>
-                <td><a class="label label-danger "
-                       href="javascript:void(0);" @click="showUpdMeter($index)">修改</a>
+              <tr v-for="meter in normalMeterList">
+                <td>{{meter.name}}</td>
+                <td>{{meter.code}}</td>
+                <td>{{meter.type}}</td>
+                <td>{{meter.parent}}</td>
+                <td>{{meter.zore}}</td>
+                <td>{{meter.mingpai}}</td>
+                <td>{{meter.provider}}</td>
+                <td>{{meter.birthday}}</td>
+                <td>{{meter.who}}</td>
+                <td>{{meter.when}}</td>
+                <td>{{meter.paid}}</td>
+                <td>{{meter.info}}</td>
+                <td>
+                  <a class="label label-danger "
+                     href="javascript:void(0);" @click="showUpdMeter($index)">修改</a>
                   <a class="label label-danger" href="javascript:void(0);"
-                     @click="showChangeMeter($index)">换表</a> <a
-                    class="label label-danger" href="javascript:void(0);"
-                    @click="showDiv($index)">设置主表</a> <a
-                    class="label label-danger" href="javascript:void(0);"
-                    @click="showNewCheck($index)">添加检查表</a></td>
-
-              </tr>
-
-
+                     @click="showChangeMeter($index)">换表</a>
+                  <a class="label label-danger" href="javascript:void(0);"
+                     @click="showDiv($index)">设置主表</a>
+                  <a class="label label-danger" href="javascript:void(0);"
+                     @click="showNewCheck($index)">添加检查表</a>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -342,273 +182,7 @@
         <!-- /.box-body -->
         <div class="box-footer clearfix" style="display: block;"></div>
         <!-- /.box-footer -->
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-upd-meter" tabindex="-2"
-             role="dialog" aria-labelledby="cml1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="cml1">修改表信息</h4>
-              </div>
-              <div class="modal-body">
-                <div id="cmul" class="row">
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表名称</span> <input
-                      type="text" v-model="temp.name" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表编号</span> <input
-                      type="text" v-model="temp.code" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表类型</span> <input
-                      type="text" v-model="temp.type" readonly="true"
-                      class="form-control">
-                    </div>
-
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">上级表编号</span> <input
-                      type="text" v-model="temp.parent" readonly="true"
-                      class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">初始表起度</span> <input
-                      type="number" v-model="temp.zore" class="form-control"
-                      min="0">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表铭牌号</span> <input
-                      type="text" v-model="temp.mingpai" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">生产厂家</span> <input
-                      type="text" v-model="temp.provider" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">生产日期</span> <input
-                      type="date" v-model="temp.birthday" class="form-control"
-                      placeholder="1945-01-01">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">采购员</span> <input
-                      type="text" v-model="temp.who" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">采购日期</span> <input
-                      type="date" v-model="temp.when" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">采购价格(元)</span> <input
-                      type="number" v-model="temp.paid" class="form-control"
-                      min="0">
-                    </div>
-													<textarea class="form-control" v-model="temp.info"
-                                    cols="30" rows="10" resize="none" placeholder="备注"></textarea>
-                  </div>
-
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left"
-                        @click="delMeter()">删除表
-                </button>
-                <button type="button" class="btn btn-danger pull-left"
-                        @click="delMeterReal()">彻底删除表
-                </button>
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="updMeter()">确定
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-change-meter" tabindex="-2"
-             role="dialog" aria-labelledby="exchangeMeterl"
-             aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="exchangeMeterl">换表</h4>
-              </div>
-              <div class="modal-body">
-                当前地址：<label class="bg-green">{{node.name}}</label>
-
-
-                <div class="row">
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-green">当前本月表起度</span> <input
-                      type="text" class="form-control" v-model="temp.start"
-                      readonly="true" min="0" max="5" placeholder="开发中">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-red">当前本月表止度</span> <input
-                      type="number" class="form-control" v-model="temp.old_end"
-                      min="0" placeholder="必填*">
-                    </div>
-                    <br>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-red">该止度抄表日期</span> <input
-                      type="date" v-model="temp.date">
-                    </div>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">表类型</span> <input
-                      type="text" readonly="true" v-model="temp.type"
-                      class="form-control">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">新表名称</span> <input
-                      type="text" class="form-control" v-model="temp.name"
-                      placeholder="必填*">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">新表编号</span> <input
-                      type="text" class="form-control" v-model="temp.code"
-                      placeholder="请输入表编号">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-green">新表初始表起度</span> <input
-                      type="number" class="form-control" min="0"
-                      v-model="temp.new_zore" placeholder="必填*">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="changeMeter()">确定
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-
-
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-div" tabindex="-2"
-             role="dialog" aria-labelledby="dvimeterl" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="dvimeterl">
-                  设置主表
-                  <small class="text-red">在下方选择主表（选择的主表，统计费用将减去分表的费用）</small>
-                </h4>
-              </div>
-              <div class="modal-body">
-                当前地址：<label class="bg-green">{{node.name}}</label> 当前分表编号：<label>{{meter[index].code}}</label><br>
-
-                <div class="row">
-
-                  <div>
-                    <ul id="divMeterTree" class="ztree"></ul>
-                  </div>
-                  <div>
-
-                    <table class="table no-margin">
-                      <tr v-for="m in temp.meter">
-                        <td>{{"名称："+m.name+" 编号"+m.code}}</td>
-                        <td><input type="radio" value="{{m.mid}}"
-                                   v-model="temp.son" name="divmeter">设为主表
-                        </td>
-                      </tr>
-                    </table>
-
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="setDivMeter()">确定
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-
-
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-new-check" tabindex="-2"
-             role="dialog" aria-labelledby="checkmeternl" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="checkmeternl">添加检查表</h4>
-              </div>
-              <div class="modal-body">
-                当前地址：<label class="bg-green">重庆邮电大学崇文路2号</label> 本月表起度：<label></label><br>
-
-                <div class="row">
-                  <div class="col-xs-11">
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">表类型</span> <input
-                      type="text" readonly="true" v-model="temp.type"
-                      class="form-control">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">新表名称</span> <input
-                      type="text" class="form-control" v-model="temp.name"
-                      placeholder="必填">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">新表编号</span> <input
-                      type="text" class="form-control" v-model="temp.code"
-                      placeholder="必填">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-green">新表初始表起度</span> <input
-                      type="number" class="form-control"
-                      v-model="temp.new_zore" min="0" placeholder="必填">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="newCheck()">确定
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-
       </div>
-      <!-- 主表信息 -->
-
       <div class="box box-solid box-info">
         <div class="box-header with-border">
           <h3 class="box-title">检查表信息</h3>
@@ -640,24 +214,23 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="m in check">
-                <td>{{m.name}}</td>
-                <td>{{m.code}}</td>
-                <td>{{m.type}}</td>
-                <td>{{m.parent}}</td>
-                <td>{{m.zore}}</td>
-                <td>{{m.mingpai}}</td>
-                <td>{{m.provider}}</td>
-                <td>{{m.birthday}}</td>
-                <td>{{m.who}}</td>
-                <td>{{m.when}}</td>
-                <td>{{m.paid}}</td>
-                <td>{{m.info}}</td>
+              <tr v-for="meter in checkMeterList">
+                <td>{{meter.name}}</td>
+                <td>{{meter.code}}</td>
+                <td>{{meter.type}}</td>
+                <td>{{meter.parent}}</td>
+                <td>{{meter.zore}}</td>
+                <td>{{meter.mingpai}}</td>
+                <td>{{meter.provider}}</td>
+                <td>{{meter.birthday}}</td>
+                <td>{{meter.who}}</td>
+                <td>{{meter.when}}</td>
+                <td>{{meter.paid}}</td>
+                <td>{{meter.info}}</td>
                 <td><a class="label label-danger"
                        href="javascript:void(0);" @click="showUpdCheck($index)">修改</a>
                   <a class="label label-danger" href="javascript:void(0);"
                      @click="showChangeCheck($index)">换表</a></td>
-
               </tr>
               </tbody>
             </table>
@@ -667,183 +240,90 @@
         <!-- /.box-body -->
         <div class="box-footer clearfix" style="display: block;"></div>
         <!-- /.box-footer -->
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-upd-check" tabindex="-2"
-             role="dialog" aria-labelledby="cml1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="cml1">修改检查表信息</h4>
-              </div>
-              <div class="modal-body">
-                <div id="cmul" class="row">
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表名称</span> <input
-                      type="text" v-model="temp.name" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表编号</span> <input
-                      type="text" v-model="temp.code" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表类型</span> <input
-                      type="text" v-model="temp.type" readonly="true"
-                      class="form-control">
-                    </div>
-
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">上级表编号</span> <input
-                      type="text" v-model="temp.parent" readonly="true"
-                      class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">初始表起度</span> <input
-                      type="number" v-model="temp.zore" class="form-control"
-                      min="0">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">表铭牌号</span> <input
-                      type="text" v-model="temp.mingpai" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">生产厂家</span> <input
-                      type="text" v-model="temp.provider" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">生产日期</span> <input
-                      type="date" v-model="temp.birthday" class="form-control"
-                      placeholder="1945-01-01">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">采购员</span> <input
-                      type="text" v-model="temp.who" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">采购日期</span> <input
-                      type="date" v-model="temp.when" class="form-control">
-                    </div>
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">采购价格(元)</span> <input
-                      type="number" v-model="temp.paid" class="form-control"
-                      min="0">
-                    </div>
-													<textarea class="form-control" v-model="temp.info"
-                                    cols="30" rows="10" resize="none" placeholder="备注"></textarea>
-                  </div>
-
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left"
-                        @click="delCheck()">删除表
-                </button>
-                <button type="button" class="btn btn-danger pull-left"
-                        @click="delCheckReal()">彻底删除表
-                </button>
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="updCheck()">确定
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="modal-change-check" tabindex="-2"
-             role="dialog" aria-labelledby="exchangeMeterl"
-             aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="exchangeMeterl">更换检查表</h4>
-              </div>
-              <div class="modal-body">
-                当前地址：<label class="bg-green">{{node.name}}</label>
-
-
-                <div class="row">
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-green">当前本月表起度</span> <input
-                      type="text" class="form-control" v-model="temp.start"
-                      readonly="true" min="0" max="5" placeholder="开发中">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-red">当前本月表止度</span> <input
-                      type="number" class="form-control" v-model="temp.old_end"
-                      min="0" placeholder="必填*">
-                    </div>
-                    <br>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-red">该止度抄表日期</span> <input
-                      type="date" v-model="temp.date">
-                    </div>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">表类型</span> <input
-                      type="text" readonly="true" v-model="temp.type"
-                      class="form-control">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">新表名称</span> <input
-                      type="text" class="form-control" v-model="temp.name"
-                      placeholder="必填*">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon">新表编号</span> <input
-                      type="text" class="form-control" v-model="temp.code"
-                      placeholder="请输入表编号">
-                    </div>
-                    <div class="input-group input-group-xs">
-                      <span class="input-group-addon bg-green">新表初始表起度</span> <input
-                      type="number" class="form-control" min="0"
-                      v-model="temp.new_zore" placeholder="必填*">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary"
-                        @click="changeCheck()">确定
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-
       </div>
     </div>
   </div>
 </template>
 <style>
-  .ztree li span.button {
-    min-width: 21px !important;
-    min-height: 21px !important;
+  .user-tree-box {
+    max-height: 600px;
+    overflow: scroll;
   }
 </style>
 <script>
-  import Side from './personal/side.vue'
+  import Core from '../../../core/core'
 
   export default {
-    components: {
-      'side': Side
+    data () {
+      return {
+        checkMeterList: [],
+        normalMeterList: [],
+        users: [],
+        node: {},
+        setting: {
+          async: {
+            enable: true,
+            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
+            autoParam: ['id=department_id'],
+            dataType: 'json',
+            dataFilter: ajaxDataFilter
+          },
+          data: {
+            keep: {
+              parent: true
+            },
+            simpleData: {
+              enable: true,
+              idKey: 'id',
+              pIdKey: 'parent_id',
+              rootPId: 1
+            }
+          },
+          callback: {
+            onClick: onUserNodeSelected
+          }
+        }
+      }
+    },
+    ready () {
+      initContext(this)
+      initUserTree()
     }
   }
+
+  var context
+
+  function initContext (c) {
+    context = c
+  }
+
+  function ajaxDataFilter (treeId, parentNode, responseData) {
+    if (!responseData || responseData.code !== 0 || responseData.data.user_list.length <= 0) {
+      return null
+    }
+    return responseData.data.user_list
+  }
+
+  function initUserTree () {
+    Core.Api.DEPARTMENT.getTreeList(1).then(function (data) {
+      context.departmentList = data.department_list
+      window.$.fn.zTree.init(window.$('#userTree'), context.setting, context.departmentList)
+      var treeObj = window.$.fn.zTree.getZTreeObj('userTree')
+      var nodes = treeObj.getNodes()
+      if (data.department_list.length > 0) {
+        treeObj.expandNode(nodes[0], true, false, true)
+      }
+    })
+  }
+
+  function onUserNodeSelected (event, treeId, node, clickFlag) {
+    if (node.hasOwnProperty('department_id')) {
+      context.users = [node]
+    } else {
+      context.users = []
+    }
+  }
+  //
+  //  function getMeterListByNodeId (node) {
+  //  }
 </script>

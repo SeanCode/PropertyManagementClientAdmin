@@ -23,15 +23,104 @@ export default {
     }
   },
   CONFIG: {
-    getPrice: function () {
-      return get(Const.NET.API.CONFIG_PRICE)
+    getPrice: function (year, month) {
+      return post(Const.NET.API.CONFIG_PRICE, {
+        year: year,
+        month: month
+      })
     },
     updateDefaultPrice: function (water, ele, gas) {
-      return post(Const.NET.API.UPDATE_DEFAULT_PRICE, {
+      return post(Const.NET.API.CONFIG_UPDATE_DEFAULT_PRICE, {
         water: water,
         ele: ele,
         gas: gas
       })
+    },
+    saveSpecificPrice: function (year, month, water, ele, gas) {
+      return post(Const.NET.API.CONFIG_SAVE_SPECIFIC_PRICE, {
+        year: year,
+        month: month,
+        water: water,
+        ele: ele,
+        gas: gas
+      })
+    }
+  },
+  DEPARTMENT: {
+    getList: function (rootId) {
+      return post(Const.NET.API.DEPARTMENT_LIST, {
+        root_id: rootId
+      })
+    },
+    getTreeList: function (rootId) {
+      return post(Const.NET.API.DEPARTMENT_TREE_LIST, {
+        root_id: rootId
+      })
+    },
+    updateName: function (id, name) {
+      return post(Const.NET.API.DEPARTMENT_NAME_UPDATE, {
+        id: id,
+        name: name
+      })
+    },
+    add: function (parentId, name) {
+      return post(Const.NET.API.DEPARTMENT_ADD, {
+        parent_id: parentId,
+        name: name
+      })
+    },
+    remove: function (id) {
+      return post(Const.NET.API.DEPARTMENT_REMOVE, {
+        id: id
+      })
+    }
+  },
+  INSTITUTION: {
+    getInstitutionList: function () {
+      return post(Const.NET.API.INSTITUTION_LIST)
+    },
+    addInstitution: function (name, people, contact, description, remark, code) {
+      return post(Const.NET.API.INSTITUTION_ADD, {
+        name: name,
+        people: people,
+        contact: contact,
+        description: description,
+        remark: remark,
+        code: code
+      })
+    },
+    deleteInstitution: function (id) {
+      return post(Const.NET.API.INSTITUTION_DELETE, {
+        id: id
+      })
+    },
+    updateInstitutionInfo: function (id, name, people, contact, description, remark, code) {
+      return post(Const.NET.API.INSTITUTION_INFO_UPDATE, {
+        id: id,
+        name: name,
+        people: people,
+        contact: contact,
+        description: description,
+        remark: remark,
+        code: code
+      })
+    }
+  },
+  USER: {
+    getUserListByDepartment: function (departmentId) {
+      return post(Const.NET.API.USER_LIST_BY_DEPARTMENT, {
+        department_id: departmentId
+      })
+    }
+  },
+  NODE: {
+    getChildren: function (parentId) {
+      return post(Const.NET.API.NODE_CHILDREN, {
+        parent_id: parentId
+      })
+    },
+    getNodeTreeRoot: function () {
+      return post(Const.NET.API.NODE_TREE_ROOT)
     }
   }
 }
