@@ -122,6 +122,35 @@ export default {
     getNodeTreeRoot: function () {
       return post(Const.NET.API.NODE_TREE_ROOT)
     }
+  },
+  METER: {
+    getNormalList: function (nodeId) {
+      return post(Const.NET.API.METER_NORMAL_LIST, {
+        node_id: nodeId
+      })
+    },
+    getCheckList: function (nodeId) {
+      return post(Const.NET.API.METER_CHECK_LIST, {
+        node_id: nodeId
+      })
+    },
+    getChildren: function (nodeId) {
+      return post(Const.NET.API.METER_CHILDREN, {
+        node_id: nodeId
+      })
+    },
+    remove: function (id, nodeId) {
+      return post(Const.NET.API.METER_REMOVE, {
+        id: id,
+        node_id: nodeId
+      })
+    },
+    setAsChild: function (id, parentId) {
+      return post(Const.NET.API.METER_SET_AS_CHILD, {
+        id: id,
+        parent_id: parentId
+      })
+    }
   }
 }
 

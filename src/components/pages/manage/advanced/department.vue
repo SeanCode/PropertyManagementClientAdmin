@@ -187,15 +187,15 @@
   }
 
   function addHoverDom (treeId, treeNode) {
-    var sObj = window.$('#departmentTree_' + treeNode.id + '_span')
+    var sObj = window.$('#' + treeNode.tId + '_span')
     var zTree = window.$.fn.zTree.getZTreeObj('departmentTree')
 
-    if (!zTree.setting.edit.showRemoveBtn || treeNode.editNameFlag || window.$('#addBtn_' + treeNode.id).length > 0) {
+    if (!zTree.setting.edit.showRemoveBtn || treeNode.editNameFlag || window.$('#addBtn_' + treeNode.tId).length > 0) {
       return
     }
-    var addStr = '<span class="button add" id=' + 'addBtn_' + treeNode.id + ' title="新增" onfocus="this.blur()"></span>'
+    var addStr = '<span class="button add" id=' + 'addBtn_' + treeNode.tId + ' title="新增" onfocus="this.blur()"></span>'
     sObj.after(addStr)
-    var btn = window.$('#addBtn_' + treeNode.id)
+    var btn = window.$('#addBtn_' + treeNode.tId)
     if (btn) {
       btn.bind('click', function () {
         Core.Log.d('click to new model')
@@ -205,7 +205,7 @@
   }
 
   function removeHoverDom (treeId, treeNode) {
-    window.$('#addBtn_' + treeNode.id).unbind().remove()
+    window.$('#addBtn_' + treeNode.tId).unbind().remove()
   }
 
   function onDepartmentSelected (event, treeId, treeNode, clickFlag) {

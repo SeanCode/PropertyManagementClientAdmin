@@ -34,18 +34,15 @@ router.start(app, '#app');
   Vue.http.interceptors.push({
 
     request: function (request) {
-      var headers = request.headers
-
       if (!request.headers.hasOwnProperty('Authorization')) {
         request.headers['Authorization'] = 'Basic ' + Core.Data.getToken()
       }
-      console.log(headers)
       return request
     },
 
     response: function (response) {
       if (response.status !== 200) {
-        Core.Log.e(response.statusText)
+        Core.Log.t(response.statusText)
       }
       return response
     }

@@ -60,8 +60,10 @@
                         <td>{{node.ownership}}</td>
                         <td>{{node.contract}}</td>
                         <td>{{node.remark}}</td>
-                        <td v-show="node.id"><a class="label label-danger" href="javascript:void(0);"
-                                                @click="editNode()">修改</a></td>
+                        <td v-show="node.id">
+                          <a class="label label-danger" href="javascript:void(0);"
+                             @click="editNode()">编辑</a>
+                        </td>
                       </tr>
                     </table>
                   </div>
@@ -88,7 +90,7 @@
                         <th>表名称</th>
                         <th>表编号</th>
                         <th>表类型</th>
-                        <th>上级表编号</th>
+                        <th>上级表名称</th>
                         <th>初始表起度</th>
                         <th>铭牌号</th>
                         <th>生产厂家</th>
@@ -101,28 +103,21 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr v-for="meter in normalMeterList">
+                      <tr v-for="meter in meterNormalList">
                         <td>{{meter.name}}</td>
                         <td>{{meter.code}}</td>
-                        <td>{{meter.type}}</td>
-                        <td>{{meter.parent}}</td>
-                        <td>{{meter.zore}}</td>
-                        <td>{{meter.mingpai}}</td>
-                        <td>{{meter.provider}}</td>
-                        <td>{{meter.birthday}}</td>
-                        <td>{{meter.who}}</td>
-                        <td>{{meter.when}}</td>
-                        <td>{{meter.paid}}</td>
-                        <td>{{meter.info}}</td>
+                        <td>{{meter.type_name}}</td>
+                        <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                        <td>{{meter.begin}}</td>
+                        <td>{{meter.nameplate}}</td>
+                        <td>{{meter.manufacturers}}</td>
+                        <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
+                        <td>{{meter.purchaser}}</td>
+                        <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
+                        <td>{{meter.cost}}</td>
+                        <td>{{meter.remark}}</td>
                         <td>
-                          <a class="label label-danger "
-                             href="javascript:void(0);" @click="showUpdMeter($index)">修改</a>
-                          <a class="label label-danger" href="javascript:void(0);"
-                             @click="showChangeMeter($index)">换表</a>
-                          <a class="label label-danger" href="javascript:void(0);"
-                             @click="showDiv($index)">设置主表</a>
-                          <a class="label label-danger" href="javascript:void(0);"
-                             @click="showNewCheck($index)">添加检查表</a>
+                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
                         </td>
                       </tr>
                       </tbody>
@@ -152,7 +147,7 @@
                         <th>表名称</th>
                         <th>表编号</th>
                         <th>表类型</th>
-                        <th>上级表</th>
+                        <th>上级表名称</th>
                         <th>初始表起度</th>
                         <th>表铭牌号</th>
                         <th>生产厂家</th>
@@ -165,24 +160,79 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr v-for="meter in checkMeterList">
+                      <tr v-for="meter in meterCheckList">
                         <td>{{meter.name}}</td>
                         <td>{{meter.code}}</td>
-                        <td>{{meter.type}}</td>
-                        <td>{{meter.parent}}</td>
-                        <td>{{meter.zore}}</td>
-                        <td>{{meter.mingpai}}</td>
-                        <td>{{meter.provider}}</td>
-                        <td>{{meter.birthday}}</td>
-                        <td>{{meter.who}}</td>
-                        <td>{{meter.when}}</td>
-                        <td>{{meter.paid}}</td>
-                        <td>{{meter.info}}</td>
-                        <td><a class="label label-danger"
-                               href="javascript:void(0);" @click="showUpdCheck($index)">修改</a>
-                          <a class="label label-danger" href="javascript:void(0);"
-                             @click="showChangeCheck($index)">换表</a></td>
-
+                        <td>{{meter.type_name}}</td>
+                        <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                        <td>{{meter.begin}}</td>
+                        <td>{{meter.nameplate}}</td>
+                        <td>{{meter.manufacturers}}</td>
+                        <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
+                        <td>{{meter.purchaser}}</td>
+                        <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
+                        <td>{{meter.cost}}</td>
+                        <td>{{meter.remark}}</td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix" style="display: block;"></div>
+                <!-- /.box-footer -->
+              </div>
+              <div class="box box-solid box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">分表信息</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="display: block;">
+                  <div class="table-responsive ">
+                    <table class="table no-margin table200">
+                      <thead>
+                      <tr>
+                        <th>表名称</th>
+                        <th>表编号</th>
+                        <th>表类型</th>
+                        <th>上级表名称</th>
+                        <th>初始表起度</th>
+                        <th>表铭牌号</th>
+                        <th>生产厂家</th>
+                        <th>生产日期</th>
+                        <th>采购员</th>
+                        <th>采购日期</th>
+                        <th>采购价格</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr v-for="meter in meterChildren">
+                        <td>{{meter.name}}</td>
+                        <td>{{meter.code}}</td>
+                        <td>{{meter.type_name}}</td>
+                        <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                        <td>{{meter.begin}}</td>
+                        <td>{{meter.nameplate}}</td>
+                        <td>{{meter.manufacturers}}</td>
+                        <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
+                        <td>{{meter.purchaser}}</td>
+                        <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
+                        <td>{{meter.cost}}</td>
+                        <td>{{meter.remark}}</td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                        </td>
                       </tr>
                       </tbody>
                     </table>
@@ -203,7 +253,7 @@
 <style>
   .node-box {
     overflow: scroll;
-    max-height: 556px;
+    max-height: 100%;
   }
 </style>
 <script>
@@ -213,6 +263,11 @@
     data () {
       return {
         setting: {
+          view: {
+            addHoverDom: addHoverDom,
+            removeHoverDom: removeHoverDom,
+            selectedMulti: false
+          },
           async: {
             enable: true,
             url: 'http://localhost:8080/api/private/v1/node/children',
@@ -240,8 +295,9 @@
         },
         nodeList: [],
         node: {},
-        normalMeterList: [],
-        checkMeterList: []
+        meterNormalList: [],
+        meterCheckList: [],
+        meterChildren: []
       }
     },
     ready () {
@@ -285,12 +341,56 @@
     })
   }
 
-  function onNodeSelected (event, treeId, treeNode, clickFlag) {
-    context.node = treeNode
-    getMeterListByNodeId(treeNode)
+  function addHoverDom (treeId, treeNode) {
+    var sObj = window.$('#' + treeNode.tId + '_span')
+    var zTree = window.$.fn.zTree.getZTreeObj('nodeTree')
+    if (!zTree.setting.edit.showRemoveBtn || treeNode.editNameFlag || window.$('#addBtn_' + treeNode.tId).length > 0) {
+      return
+    }
+    var addStr = '<span class="button add" id=' + 'addBtn_' + treeNode.tId + ' title="新增" onfocus="this.blur()"></span>'
+    sObj.after(addStr)
+    var btn = window.$('#addBtn_' + treeNode.tId)
+    if (btn) {
+      btn.bind('click', function () {
+        Core.Log.d('click to new model')
+        return false
+      })
+    }
   }
 
-  function getMeterListByNodeId (node) {
+  function removeHoverDom (treeId, treeNode) {
+    window.$('#addBtn_' + treeNode.tId).unbind().remove()
+  }
+
+  function onNodeSelected (event, treeId, treeNode, clickFlag) {
+    context.node = treeNode
+    getMeterNormalList(treeNode)
+    getMeterCheckList(treeNode)
+    getMeterChildren(treeNode)
+  }
+
+  function getMeterNormalList (node) {
+    Core.Api.METER.getNormalList(node.id).then(function (data) {
+      context.meterNormalList = data.meter_normal_list
+    }, function (error) {
+      Core.Log.e(error)
+    })
+  }
+
+  function getMeterCheckList (node) {
+    Core.Api.METER.getCheckList(node.id).then(function (data) {
+      context.meterCheckList = data.meter_check_list
+    }, function (error) {
+      Core.Log.e(error)
+    })
+  }
+
+  function getMeterChildren (node) {
+    Core.Api.METER.getChildren(node.id).then(function (data) {
+      context.meterChildren = data.meter_children
+    }, function (error) {
+      Core.Log.e(error)
+    })
   }
 
   function showRemoveBtn (treeId, treeNode) {

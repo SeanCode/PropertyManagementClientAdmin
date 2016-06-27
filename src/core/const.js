@@ -21,7 +21,14 @@ export default {
       INSTITUTION_DELETE: '/institution/delete',
       USER_LIST_BY_DEPARTMENT: '/user/list-by-department',
       NODE_CHILDREN: '/node/children',
-      NODE_TREE_ROOT: '/node/tree-root'
+      NODE_TREE_ROOT: '/node/tree-root',
+      METER_NORMAL_LIST: '/meter/normal-list',
+      METER_CHECK_LIST: '/meter/check-list',
+      METER_CHILDREN: '/meter/children',
+      METER_ADD: '/meter/add',
+      METER_INFO_UPDATE: '/meter/info-update',
+      METER_REMOVE: '/meter/remove',
+      METER_SET_AS_CHILD: '/meter/set-as-child'
     }
   },
 
