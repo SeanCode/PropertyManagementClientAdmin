@@ -74,9 +74,8 @@
       Core.Data.setAdmin(response.data.data['admin'])
       Core.Data.setToken(Core.Util.Base64.encode(name + ':' + password))
       window.router.go('/')
-    }, function (error) {
-      window.alert(error)
-      Core.Log.e(error)
+    }, function () {
+      window.alert('登录失败')
     })
   }
 </script>

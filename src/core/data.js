@@ -17,7 +17,8 @@ export default {
   isGuest: isGuest,
   logout: logout,
   getAll: getAll,
-  clear: clear
+  clear: clear,
+  getEmptyUser: getEmptyUser
 }
 
 //  cache data
@@ -95,4 +96,18 @@ function clear () {
   tokenData = undefined
   adminData = undefined
   Store.clear()
+}
+
+function getEmptyUser () {
+  return {
+    'id': 0,
+    'name': '',
+    'department': '',
+    'phone': '',
+    'school_card': '',
+    'id_card': '',
+    'important': '',
+    'title': '',
+    'remark': ''
+  }
 }

@@ -151,6 +151,33 @@ export default {
         parent_id: parentId
       })
     }
+  },
+  NODE_OWNER: {
+    addNodeOwner: function (nodeId, ownerId, ownerType) {
+      return post(Const.NET.API.NODE_OWNER_ADD, {
+        node_id: nodeId,
+        owner_id: ownerId,
+        owner_type: ownerType
+      })
+    },
+    invalidNodeOwner: function (nodeId, ownerId, ownerType) {
+      return post(Const.NET.API.NODE_OWNER_INVALID, {
+        node_id: nodeId,
+        owner_id: ownerId,
+        owner_type: ownerType
+      })
+    },
+    getNodeByOwner: function (ownerId, ownerType) {
+      return post(Const.NET.API.NODE_OWNER_NODE, {
+        owner_id: ownerId,
+        owner_type: ownerType
+      })
+    },
+    getOwnerByNode: function (nodeId) {
+      return post(Const.NET.API.NODE_OWNER_OWNER, {
+        node_id: nodeId
+      })
+    }
   }
 }
 
@@ -160,14 +187,14 @@ function post (api, data, requestHeaders, raw) {
 
   return Vue.http.post(url, transformObjectToUrlencodedData(data), {
     headers: configurePostHeaders(requestHeaders)
-  }).then(function (response) {
+  }).then((response) => {
     if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
-      return Promise.reject(JSON.stringify(response.data))
+      return Promise.reject(response.data)
     }
     return raw ? response : response.data.data
   }, function (error) {
     Log.e(error)
-    return error
+    return Promise.reject(error)
   })
 }
 

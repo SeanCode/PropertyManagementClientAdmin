@@ -23,6 +23,94 @@
             <div class='col-md-9 no-padding-left'>
               <div class="box box-solid box-info">
                 <div class="box-header with-border">
+                  <h3 class="box-title">机构信息</h3>
+                  <div class="box-tools pull-right">
+                    <button v-show="!institution.id" class="btn btn-box-tool">
+                      <i class="fa fa-suitcase" title="入住"></i>
+                    </button>
+                    <button class="btn btn-box-tool" data-widget="collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="display: block;">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <tr>
+                        <th>名称</th>
+                        <th>负责人</th>
+                        <th>联系方式</th>
+                        <th>组织机构代码</th>
+                        <th>描述</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                      </tr>
+                      <tr v-show="institution.id">
+                        <td>{{institution.name}}</td>
+                        <td>{{institution.people}}</td>
+                        <td>{{institution.contact}}</td>
+                        <td>{{institution.code}}</td>
+                        <td>{{institution.description}}</td>
+                        <td>{{institution.remark}}</td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                </div>
+                <!--  boxbody -->
+              </div>
+              <div class="box box-solid box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">个人信息</h3>
+                  <div class="box-tools pull-right">
+                    <button v-show="users.length==0" class="btn btn-box-tool">
+                      <i class="fa fa-suitcase" title="入住"></i>
+                    </button>
+                    <button class="btn btn-box-tool" data-widget="collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="display: block;">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <tr>
+                        <th>姓名</th>
+                        <th>部门</th>
+                        <th>电话</th>
+                        <th>一卡通</th>
+                        <th>身份证</th>
+                        <th>标记用户</th>
+                        <th>职称</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                      </tr>
+                      <tr v-for="user in users">
+                        <td>{{user.name}}</td>
+                        <td>{{user.department}}</td>
+                        <td>{{user.phone}}</td>
+                        <td>{{user.school_card}}</td>
+                        <td>{{user.id_card}}</td>
+                        <td>{{user.important}}</td>
+                        <td>{{user.title}}</td>
+                        <td>{{user.remark}}</td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                </div>
+                <!--  boxbody -->
+              </div>
+              <div class="box box-solid box-info">
+                <div class="box-header with-border">
                   <h3 class="box-title">节点信息</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse">
@@ -48,11 +136,11 @@
                         <th>备注</th>
                         <th>操作</th>
                       </tr>
-                      <tr>
+                      <tr v-show="node.id">
                         <td>{{node.name}}</td>
                         <td>{{node.code}}</td>
                         <td>{{node.path}}</td>
-                        <td>{{node.type}}</td>
+                        <td>{{node.type_name}}</td>
                         <td>{{node.area}}</td>
                         <td>{{node.price}}</td>
                         <td>{{node.fee}}</td>
@@ -60,7 +148,7 @@
                         <td>{{node.ownership}}</td>
                         <td>{{node.contract}}</td>
                         <td>{{node.remark}}</td>
-                        <td v-show="node.id">
+                        <td>
                           <a class="label label-danger" href="javascript:void(0);"
                              @click="editNode()">编辑</a>
                         </td>
@@ -147,7 +235,7 @@
                         <th>表名称</th>
                         <th>表编号</th>
                         <th>表类型</th>
-                        <th>上级表名称</th>
+                        <th>主表名称</th>
                         <th>初始表起度</th>
                         <th>表铭牌号</th>
                         <th>生产厂家</th>
@@ -282,19 +370,12 @@
           },
           callback: {
             onClick: onNodeSelected
-          },
-          edit: {
-            enable: true,
-            drag: {
-              autoExpandTrigger: false
-            },
-            removeTitle: '删除',
-            renameTitle: '重命名',
-            showRemoveBtn: showRemoveBtn
           }
         },
         nodeList: [],
         node: {},
+        users: [],
+        institution: {},
         meterNormalList: [],
         meterCheckList: [],
         meterChildren: []
@@ -315,7 +396,7 @@
   }
 
   function ajaxDataFilter (treeId, parentNode, responseData) {
-    if (!responseData || responseData.code !== 0 || responseData.data.children.length <= 0) {
+    if (!responseData || responseData.code !== 0 || responseData.data.children === undefined || responseData.data.children.length <= 0) {
       return null
     }
     return responseData.data.children
@@ -364,9 +445,32 @@
 
   function onNodeSelected (event, treeId, treeNode, clickFlag) {
     context.node = treeNode
+    getOwnerByNode(treeNode.id)
     getMeterNormalList(treeNode)
     getMeterCheckList(treeNode)
     getMeterChildren(treeNode)
+  }
+
+  function getOwnerByNode (nodeId) {
+    Core.Api.NODE_OWNER.getOwnerByNode(nodeId).then(function (data) {
+      var nodeOwner = data.node_owner
+      if (nodeOwner.owner_type === Core.Const.TYPE.OWNER_TYPE_USER) {
+        var user = nodeOwner.user
+        context.users = [user]
+        context.institution = {}
+      } else if (nodeOwner.owner_type === Core.Const.TYPE.OWNER_TYPE_INSTITUTION) {
+        var institution = nodeOwner.institution
+        context.institution = institution
+        context.users = []
+      } else {
+        context.users = []
+        context.institution = {}
+      }
+    }, function (error) {
+      Core.Log.e(error)
+      context.users = []
+      context.institution = {}
+    })
   }
 
   function getMeterNormalList (node) {
@@ -393,8 +497,8 @@
     })
   }
 
-  function showRemoveBtn (treeId, treeNode) {
-    return treeNode.id !== 1
-  }
+//  function showRemoveBtn (treeId, treeNode) {
+//    return treeNode.id !== 1
+//  }
 
 </script>

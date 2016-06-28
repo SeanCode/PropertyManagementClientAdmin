@@ -41,9 +41,6 @@
             noResults: '暂无匹配',
             count: '共 {count} 条记录'
           },
-          onRowClick: function (row) {
-            console.log('row click')
-          },
           headings: {
             id: '编号',
             name: '名称',
@@ -52,12 +49,10 @@
             code: '组织机构代码',
             description: '描述',
             remark: '备注',
-            edit: '编辑',
-            delete: '删除'
+            operate: '操作'
           },
           templates: {
-            edit: '<div @click="$parent.edit({id})"><i class="fa fa-pencil" style="color: lightskyblue; cursor: pointer;"></i></div>',
-            delete: '<div @click="$parent.delete({id})"><i class="fa fa-trash" style="color: red; cursor: pointer;"></i></div>'
+            operate: '<a class="label label-danger" href="javascript:void(0);" @click="$parent.operate({id})">编辑</a></i></div>'
           }
         }
       }
@@ -67,14 +62,10 @@
       getInstitutionList()
     },
     methods: {
-      'delete': function (id) {
+      'operate': function (id) {
         if (window.confirm('确认删除?')) {
           deleteInstitution(id)
         }
-      },
-      'edit': function (id) {
-        console.log('edit')
-        console.log(id)
       },
       'refresh': function () {
         getInstitutionList()

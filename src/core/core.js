@@ -7,6 +7,7 @@ import Data from './data'
 import Log from './log'
 import Util from './util'
 import Config from './config'
+import Toast from './toast'
 
 export default {
   Api: Api,
@@ -14,5 +15,6 @@ export default {
   Data: Data,
   Log: Log,
   Util: Util,
-  Config: Config
+  Config: Config,
+  Toast: Toast
 }

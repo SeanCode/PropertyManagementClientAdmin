@@ -3,7 +3,7 @@
     <!-- Logo -->
     <a v-link="{ path: '/' }" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>后</b>台</span>
+      <span class="logo-mini">物管</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">重邮物业后台管理系统</span>
     </a>

@@ -28,7 +28,11 @@ export default {
       METER_ADD: '/meter/add',
       METER_INFO_UPDATE: '/meter/info-update',
       METER_REMOVE: '/meter/remove',
-      METER_SET_AS_CHILD: '/meter/set-as-child'
+      METER_SET_AS_CHILD: '/meter/set-as-child',
+      NODE_OWNER_NODE: '/node-owner/node',
+      NODE_OWNER_OWNER: '/node-owner/owner',
+      NODE_OWNER_ADD: '/node-owner/add',
+      NODE_OWNER_INVALID: '/node-owner/invalid'
     }
   },
 
@@ -55,5 +59,10 @@ export default {
     KEY_COOKIE: 'cookie',
     KEY_TOKEN: 'token',
     KEY_ADMIN: 'admin'
+  },
+
+  TYPE: {
+    OWNER_TYPE_USER: 1,
+    OWNER_TYPE_INSTITUTION: 2
   }
 }

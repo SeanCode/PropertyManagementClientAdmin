@@ -92,9 +92,6 @@
             noResults: '暂无匹配',
             count: '共 {count} 条记录'
           },
-          onRowClick: function (row) {
-            console.log('on row click')
-          },
           headings: {
             id: '编号',
             name: '姓名',
@@ -102,12 +99,10 @@
             phone: '手机号码',
             id_card: '身份证',
             school_card: '一卡通',
-            edit: '编辑',
-            delete: '删除'
+            operate: '操作'
           },
           templates: {
-            edit: '<div @click="$parent.delete({id})"><i class="fa fa-pencil" style="color: lightskyblue; cursor: pointer;"></i></div>',
-            delete: '<div @click="$parent.delete({id})"><i class="fa fa-trash" style="color: red; cursor: pointer;"></i></div>'
+            operate: '<a class="label label-danger" href="javascript:void(0);" @click="$parent.operate({id})">编辑</a></i></div>'
           }
         }
       }
@@ -124,9 +119,8 @@
         getDepartmentList(true)
         refreshUserList()
       },
-      'delete': function (param) {
-        console.log('param: ' + param)
-        window.alert('删除: ' + param + ' ?')
+      'operate': function (param) {
+        window.alert('编辑: ' + param + ' ?')
       }
     }
   }
@@ -157,6 +151,8 @@
           treeObj.expandNode(nodes[0], true, false, true)
         }
       }
+    }, function () {
+      Core.Toast.error(context, '获取部门失败')
     })
   }
 
@@ -198,7 +194,7 @@
     var btn = window.$('#addBtn_' + treeNode.tId)
     if (btn) {
       btn.bind('click', function () {
-        Core.Log.d('click to new model')
+        Core.Toast.success(context, '新增部门成功')
         return false
       })
     }
