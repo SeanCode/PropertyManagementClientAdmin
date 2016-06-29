@@ -64,7 +64,7 @@
                 <th>名称</th>
                 <th>负责人</th>
                 <th>联系方式</th>
-                <th>组织机构代码</th>
+                <th>机构代码</th>
                 <th>描述</th>
                 <th>备注</th>
                 <th>操作</th>
@@ -77,14 +77,60 @@
                 <td>{{institution.description}}</td>
                 <td>{{institution.remark}}</td>
                 <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  <a class="label label-primary" href="javascript:void(0);"
+                     @click="toggleEditInstitution(institution.id)">编辑</a>
                 </td>
               </tr>
             </table>
           </div>
-
         </div>
         <!--  boxbody -->
+        <modal title="修改机构信息" :show.sync="showEditInstitution" effect="fade" width="800">
+          <div slot="modal-body" class="modal-body">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="institutionEditing.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">负责人</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="institutionEditing.people">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">联系方式</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="institutionEditing.contact">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">机构代码</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="institutionEditing.code">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">描述</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="institutionEditing.description">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="institutionEditing.remark">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click='showEditInstitution = false'>取消</button>
+            <button type="button" class="btn btn-success" @click='updateInstitution'>更新</button>
+          </div>
+        </modal>
       </div>
       <!-- boxinfo -->
       <div class="box box-solid box-info">
@@ -113,7 +159,6 @@
                 <th>其他费用</th>
                 <th>物管费(元)</th>
                 <th>所有权</th>
-                <th>租房合同</th>
                 <th>备注</th>
                 <th>操作</th>
               </tr>
@@ -127,10 +172,9 @@
                 <td>{{node.fee}}</td>
                 <td>{{node.area * node.price + node.fee}}</td>
                 <td>{{node.ownership}}</td>
-                <td>{{node.contract}}</td>
                 <td>{{node.remark}}</td>
                 <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  <a class="label label-primary" href="javascript:void(0);">编辑</a>
                 </td>
               </tr>
             </table>
@@ -185,7 +229,7 @@
                 <td>{{meter.cost}}</td>
                 <td>{{meter.remark}}</td>
                 <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  <a class="label label-primary" href="javascript:void(0);">编辑</a>
                 </td>
               </tr>
               </tbody>
@@ -242,7 +286,7 @@
                 <td>{{meter.cost}}</td>
                 <td>{{meter.remark}}</td>
                 <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  <a class="label label-primary" href="javascript:void(0);">编辑</a>
                 </td>
               </tr>
               </tbody>
@@ -299,7 +343,7 @@
                 <td>{{meter.cost}}</td>
                 <td>{{meter.remark}}</td>
                 <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  <a class="label label-primary" href="javascript:void(0);">编辑</a>
                 </td>
               </tr>
               </tbody>
@@ -318,10 +362,16 @@
 </style>
 <script>
   import Core from '../../../core/core'
+  import Modal from '../../widgets/Modal.vue'
 
   export default {
+    components: {
+      'modal': Modal
+    },
     data () {
       return {
+        showEditInstitution: false,
+        institutionEditing: {},
         meterNormalList: [],
         meterCheckList: [],
         meterChildren: [],
@@ -377,6 +427,12 @@
       },
       refreshNodeTree: function () {
         initNodeTree()
+      },
+      'toggleEditInstitution': function (id) {
+        getInstitutionEditing(id)
+      },
+      'updateInstitution': function () {
+        updateInstitutionInfo(this.institutionEditing.id, this.institutionEditing.name, this.institutionEditing.people, this.institutionEditing.contact, this.institutionEditing.description, this.institutionEditing.remark, this.institutionEditing.code)
       }
     }
   }
@@ -471,6 +527,26 @@
       context.meterChildren = data.meter_children
     }, function (error) {
       Core.Log.e(error)
+    })
+  }
+
+  function getInstitutionEditing (id) {
+    Core.Api.INSTITUTION.getDetail(id).then(function (data) {
+      context.institutionEditing = data.institution
+      context.showEditInstitution = true
+    }, function (error) {
+      Core.Toast.error(context, '获取机构信息失败: ' + error.message)
+    })
+  }
+
+  function updateInstitutionInfo (id, name, people, contact, description, remark, code) {
+    Core.Api.INSTITUTION.updateInstitutionInfo(id, name, people, contact, description, remark, code).then(function (data) {
+      Core.Toast.success(context, '更新成功')
+      context.showEditInstitution = false
+      context.institution = data.institution
+      getInstitutionList()
+    }, function (error) {
+      Core.Toast.error(context, error.message)
     })
   }
 </script>

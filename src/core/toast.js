@@ -12,7 +12,8 @@ function error (context, msg) {
     msg = '发生一个未知错误'
   }
   toast(context, {
-    error: msg
+    error: msg,
+    duration: 5000
   })
 }
 
@@ -30,7 +31,8 @@ function info (context, msg) {
     msg = '这是一条消息'
   }
   toast(context, {
-    info: msg
+    info: msg,
+    duration: 5000
   })
 }
 

@@ -67,8 +67,6 @@
                 <th>电话</th>
                 <th>一卡通</th>
                 <th>身份证</th>
-                <th>标记用户</th>
-                <th>职称</th>
                 <th>备注</th>
                 <th>操作</th>
               </tr>
@@ -78,11 +76,9 @@
                 <td>{{user.phone}}</td>
                 <td>{{user.school_card}}</td>
                 <td>{{user.id_card}}</td>
-                <td>{{user.important}}</td>
-                <td>{{user.title}}</td>
                 <td>{{user.remark}}</td>
                 <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  <a class="label label-primary" href="javascript:void(0);" @click="toggleEditUser(user.id)">编辑</a>
                 </td>
               </tr>
             </table>
@@ -90,6 +86,52 @@
 
         </div>
         <!--  boxbody -->
+        <modal title="修改个人信息" :show.sync="showEditUser" effect="fade" width="800">
+          <div slot="modal-body" class="modal-body">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="userEditing.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="userEditing.username">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">手机号码</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="userEditing.phone">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">身份证</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="userEditing.id_card">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">一卡通</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="userEditing.school_card">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="userEditing.remark">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click='showEditUser = false'>取消</button>
+            <button type="button" class="btn btn-success" @click='updateUser'>更新</button>
+          </div>
+        </modal>
       </div>
       <!-- boxinfo -->
 
@@ -119,7 +161,6 @@
                 <th>其他费用</th>
                 <th>物管费(元)</th>
                 <th>所有权</th>
-                <th>租房合同</th>
                 <th>备注</th>
                 <th>操作</th>
               </tr>
@@ -133,10 +174,9 @@
                 <td>{{node.fee}}</td>
                 <td>{{node.area * node.price + node.fee}}</td>
                 <td>{{node.ownership}}</td>
-                <td>{{node.contract}}</td>
                 <td>{{node.remark}}</td>
                 <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  <a class="label label-primary" href="javascript:void(0);" @click="toggleEditNode">编辑</a>
                 </td>
               </tr>
             </table>
@@ -144,6 +184,74 @@
           <!-- table-->
         </div>
         <!--  boxbody -->
+        <modal title="修改节点信息" :show.sync="showEditNode" effect="fade" width="800">
+          <div slot="modal-body" class="modal-body">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="nodeEditing.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">编号</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="nodeEditing.code">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">完整地址</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="nodeEditing.path">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">类型</label>
+                <div class="col-sm-10">
+                  <select class="form-control" v-model="nodeEditing.type">
+                    <option value="1">一般</option>
+                    <option value="2">房间</option>
+                    <option value="3">机构</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">面积</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" v-model="nodeEditing.area">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">物管单价</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" v-model="nodeEditing.price">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">其他费用</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" v-model="nodeEditing.fee">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">所有权</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="nodeEditing.ownership">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="nodeEditing.contract">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click='showEditNode = false'>取消</button>
+            <button type="button" class="btn btn-success" @click='updateNode'>更新</button>
+          </div>
+        </modal>
       </div>
       <!-- boxinfo -->
       <div class="box box-solid box-info">
@@ -328,10 +436,18 @@
 </style>
 <script>
   import Core from '../../../core/core'
+  import Modal from '../../widgets/Modal.vue'
 
   export default {
+    components: {
+      'modal': Modal
+    },
     data () {
       return {
+        showEditUser: false,
+        userEditing: {},
+        showEditNode: false,
+        nodeEditing: {},
         meterNormalList: [],
         meterCheckList: [],
         meterChildren: [],
@@ -391,6 +507,18 @@
       },
       refreshUserTree: function () {
         initUserTree()
+      },
+      toggleEditUser: function (id) {
+        getUserEditing(id)
+      },
+      updateUser: function () {
+        updateUserInfo(this.userEditing.id, this.userEditing.name, this.userEditing.username, this.userEditing.phone, this.userEditing.id_card, this.userEditing.school_card, this.userEditing.remark)
+      },
+      toggleEditNode: function () {
+        getNodeEditing(this.node.id)
+      },
+      updateNode: function () {
+        updateNodeInfo(this.nodeEditing.id, this.nodeEditing.name, this.nodeEditing.code, this.nodeEditing.path, this.nodeEditing.type, this.nodeEditing.area, this.nodeEditing.price, this.nodeEditing.fee, this.nodeEditing.ownership, this.nodeEditing.remark)
       }
     }
   }
@@ -430,6 +558,7 @@
   function onUserNodeSelected (event, treeId, node, clickFlag) {
     if (node.hasOwnProperty('department_id')) {
       context.users = [node]
+      getUserDetail(node.id)
       getNodeByOwner(node.id, Core.Const.TYPE.OWNER_TYPE_USER)
     } else {
       context.users = []
@@ -502,6 +631,50 @@
       context.meterChildren = data.meter_children
     }, function (error) {
       Core.Log.e(error)
+    })
+  }
+
+  function getUserEditing (id) {
+    Core.Api.USER.getUserDetail(id).then(function (data) {
+      context.userEditing = data.user
+      context.showEditUser = true
+    }, function (error) {
+      Core.Toast.error(context, '获取个人信息失败: ' + error.message)
+    })
+  }
+
+  function getUserDetail (id) {
+    Core.Api.USER.getUserDetail(id).then(function (data) {
+      context.users = [data.user]
+    }, function (error) {
+      Core.Toast.error(context, '获取个人最新信息失败: ' + error.message)
+    })
+  }
+
+  function updateUserInfo (id, name, username, phone, idCard, schoolCard, remark) {
+    Core.Api.USER.updateUserInfo(id, name, username, phone, idCard, schoolCard, remark).then(function (data) {
+      context.showEditUser = false
+      context.users = [data.user]
+    }, function (error) {
+      Core.Toast.error(context, '更新失败: ' + error.message)
+    })
+  }
+
+  function getNodeEditing (id) {
+    Core.Api.NODE.getNodeDetail(id).then(function (data) {
+      context.nodeEditing = data.node
+      context.showEditNode = true
+    }, function (error) {
+      Core.Toast.error(context, '获取节点信息失败: ' + error.message)
+    })
+  }
+
+  function updateNodeInfo (id, name, code, path, type, area, price, fee, ownership, remark) {
+    Core.Api.NODE.updateNodeInfo(id, name, code, path, type, area, price, fee, ownership, remark).then(function (data) {
+      context.node = data.node
+      context.showEditNode = false
+    }, function (error) {
+      Core.Toast.error(context, '更新节点信息失败: ' + error.message)
     })
   }
 </script>

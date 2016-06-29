@@ -28,6 +28,59 @@
             </div>
           </div>
         </div>
+        <modal title="修改个人信息" :show.sync="showEditModal" effect="fade" width="800">
+          <div slot="modal-body" class="modal-body">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="modelEditing.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="modelEditing.username">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">手机号码</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="modelEditing.phone">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">身份证</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="modelEditing.id_card">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">一卡通</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="modelEditing.school_card">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="modelEditing.remark">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click='showEditModal = false'>取消</button>
+            <button type="button" class="btn btn-success" @click='updateUser'>更新</button>
+          </div>
+        </modal>
+        <modal title="警告" :show.sync="showDeleteModal" effect="fade">
+          <div slot="modal-body" class="modal-body">确认删除?</div>
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click='showDeleteModal = false'>取消</button>
+            <button type="button" class="btn label-danger" @click='delete'>删除</button>
+          </div>
+        </modal>
       </div>
     </div>
   </div>
@@ -48,10 +101,17 @@
 </style>
 <script>
   import Core from '../../../../core/core'
+  import Modal from '../../../widgets/Modal.vue'
 
   export default {
+    components: {
+      'modal': Modal
+    },
     data () {
       return {
+        showEditModal: false,
+        modelEditing: {},
+        showDeleteModal: false,
         isEditMode: false,
         setting: {
           view: {
@@ -99,10 +159,12 @@
             phone: '手机号码',
             id_card: '身份证',
             school_card: '一卡通',
-            operate: '操作'
+            edit: '编辑',
+            delete: '删除'
           },
           templates: {
-            operate: '<a class="label label-danger" href="javascript:void(0);" @click="$parent.operate({id})">编辑</a></i></div>'
+            edit: '<a class="label label-primary" href="javascript:void(0);" @click="$parent.toggleEditModal({id})">编辑</a></i></div>',
+            delete: '<a class="label label-danger" href="javascript:void(0);" @click="$parent.toggleDeleteModal({id})">删除</a></i></div>'
           }
         }
       }
@@ -119,8 +181,19 @@
         getDepartmentList(true)
         refreshUserList()
       },
-      'operate': function (param) {
-        window.alert('编辑: ' + param + ' ?')
+      'toggleDeleteModal': function (id) {
+        this.showDeleteModal = true
+        this.modelEditing.id = id
+      },
+      'toggleEditModal': function (id) {
+        getUserEditing(id)
+      },
+      'delete': function () {
+        this.showDeleteModal = false
+        deleterUser(this.modelEditing.id)
+      },
+      'updateUser': function () {
+        updateUserInfo(this.modelEditing.id, this.modelEditing.name, this.modelEditing.username, this.modelEditing.phone, this.modelEditing.id_card, this.modelEditing.school_card, this.modelEditing.remark)
       }
     }
   }
@@ -206,17 +279,45 @@
 
   function onDepartmentSelected (event, treeId, treeNode, clickFlag) {
     context.treeNode = treeNode
-    Core.Api.USER.getUserListByDepartment(treeNode.id).then(function (data) {
+    getUserList(treeNode.id)
+  }
+
+  function getUserList (departmentId) {
+    Core.Api.USER.getUserListByDepartment(departmentId).then(function (data) {
       context.userList = data.user_list
     })
   }
 
   function refreshUserList () {
     if (context.treeNode) {
-      Core.Api.USER.getUserListByDepartment(context.treeNode.id).then(function (data) {
-        context.userList = data.user_list
-      })
+      getUserList(context.treeNode.id)
     }
+  }
+
+  function getUserEditing (id) {
+    Core.Api.USER.getUserDetail(id).then(function (data) {
+      context.modelEditing = data.user
+      context.showEditModal = true
+    }, function (error) {
+      Core.Toast.error(context, '获取个人信息失败: ' + error.message)
+    })
+  }
+
+  function deleterUser (id) {
+    Core.Api.USER.deleteUser(id).then(function (data) {
+      getUserList(context.treeNode.id)
+    }, function (error) {
+      Core.Toast.error(context, '删除失败: ' + error.message)
+    })
+  }
+
+  function updateUserInfo (id, name, username, phone, idCard, schoolCard, remark) {
+    Core.Api.USER.updateUserInfo(id, name, username, phone, idCard, schoolCard, remark).then(function (data) {
+      context.showEditModal = false
+      getUserList(context.treeNode.id)
+    }, function (error) {
+      Core.Toast.error(context, '更新失败: ' + error.message)
+    })
   }
 
 </script>

@@ -25,6 +25,9 @@
                 <div class="box-header with-border">
                   <h3 class="box-title">机构信息</h3>
                   <div class="box-tools pull-right">
+                    <button v-show="institution.id" class="btn btn-box-tool">
+                      <i class="fa fa-sing-out" title="搬出"></i>
+                    </button>
                     <button v-show="!institution.id" class="btn btn-box-tool">
                       <i class="fa fa-suitcase" title="入住"></i>
                     </button>
@@ -54,7 +57,7 @@
                         <td>{{institution.description}}</td>
                         <td>{{institution.remark}}</td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                          <a class="label label-primary" href="javascript:void(0);">编辑</a>
                         </td>
                       </tr>
                     </table>
@@ -67,6 +70,9 @@
                 <div class="box-header with-border">
                   <h3 class="box-title">个人信息</h3>
                   <div class="box-tools pull-right">
+                    <button v-show="users.length>0" class="btn btn-box-tool">
+                      <i class="fa fa-sing-out" title="搬出"></i>
+                    </button>
                     <button v-show="users.length==0" class="btn btn-box-tool">
                       <i class="fa fa-suitcase" title="入住"></i>
                     </button>
@@ -85,8 +91,6 @@
                         <th>电话</th>
                         <th>一卡通</th>
                         <th>身份证</th>
-                        <th>标记用户</th>
-                        <th>职称</th>
                         <th>备注</th>
                         <th>操作</th>
                       </tr>
@@ -96,11 +100,9 @@
                         <td>{{user.phone}}</td>
                         <td>{{user.school_card}}</td>
                         <td>{{user.id_card}}</td>
-                        <td>{{user.important}}</td>
-                        <td>{{user.title}}</td>
                         <td>{{user.remark}}</td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                          <a class="label label-primary" href="javascript:void(0);">编辑</a>
                         </td>
                       </tr>
                     </table>
@@ -132,7 +134,6 @@
                         <th>其他费用</th>
                         <th>物管费(元)</th>
                         <th>所有权</th>
-                        <th>租房合同</th>
                         <th>备注</th>
                         <th>操作</th>
                       </tr>
@@ -146,11 +147,10 @@
                         <td>{{node.fee}}</td>
                         <td>{{node.area * node.price + node.fee}}</td>
                         <td>{{node.ownership}}</td>
-                        <td>{{node.contract}}</td>
                         <td>{{node.remark}}</td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);"
-                             @click="editNode()">编辑</a>
+                          <a class="label label-primary" href="javascript:void(0);"
+                             @click="toggleEditNode()">编辑</a>
                         </td>
                       </tr>
                     </table>
@@ -158,6 +158,74 @@
                   <!-- table-->
                 </div>
                 <!--  boxbody -->
+                <modal title="修改节点信息" :show.sync="showEditNode" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.code">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">完整地址</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.path">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" v-model="nodeEditing.type">
+                            <option value="1">一般</option>
+                            <option value="2">房间</option>
+                            <option value="3">机构</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">面积</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="nodeEditing.area">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">物管单价</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="nodeEditing.price">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">其他费用</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="nodeEditing.fee">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">所有权</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.ownership">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.contract">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showEditNode = false'>取消</button>
+                    <button type="button" class="btn btn-success" @click='updateNode'>更新</button>
+                  </div>
+                </modal>
               </div>
               <!-- boxinfo -->
               <div class="box box-solid box-info">
@@ -205,7 +273,8 @@
                         <td>{{meter.cost}}</td>
                         <td>{{meter.remark}}</td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                          <a class="label label-primary" href="javascript:void(0);"
+                             @click="toggleEditMeter(meter)">编辑</a>
                         </td>
                       </tr>
                       </tbody>
@@ -216,6 +285,92 @@
                 <!-- /.box-body -->
                 <div class="box-footer clearfix" style="display: block;"></div>
                 <!-- /.box-footer -->
+                <modal title="修改表信息" :show.sync="showEditMeter" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.code">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" disabled v-model="meterEditing.type">
+                            <option value="1">水表</option>
+                            <option value="2">电表</option>
+                            <option value="3">气表</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">上级表名称</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.parent.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">初始起度</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.begin">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">铭牌</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.nameplate">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产厂家</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.manufacturers">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.product_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购员</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.purchaser">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.buy_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购价格</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterEditing.cost">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.remark">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showEditMeter = false'>取消</button>
+                    <button type="button" class="btn btn-success" @click='updateMeter'>更新</button>
+                  </div>
+                </modal>
               </div>
               <div class="box box-solid box-info">
                 <div class="box-header with-border">
@@ -262,7 +417,7 @@
                         <td>{{meter.cost}}</td>
                         <td>{{meter.remark}}</td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                          <a class="label label-primary" href="javascript:void(0);">编辑</a>
                         </td>
                       </tr>
                       </tbody>
@@ -319,7 +474,7 @@
                         <td>{{meter.cost}}</td>
                         <td>{{meter.remark}}</td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                          无
                         </td>
                       </tr>
                       </tbody>
@@ -346,10 +501,18 @@
 </style>
 <script>
   import Core from '../../../../core/core'
+  import Modal from '../../../widgets/Modal.vue'
 
   export default {
+    components: {
+      'modal': Modal
+    },
     data () {
       return {
+        showEditNode: false,
+        nodeEditing: {},
+        showEditMeter: false,
+        meterEditing: {},
         setting: {
           view: {
             addHoverDom: addHoverDom,
@@ -389,8 +552,17 @@
       refresh: function () {
         initNodeTree()
       },
-      editNode: function () {
-        Core.Log.d(this.node.name)
+      toggleEditNode: function () {
+        getNodeEditing(this.node.id)
+      },
+      updateNode: function () {
+        updateNodeInfo(this.nodeEditing.id, this.nodeEditing.name, this.nodeEditing.code, this.nodeEditing.path, this.nodeEditing.type, this.nodeEditing.area, this.nodeEditing.price, this.nodeEditing.fee, this.nodeEditing.ownership, this.nodeEditing.remark)
+      },
+      toggleEditMeter: function (meter) {
+        getMeterEditing(meter.id)
+      },
+      updateMeter: function () {
+        updateMeterInfo(this.meterEditing.id, this.meterEditing.name, this.meterEditing.code, this.meterEditing.remark)
       }
     }
   }
@@ -445,10 +617,19 @@
 
   function onNodeSelected (event, treeId, treeNode, clickFlag) {
     context.node = treeNode
+    getNodeDetail(treeNode)
     getOwnerByNode(treeNode.id)
     getMeterNormalList(treeNode)
     getMeterCheckList(treeNode)
     getMeterChildren(treeNode)
+  }
+
+  function getNodeDetail (treeNode) {
+    Core.Api.NODE.getNodeDetail(treeNode.id).then(function (data) {
+      context.node = data.node
+    }, function (error) {
+      Core.Toast.error(context, '获取节点该最新信息失败: ' + error.message)
+    })
   }
 
   function getOwnerByNode (nodeId) {
@@ -497,8 +678,44 @@
     })
   }
 
-//  function showRemoveBtn (treeId, treeNode) {
-//    return treeNode.id !== 1
-//  }
+  function getNodeEditing (id) {
+    Core.Api.NODE.getNodeDetail(id).then(function (data) {
+      context.nodeEditing = data.node
+      context.showEditNode = true
+    }, function (error) {
+      Core.Toast.error(context, '获取节点信息失败: ' + error.message)
+    })
+  }
+
+  function updateNodeInfo (id, name, code, path, type, area, price, fee, ownership, remark) {
+    Core.Api.NODE.updateNodeInfo(id, name, code, path, type, area, price, fee, ownership, remark).then(function (data) {
+      context.node = data.node
+      context.showEditNode = false
+    }, function (error) {
+      Core.Toast.error(context, '更新节点信息失败: ' + error.message)
+    })
+  }
+
+  function getMeterEditing (id) {
+    Core.Api.METER.getMeterDetail(id).then(function (data) {
+      context.meterEditing = data.meter
+      context.showEditMeter = true
+    }, function (error) {
+      Core.Toast.error(context, '获取表信息失败: ' + error.message)
+    })
+  }
+
+  function updateMeterInfo (id, name, code, remark) {
+    Core.Api.METER.updateMeterInfo(id, name, code, remark).then(function (data) {
+      context.showEditMeter = false
+      if (data.meter.type < 4) {
+        getMeterNormalList(context.node)
+      } else {
+        getMeterCheckList(context.node)
+      }
+    }, function (error) {
+      Core.Toast.error(context, '更新表信息失败: ' + error.message)
+    })
+  }
 
 </script>

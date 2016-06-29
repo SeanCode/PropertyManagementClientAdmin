@@ -14,9 +14,9 @@
 </template>
 
 <script>
-  import SidebarSearch from './../widgets/sidebar-search.vue'
-  import SidebarUserPanel from './../widgets/sidebar-user-panel.vue'
-  import SidebarMenu from './../widgets/sidebar-menu.vue'
+  import SidebarSearch from './../widgets/admin/sidebar-search.vue'
+  import SidebarUserPanel from './../widgets/admin/sidebar-user-panel.vue'
+  import SidebarMenu from './../widgets/admin/sidebar-menu.vue'
 
   module.exports = {
     data: function () {

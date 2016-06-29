@@ -104,12 +104,38 @@ export default {
         remark: remark,
         code: code
       })
+    },
+    getDetail: function (id) {
+      return post(Const.NET.API.INSTITUTION_DETAIL, {
+        id: id
+      })
     }
   },
   USER: {
     getUserListByDepartment: function (departmentId) {
       return post(Const.NET.API.USER_LIST_BY_DEPARTMENT, {
         department_id: departmentId
+      })
+    },
+    getUserDetail: function (id) {
+      return post(Const.NET.API.USER_DETAIL, {
+        id: id
+      })
+    },
+    updateUserInfo: function (id, name, username, phone, idCard, schoolCard, remark) {
+      return post(Const.NET.API.USER_INFO_UPDATE, {
+        id: id,
+        name: name,
+        username: username,
+        phone: phone,
+        id_card: idCard,
+        school_card: schoolCard,
+        remark: remark
+      })
+    },
+    deleteUser: function (id) {
+      return post(Const.NET.API.USER_DELETE, {
+        id: id
       })
     }
   },
@@ -121,6 +147,25 @@ export default {
     },
     getNodeTreeRoot: function () {
       return post(Const.NET.API.NODE_TREE_ROOT)
+    },
+    getNodeDetail: function (id) {
+      return post(Const.NET.API.NODE_DETAIL, {
+        id: id
+      })
+    },
+    updateNodeInfo: function (id, name, code, path, type, area, price, fee, ownership, remark) {
+      return post(Const.NET.API.NODE_INFO_UPDATE, {
+        id: id,
+        name: name,
+        code: code,
+        path: path,
+        type: type,
+        area: area,
+        price: price,
+        fee: fee,
+        ownership: ownership,
+        remark: remark
+      })
     }
   },
   METER: {
@@ -149,6 +194,53 @@ export default {
       return post(Const.NET.API.METER_SET_AS_CHILD, {
         id: id,
         parent_id: parentId
+      })
+    },
+    addNormal: function (name, nodeId, code, type, rate, begin, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
+      return post(Const.NET.API.METER_ADD_NORMAL, {
+        name: name,
+        node_id: nodeId,
+        code: code,
+        type: type,
+        rate: rate,
+        begin: begin,
+        nameplate: nameplate,
+        manufacturers: manufacturers,
+        purchaser: purchaser,
+        cost: cost,
+        buy_time: buyTime,
+        product_time: productTime,
+        remark: remark
+      })
+    },
+    addCheck: function (name, parentId, code, type, rate, begin, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
+      return post(Const.NET.API.METER_ADD_CHECK, {
+        name: name,
+        parent_id: parentId,
+        code: code,
+        type: type,
+        rate: rate,
+        begin: begin,
+        nameplate: nameplate,
+        manufacturers: manufacturers,
+        purchaser: purchaser,
+        cost: cost,
+        buy_time: buyTime,
+        product_time: productTime,
+        remark: remark
+      })
+    },
+    getMeterDetail: function (id) {
+      return post(Const.NET.API.METER_DETAIL, {
+        id: id
+      })
+    },
+    updateMeterInfo: function (id, name, code, remark) {
+      return post(Const.NET.API.METER_INFO_UPDATE, {
+        id: id,
+        name: name,
+        code: code,
+        remark: remark
       })
     }
   },

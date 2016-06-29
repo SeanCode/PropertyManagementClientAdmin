@@ -65,7 +65,6 @@
                 <th>组织机构代码</th>
                 <th>描述</th>
                 <th>备注</th>
-                <th>操作</th>
               </tr>
               <tr v-show="institution.id">
                 <td>{{institution.name}}</td>
@@ -74,9 +73,6 @@
                 <td>{{institution.code}}</td>
                 <td>{{institution.description}}</td>
                 <td>{{institution.remark}}</td>
-                <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
-                </td>
               </tr>
             </table>
           </div>
@@ -108,9 +104,7 @@
                 <th>其他费用</th>
                 <th>物管费(元)</th>
                 <th>所有权</th>
-                <th>租房合同</th>
                 <th>备注</th>
-                <th>操作</th>
               </tr>
               <tr v-show="node.id">
                 <td>{{node.name}}</td>
@@ -122,11 +116,7 @@
                 <td>{{node.fee}}</td>
                 <td>{{node.area * node.price + node.fee}}</td>
                 <td>{{node.ownership}}</td>
-                <td>{{node.contract}}</td>
                 <td>{{node.remark}}</td>
-                <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
-                </td>
               </tr>
             </table>
           </div>
@@ -325,7 +315,7 @@
 </style>
 <script>
   import Core from '../../../core/core'
-  import Price from '../../widgets/price.vue'
+  import Price from '../../widgets/Price.vue'
 
   export default {
     components: {
