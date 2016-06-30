@@ -87,7 +87,7 @@
 </template>
 <style>
   .department-box {
-    overflow: scroll;
+    overflow: auto;
     max-height: 556px;
   }
 

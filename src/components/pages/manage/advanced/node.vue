@@ -21,12 +21,12 @@
               </div>
             </div>
             <div class='col-md-9 no-padding-left'>
-              <div class="box box-solid box-info">
+              <div class="box box-solid box-info" v-show="node.id&&users.length==0">
                 <div class="box-header with-border">
                   <h3 class="box-title">机构信息</h3>
                   <div class="box-tools pull-right">
                     <button v-show="institution.id" class="btn btn-box-tool">
-                      <i class="fa fa-sing-out" title="搬出"></i>
+                      <i class="fa fa-sign-out" title="搬出"></i>
                     </button>
                     <button v-show="!institution.id" class="btn btn-box-tool">
                       <i class="fa fa-suitcase" title="入住"></i>
@@ -47,7 +47,6 @@
                         <th>组织机构代码</th>
                         <th>描述</th>
                         <th>备注</th>
-                        <th>操作</th>
                       </tr>
                       <tr v-show="institution.id">
                         <td>{{institution.name}}</td>
@@ -56,24 +55,20 @@
                         <td>{{institution.code}}</td>
                         <td>{{institution.description}}</td>
                         <td>{{institution.remark}}</td>
-                        <td>
-                          <a class="label label-primary" href="javascript:void(0);">编辑</a>
-                        </td>
                       </tr>
                     </table>
                   </div>
-
                 </div>
                 <!--  boxbody -->
               </div>
-              <div class="box box-solid box-info">
+              <div class="box box-solid box-info" v-show="node.id&&(!institution.id)">
                 <div class="box-header with-border">
                   <h3 class="box-title">个人信息</h3>
                   <div class="box-tools pull-right">
-                    <button v-show="users.length>0" class="btn btn-box-tool">
-                      <i class="fa fa-sing-out" title="搬出"></i>
+                    <button v-show="users.length > 0" class="btn btn-box-tool">
+                      <i class="fa fa-sign-out" title="搬出" @click="toggleRemoveUserOwner()"></i>
                     </button>
-                    <button v-show="users.length==0" class="btn btn-box-tool">
+                    <button v-show="users.length==0" class="btn btn-box-tool" @click="toggleAddUserOwner()">
                       <i class="fa fa-suitcase" title="入住"></i>
                     </button>
                     <button class="btn btn-box-tool" data-widget="collapse">
@@ -87,29 +82,39 @@
                     <table class="table no-margin">
                       <tr>
                         <th>姓名</th>
-                        <th>部门</th>
                         <th>电话</th>
                         <th>一卡通</th>
                         <th>身份证</th>
                         <th>备注</th>
-                        <th>操作</th>
                       </tr>
                       <tr v-for="user in users">
                         <td>{{user.name}}</td>
-                        <td>{{user.department}}</td>
                         <td>{{user.phone}}</td>
                         <td>{{user.school_card}}</td>
                         <td>{{user.id_card}}</td>
                         <td>{{user.remark}}</td>
-                        <td>
-                          <a class="label label-primary" href="javascript:void(0);">编辑</a>
-                        </td>
                       </tr>
                     </table>
                   </div>
-
                 </div>
                 <!--  boxbody -->
+                <modal title="个人入住" :show.sync="showAddUserOwner" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body modal-user-tree">
+                    <div class="user-tree-box">
+                      <ul id="addUserOwnerTree" class="ztree"></ul>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showAddUserOwner = false'>取消</button>
+                  </div>
+                </modal>
+                <modal title="警告" :show.sync="showRemoveUserOwner" effect="fade">
+                  <div slot="modal-body" class="modal-body">确认搬出?</div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showRemoveUserOwner = false'>取消</button>
+                    <button type="button" class="btn label-danger" @click='removeUserOwner()'>搬出</button>
+                  </div>
+                </modal>
               </div>
               <div class="box box-solid box-info">
                 <div class="box-header with-border">
@@ -247,15 +252,12 @@
                         <th>表编号</th>
                         <th>表类型</th>
                         <th>上级表名称</th>
-                        <th>初始表起度</th>
-                        <th>铭牌号</th>
-                        <th>生产厂家</th>
-                        <th>生产日期</th>
-                        <th>采购员</th>
-                        <th>采购日期</th>
-                        <th>采购价格</th>
                         <th>备注</th>
-                        <th>操作</th>
+                        <th>详情</th>
+                        <th>移除</th>
+                        <th>设置上级表</th>
+                        <th>更换</th>
+                        <th>添加检查表</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -264,17 +266,18 @@
                         <td>{{meter.code}}</td>
                         <td>{{meter.type_name}}</td>
                         <td>{{meter.parent ? meter.parent.name : ''}}</td>
-                        <td>{{meter.begin}}</td>
-                        <td>{{meter.nameplate}}</td>
-                        <td>{{meter.manufacturers}}</td>
-                        <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
-                        <td>{{meter.purchaser}}</td>
-                        <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
-                        <td>{{meter.cost}}</td>
                         <td>{{meter.remark}}</td>
                         <td>
                           <a class="label label-primary" href="javascript:void(0);"
-                             @click="toggleEditMeter(meter)">编辑</a>
+                             @click="toggleEditMeter(meter)">编辑</a></td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">移除</a></td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">设置上级表</a></td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">更换</a></td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">添加检查表</a>
                         </td>
                       </tr>
                       </tbody>
@@ -313,7 +316,8 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">上级表名称</label>
                         <div class="col-sm-10">
-                          <input class="form-control" disabled v-model="meterEditing.parent.name">
+                          <input class="form-control" disabled
+                                 v-model="meterEditing.parent ? meterEditing.parent.name : ''">
                         </div>
                       </div>
                       <div class="form-group">
@@ -390,16 +394,11 @@
                         <th>表名称</th>
                         <th>表编号</th>
                         <th>表类型</th>
-                        <th>主表名称</th>
-                        <th>初始表起度</th>
-                        <th>表铭牌号</th>
-                        <th>生产厂家</th>
-                        <th>生产日期</th>
-                        <th>采购员</th>
-                        <th>采购日期</th>
-                        <th>采购价格</th>
+                        <th>上级表名称</th>
                         <th>备注</th>
-                        <th>操作</th>
+                        <th>详情</th>
+                        <th>移除</th>
+                        <th>更换</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -408,16 +407,16 @@
                         <td>{{meter.code}}</td>
                         <td>{{meter.type_name}}</td>
                         <td>{{meter.parent ? meter.parent.name : ''}}</td>
-                        <td>{{meter.begin}}</td>
-                        <td>{{meter.nameplate}}</td>
-                        <td>{{meter.manufacturers}}</td>
-                        <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
-                        <td>{{meter.purchaser}}</td>
-                        <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
-                        <td>{{meter.cost}}</td>
                         <td>{{meter.remark}}</td>
                         <td>
-                          <a class="label label-primary" href="javascript:void(0);">编辑</a>
+                          <a class="label label-primary" href="javascript:void(0);"
+                             @click="toggleEditMeter(meter)">编辑</a>
+                        </td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">移除</a>
+                        </td>
+                        <td>
+                          <a class="label label-danger" href="javascript:void(0);">更换</a>
                         </td>
                       </tr>
                       </tbody>
@@ -448,15 +447,8 @@
                         <th>表编号</th>
                         <th>表类型</th>
                         <th>上级表名称</th>
-                        <th>初始表起度</th>
-                        <th>表铭牌号</th>
-                        <th>生产厂家</th>
-                        <th>生产日期</th>
-                        <th>采购员</th>
-                        <th>采购日期</th>
-                        <th>采购价格</th>
                         <th>备注</th>
-                        <th>操作</th>
+                        <th>详情</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -465,16 +457,10 @@
                         <td>{{meter.code}}</td>
                         <td>{{meter.type_name}}</td>
                         <td>{{meter.parent ? meter.parent.name : ''}}</td>
-                        <td>{{meter.begin}}</td>
-                        <td>{{meter.nameplate}}</td>
-                        <td>{{meter.manufacturers}}</td>
-                        <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
-                        <td>{{meter.purchaser}}</td>
-                        <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
-                        <td>{{meter.cost}}</td>
                         <td>{{meter.remark}}</td>
                         <td>
-                          无
+                          <a class="label label-primary" href="javascript:void(0);"
+                             @click="toggleEditMeter(meter)">编辑</a>
                         </td>
                       </tr>
                       </tbody>
@@ -495,8 +481,12 @@
 </template>
 <style>
   .node-box {
-    overflow: scroll;
-    max-height: 100%;
+    overflow: auto;
+    max-height: 1000px;
+  }
+
+  .modal-user-tree {
+    padding: 0 15px;
   }
 </style>
 <script>
@@ -509,10 +499,14 @@
     },
     data () {
       return {
+        // modal
         showEditNode: false,
         nodeEditing: {},
         showEditMeter: false,
         meterEditing: {},
+        showAddUserOwner: false,
+        showRemoveUserOwner: false,
+        // tree setting
         setting: {
           view: {
             addHoverDom: addHoverDom,
@@ -524,7 +518,7 @@
             url: 'http://localhost:8080/api/private/v1/node/children',
             autoParam: ['id'],
             dataType: 'json',
-            dataFilter: ajaxDataFilter
+            dataFilter: ajaxNodeDataFilter
           },
           data: {
             keep: {
@@ -535,13 +529,39 @@
             onClick: onNodeSelected
           }
         },
+        user_tree_setting: {
+          async: {
+            enable: true,
+            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
+            autoParam: ['id=department_id'],
+            dataType: 'json',
+            dataFilter: ajaxUserDataFilter
+          },
+          data: {
+            keep: {
+              parent: true
+            },
+            simpleData: {
+              enable: true,
+              idKey: 'id',
+              pIdKey: 'parent_id',
+              rootPId: 1
+            }
+          },
+          callback: {
+            onClick: onUserNodeSelected
+          }
+        },
+        // data
         nodeList: [],
         node: {},
         users: [],
         institution: {},
         meterNormalList: [],
         meterCheckList: [],
-        meterChildren: []
+        meterChildren: [],
+        userTreeList: [],
+        institutionList: []
       }
     },
     ready () {
@@ -563,11 +583,27 @@
       },
       updateMeter: function () {
         updateMeterInfo(this.meterEditing.id, this.meterEditing.name, this.meterEditing.code, this.meterEditing.remark)
+      },
+      toggleAddUserOwner: function () {
+        getUserTree()
+      },
+      toggleRemoveUserOwner: function () {
+        this.showRemoveUserOwner = true
+      },
+      removeUserOwner: function () {
+        removeNodeUser()
       }
     }
   }
 
-  function ajaxDataFilter (treeId, parentNode, responseData) {
+  function ajaxUserDataFilter (treeId, parentNode, responseData) {
+    if (!responseData || responseData.code !== 0 || responseData.data.user_list === undefined || responseData.data.user_list.length <= 0) {
+      return null
+    }
+    return responseData.data.user_list
+  }
+
+  function ajaxNodeDataFilter (treeId, parentNode, responseData) {
     if (!responseData || responseData.code !== 0 || responseData.data.children === undefined || responseData.data.children.length <= 0) {
       return null
     }
@@ -715,6 +751,48 @@
       }
     }, function (error) {
       Core.Toast.error(context, '更新表信息失败: ' + error.message)
+    })
+  }
+
+  function getUserTree () {
+    Core.Api.DEPARTMENT.getTreeList(1).then(function (data) {
+      context.showAddUserOwner = true
+      context.userTreeList = data.department_list
+      window.$.fn.zTree.init(window.$('#addUserOwnerTree'), context.user_tree_setting, context.userTreeList)
+      var treeObj = window.$.fn.zTree.getZTreeObj('addUserOwnerTree')
+      var nodes = treeObj.getNodes()
+      if (data.department_list.length > 0) {
+        treeObj.expandNode(nodes[0], true, false, true)
+      }
+    })
+  }
+
+  function onUserNodeSelected (event, treeId, node, clickFlag) {
+    if (node.hasOwnProperty('department_id')) {
+      bindNodeUser(node.id, context.node.id)
+    } else {
+//      context.users = []
+    }
+  }
+
+  function bindNodeUser (userId, nodeId) {
+    Core.Api.NODE_OWNER.addNodeOwner(nodeId, userId, Core.Const.TYPE.OWNER_TYPE_USER).then(function (data) {
+      context.showAddUserOwner = false
+      Core.Toast.success(context, '入住成功')
+      getOwnerByNode(nodeId)
+    }, function (error) {
+      Core.Toast.error(context, '入住失败: ' + error.message)
+    })
+  }
+
+  function removeNodeUser () {
+    Core.Api.NODE_OWNER.invalidNodeOwner(context.node.id, context.users[0].id, Core.Const.TYPE.OWNER_TYPE_USER).then(function (data) {
+      context.showRemoveUserOwner = false
+      context.users = []
+      Core.Toast.success(context, '搬出成功')
+      getOwnerByNode(context.node.id)
+    }, function (error) {
+      Core.Toast.error(context, '搬出失败: ' + error.message)
     })
   }
 

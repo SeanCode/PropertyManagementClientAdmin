@@ -431,7 +431,7 @@
 <style>
   .user-tree-box {
     max-height: 600px;
-    overflow: scroll;
+    overflow: auto;
   }
 </style>
 <script>
@@ -561,7 +561,7 @@
       getUserDetail(node.id)
       getNodeByOwner(node.id, Core.Const.TYPE.OWNER_TYPE_USER)
     } else {
-      context.users = []
+//      context.users = []
     }
   }
 
