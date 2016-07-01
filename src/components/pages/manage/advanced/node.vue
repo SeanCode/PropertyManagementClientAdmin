@@ -25,10 +25,10 @@
                 <div class="box-header with-border">
                   <h3 class="box-title">机构信息</h3>
                   <div class="box-tools pull-right">
-                    <button v-show="institution.id" class="btn btn-box-tool">
+                    <button v-show="institution.id" class="btn btn-box-tool" @click="toggleRemoveInstitutionOwner()">
                       <i class="fa fa-sign-out" title="搬出"></i>
                     </button>
-                    <button v-show="!institution.id" class="btn btn-box-tool">
+                    <button v-show="!institution.id" class="btn btn-box-tool" @click="toggleAddInstitutionOwner()">
                       <i class="fa fa-suitcase" title="入住"></i>
                     </button>
                     <button class="btn btn-box-tool" data-widget="collapse">
@@ -60,6 +60,26 @@
                   </div>
                 </div>
                 <!--  boxbody -->
+                <modal title="机构入住" :show.sync="showAddInstitutionOwner" effect="fade" large="true">
+                  <div slot="modal-body" class="modal-body">
+                    <v-client-table :data='institutionList'
+                                    :columns='table_setting.columns'
+                                    :options='table_setting.options'
+                                    class='institution-list-table'>
+                    </v-client-table>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showAddInstitutionOwner = false'>取消</button>
+                  </div>
+                </modal>
+                <modal title="警告" :show.sync="showRemoveInstitutionOwner" effect="fade">
+                  <div slot="modal-body" class="modal-body">确认搬出?</div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showRemoveInstitutionOwner = false'>取消
+                    </button>
+                    <button type="button" class="btn label-danger" @click='removeInstitutionOwner()'>搬出</button>
+                  </div>
+                </modal>
               </div>
               <div class="box box-solid box-info" v-show="node.id&&(!institution.id)">
                 <div class="box-header with-border">
@@ -317,7 +337,7 @@
                         <label class="col-sm-2 control-label">上级表名称</label>
                         <div class="col-sm-10">
                           <input class="form-control" disabled
-                                 v-model="meterEditing.parent ? meterEditing.parent.name : ''">
+                                 placeholder="{{meterEditing.parent ? meterEditing.parent.name : ''}}">
                         </div>
                       </div>
                       <div class="form-group">
@@ -506,7 +526,9 @@
         meterEditing: {},
         showAddUserOwner: false,
         showRemoveUserOwner: false,
-        // tree setting
+        showAddInstitutionOwner: false,
+        showRemoveInstitutionOwner: false,
+        // tree setting & table setting
         setting: {
           view: {
             addHoverDom: addHoverDom,
@@ -552,6 +574,33 @@
             onClick: onUserNodeSelected
           }
         },
+        table_setting: {
+          columns: ['id', 'name', 'people', 'contact', 'code', 'description', 'remark'],
+          options: {
+            compileTemplates: true,
+            highlightMatches: true,
+            filterByColumn: true,
+            filterable: ['name', 'people', 'contact', 'code', 'description', 'remark'],
+            texts: {
+              filter: 'Search:',
+              noResults: '暂无匹配',
+              count: '共 {count} 条记录'
+            },
+            headings: {
+              id: '编号',
+              name: '名称',
+              people: '负责人',
+              contact: '联系方式',
+              code: '机构代码',
+              description: '描述',
+              remark: '备注',
+              operate: '操作'
+            },
+            templates: {
+              operate: '<a class="label label-primary" href="javascript:void(0);" @click="$parent.$parent.addInstitutionOwner({id})">入住</a></i></div>'
+            }
+          }
+        },
         // data
         nodeList: [],
         node: {},
@@ -592,6 +641,18 @@
       },
       removeUserOwner: function () {
         removeNodeUser()
+      },
+      toggleAddInstitutionOwner: function () {
+        getInstitutionList()
+      },
+      addInstitutionOwner: function (institutionId) {
+        addInstitutionOwner(institutionId, this.node.id)
+      },
+      toggleRemoveInstitutionOwner: function () {
+        this.showRemoveInstitutionOwner = true
+      },
+      removeInstitutionOwner: function () {
+        removeNodeInstitution()
       }
     }
   }
@@ -764,6 +825,8 @@
       if (data.department_list.length > 0) {
         treeObj.expandNode(nodes[0], true, false, true)
       }
+    }, function (error) {
+      Core.Toast.error(context, '获取个人数据失败: ' + error.message)
     })
   }
 
@@ -789,6 +852,36 @@
     Core.Api.NODE_OWNER.invalidNodeOwner(context.node.id, context.users[0].id, Core.Const.TYPE.OWNER_TYPE_USER).then(function (data) {
       context.showRemoveUserOwner = false
       context.users = []
+      Core.Toast.success(context, '搬出成功')
+      getOwnerByNode(context.node.id)
+    }, function (error) {
+      Core.Toast.error(context, '搬出失败: ' + error.message)
+    })
+  }
+
+  function getInstitutionList () {
+    Core.Api.INSTITUTION.getInstitutionList().then(function (data) {
+      context.showAddInstitutionOwner = true
+      context.institutionList = data.institution_list
+    }, function (error) {
+      Core.Toast.error(context, '获取机构数据失败: ' + error.message)
+    })
+  }
+
+  function addInstitutionOwner (institutionId, nodeId) {
+    Core.Api.NODE_OWNER.addNodeOwner(nodeId, institutionId, Core.Const.TYPE.OWNER_TYPE_INSTITUTION).then(function (data) {
+      context.showAddInstitutionOwner = false
+      Core.Toast.success(context, '入住成功')
+      getOwnerByNode(nodeId)
+    }, function (error) {
+      Core.Toast.error(context, '入住失败: ' + error.message)
+    })
+  }
+
+  function removeNodeInstitution () {
+    Core.Api.NODE_OWNER.invalidNodeOwner(context.node.id, context.institution.id, Core.Const.TYPE.OWNER_TYPE_INSTITUTION).then(function (data) {
+      context.showRemoveInstitutionOwner = false
+      context.institution = {}
       Core.Toast.success(context, '搬出成功')
       getOwnerByNode(context.node.id)
     }, function (error) {
