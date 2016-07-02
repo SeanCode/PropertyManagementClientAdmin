@@ -24,6 +24,7 @@ export default {
       USER_DETAIL: '/user/detail',
       USER_INFO_UPDATE: '/user/info-update',
       USER_DELETE: '/user/delete',
+      USER_ADD: '/user/add',
       NODE_CHILDREN: '/node/children',
       NODE_DETAIL: '/node/detail',
       NODE_INFO_UPDATE: '/node/info-update',

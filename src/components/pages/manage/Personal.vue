@@ -1,432 +1,437 @@
 <template>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="box box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">部门与个人</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" @click="refreshUserTree()">
-              <i class="fa fa-refresh"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+  <!-- Content Header (Page header) -->
+  <content-header parent="水电气管理" child="个人管理"></content-header>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">部门与个人</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" @click="refreshUserTree()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="user-tree-box">
-            <ul id="userTree" class="ztree"></ul>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="user-tree-box">
+              <ul id="userTree" class="ztree"></ul>
+            </div>
           </div>
+          <!--  boxbody -->
         </div>
-        <!--  boxbody -->
+        <!-- boxinfo -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">个人节点</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" @click="refreshNodeTree()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="user-tree-box">
+              <ul id="nodeUserTree" class="ztree"></ul>
+            </div>
+          </div>
+          <!--  boxbody -->
+        </div>
+        <!-- boxinfo -->
       </div>
-      <!-- boxinfo -->
-      <div class="box box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">个人节点</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" @click="refreshNodeTree()">
-              <i class="fa fa-refresh"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+      <div class="col-md-9" id="panel">
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">个人信息</h3>
+            <div class="box-tools pull-right">
+              <button v-show="users.length>0&&(!node.id)" class="btn btn-box-tool">
+                <i class="fa fa-suitcase" title="入住"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="user-tree-box">
-            <ul id="nodeUserTree" class="ztree"></ul>
-          </div>
-        </div>
-        <!--  boxbody -->
-      </div>
-      <!-- boxinfo -->
-    </div>
-    <div class="col-md-9" id="panel">
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">个人信息</h3>
-          <div class="box-tools pull-right">
-            <button v-show="users.length>0&&(!node.id)" class="btn btn-box-tool">
-              <i class="fa fa-suitcase" title="入住"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin">
-              <tr>
-                <th>姓名</th>
-                <th>部门</th>
-                <th>电话</th>
-                <th>一卡通</th>
-                <th>身份证</th>
-                <th>备注</th>
-                <th>操作</th>
-              </tr>
-              <tr v-for="user in users">
-                <td>{{user.name}}</td>
-                <td>{{user.department}}</td>
-                <td>{{user.phone}}</td>
-                <td>{{user.school_card}}</td>
-                <td>{{user.id_card}}</td>
-                <td>{{user.remark}}</td>
-                <td>
-                  <a class="label label-primary" href="javascript:void(0);" @click="toggleEditUser(user.id)">编辑</a>
-                </td>
-              </tr>
-            </table>
-          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <tr>
+                  <th>姓名</th>
+                  <th>部门</th>
+                  <th>电话</th>
+                  <th>一卡通</th>
+                  <th>身份证</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+                <tr v-for="user in users">
+                  <td>{{user.name}}</td>
+                  <td>{{user.department}}</td>
+                  <td>{{user.phone}}</td>
+                  <td>{{user.school_card}}</td>
+                  <td>{{user.id_card}}</td>
+                  <td>{{user.remark}}</td>
+                  <td>
+                    <a class="label label-primary" href="javascript:void(0);" @click="toggleEditUser(user.id)">编辑</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
 
-        </div>
-        <!--  boxbody -->
-        <modal title="修改个人信息" :show.sync="showEditUser" effect="fade" width="800">
-          <div slot="modal-body" class="modal-body">
-            <div class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label">姓名</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="userEditing.name">
+          </div>
+          <!--  boxbody -->
+          <modal title="修改个人信息" :show.sync="showEditUser" effect="fade" width="800">
+            <div slot="modal-body" class="modal-body">
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">姓名</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="userEditing.name">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">用户名</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="userEditing.username">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">用户名</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="userEditing.username">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">手机号码</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="userEditing.phone">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">手机号码</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="userEditing.phone">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">身份证</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="userEditing.id_card">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">身份证</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="userEditing.id_card">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">一卡通</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="userEditing.school_card">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">一卡通</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="userEditing.school_card">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">备注</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="userEditing.remark">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">备注</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="userEditing.remark">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div slot="modal-footer" class="modal-footer">
-            <button type="button" class="btn btn-default" @click='showEditUser = false'>取消</button>
-            <button type="button" class="btn btn-success" @click='updateUser'>更新</button>
-          </div>
-        </modal>
-      </div>
-      <!-- boxinfo -->
+            <div slot="modal-footer" class="modal-footer">
+              <button type="button" class="btn btn-default" @click='showEditUser = false'>取消</button>
+              <button type="button" class="btn btn-success" @click='updateUser'>更新</button>
+            </div>
+          </modal>
+        </div>
+        <!-- boxinfo -->
 
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">节点信息</h3>
-          <div class="box-tools pull-right">
-            <button v-show="node.id&&users.length==0" class="btn btn-box-tool">
-              <i class="fa fa-user" title="入住"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">节点信息</h3>
+            <div class="box-tools pull-right">
+              <button v-show="node.id&&users.length==0" class="btn btn-box-tool">
+                <i class="fa fa-user" title="入住"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin table200">
-              <tr>
-                <th>节点名</th>
-                <th>地址编号</th>
-                <th>完整地址</th>
-                <th>类型</th>
-                <th>房间面积(平方米)</th>
-                <th>物管价(元/每平方米)</th>
-                <th>其他费用</th>
-                <th>物管费(元)</th>
-                <th>所有权</th>
-                <th>备注</th>
-                <th>操作</th>
-              </tr>
-              <tr v-show="node.id">
-                <td>{{node.name}}</td>
-                <td>{{node.code}}</td>
-                <td>{{node.path}}</td>
-                <td>{{node.type_name}}</td>
-                <td>{{node.area}}</td>
-                <td>{{node.price}}</td>
-                <td>{{node.fee}}</td>
-                <td>{{node.area * node.price + node.fee}}</td>
-                <td>{{node.ownership}}</td>
-                <td>{{node.remark}}</td>
-                <td>
-                  <a class="label label-primary" href="javascript:void(0);" @click="toggleEditNode">编辑</a>
-                </td>
-              </tr>
-            </table>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin table200">
+                <tr>
+                  <th>节点名</th>
+                  <th>地址编号</th>
+                  <th>完整地址</th>
+                  <th>类型</th>
+                  <th>房间面积(平方米)</th>
+                  <th>物管价(元/每平方米)</th>
+                  <th>其他费用</th>
+                  <th>物管费(元)</th>
+                  <th>所有权</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+                <tr v-show="node.id">
+                  <td>{{node.name}}</td>
+                  <td>{{node.code}}</td>
+                  <td>{{node.path}}</td>
+                  <td>{{node.type_name}}</td>
+                  <td>{{node.area}}</td>
+                  <td>{{node.price}}</td>
+                  <td>{{node.fee}}</td>
+                  <td>{{node.area * node.price + node.fee}}</td>
+                  <td>{{node.ownership}}</td>
+                  <td>{{node.remark}}</td>
+                  <td>
+                    <a class="label label-primary" href="javascript:void(0);" @click="toggleEditNode">编辑</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- table-->
           </div>
-          <!-- table-->
-        </div>
-        <!--  boxbody -->
-        <modal title="修改节点信息" :show.sync="showEditNode" effect="fade" width="800">
-          <div slot="modal-body" class="modal-body">
-            <div class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label">名称</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="nodeEditing.name">
+          <!--  boxbody -->
+          <modal title="修改节点信息" :show.sync="showEditNode" effect="fade" width="800">
+            <div slot="modal-body" class="modal-body">
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">名称</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="nodeEditing.name">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">编号</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="nodeEditing.code">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">编号</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="nodeEditing.code">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">完整地址</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="nodeEditing.path">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">完整地址</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="nodeEditing.path">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">类型</label>
-                <div class="col-sm-10">
-                  <select class="form-control" v-model="nodeEditing.type">
-                    <option value="1">一般</option>
-                    <option value="2">房间</option>
-                    <option value="3">机构</option>
-                  </select>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">类型</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="nodeEditing.type">
+                      <option value="1">一般</option>
+                      <option value="2">房间</option>
+                      <option value="3">机构</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">面积</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="number" v-model="nodeEditing.area">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">面积</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" v-model="nodeEditing.area">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">物管单价</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="number" v-model="nodeEditing.price">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">物管单价</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" v-model="nodeEditing.price">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">其他费用</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="number" v-model="nodeEditing.fee">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">其他费用</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" v-model="nodeEditing.fee">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">所有权</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="nodeEditing.ownership">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">所有权</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="nodeEditing.ownership">
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">备注</label>
-                <div class="col-sm-10">
-                  <input class="form-control" v-model="nodeEditing.contract">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">备注</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="nodeEditing.contract">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div slot="modal-footer" class="modal-footer">
-            <button type="button" class="btn btn-default" @click='showEditNode = false'>取消</button>
-            <button type="button" class="btn btn-success" @click='updateNode'>更新</button>
-          </div>
-        </modal>
-      </div>
-      <!-- boxinfo -->
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">主表信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
+            <div slot="modal-footer" class="modal-footer">
+              <button type="button" class="btn btn-default" @click='showEditNode = false'>取消</button>
+              <button type="button" class="btn btn-success" @click='updateNode'>更新</button>
+            </div>
+          </modal>
         </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin table200">
-              <thead>
-              <tr>
-                <th>表名称</th>
-                <th>表编号</th>
-                <th>表类型</th>
-                <th>上级表名称</th>
-                <th>初始表起度</th>
-                <th>铭牌号</th>
-                <th>生产厂家</th>
-                <th>生产日期</th>
-                <th>采购员</th>
-                <th>采购日期</th>
-                <th>采购价格</th>
-                <th>备注</th>
-                <th>操作</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="meter in meterNormalList">
-                <td>{{meter.name}}</td>
-                <td>{{meter.code}}</td>
-                <td>{{meter.type_name}}</td>
-                <td>{{meter.parent ? meter.parent.name : ''}}</td>
-                <td>{{meter.begin}}</td>
-                <td>{{meter.nameplate}}</td>
-                <td>{{meter.manufacturers}}</td>
-                <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
-                <td>{{meter.purchaser}}</td>
-                <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
-                <td>{{meter.cost}}</td>
-                <td>{{meter.remark}}</td>
-                <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+        <!-- boxinfo -->
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">主表信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-          <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix" style="display: block;"></div>
-        <!-- /.box-footer -->
-      </div>
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">检查表信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin table200">
+                <thead>
+                <tr>
+                  <th>表名称</th>
+                  <th>表编号</th>
+                  <th>表类型</th>
+                  <th>上级表名称</th>
+                  <th>初始表起度</th>
+                  <th>铭牌号</th>
+                  <th>生产厂家</th>
+                  <th>生产日期</th>
+                  <th>采购员</th>
+                  <th>采购日期</th>
+                  <th>采购价格</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="meter in meterNormalList">
+                  <td>{{meter.name}}</td>
+                  <td>{{meter.code}}</td>
+                  <td>{{meter.type_name}}</td>
+                  <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                  <td>{{meter.begin}}</td>
+                  <td>{{meter.nameplate}}</td>
+                  <td>{{meter.manufacturers}}</td>
+                  <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
+                  <td>{{meter.purchaser}}</td>
+                  <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
+                  <td>{{meter.cost}}</td>
+                  <td>{{meter.remark}}</td>
+                  <td>
+                    <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
           </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="display: block;"></div>
+          <!-- /.box-footer -->
         </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive ">
-            <table class="table no-margin table200">
-              <thead>
-              <tr>
-                <th>表名称</th>
-                <th>表编号</th>
-                <th>表类型</th>
-                <th>主表名称</th>
-                <th>初始表起度</th>
-                <th>表铭牌号</th>
-                <th>生产厂家</th>
-                <th>生产日期</th>
-                <th>采购员</th>
-                <th>采购日期</th>
-                <th>采购价格</th>
-                <th>备注</th>
-                <th>操作</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="meter in meterCheckList">
-                <td>{{meter.name}}</td>
-                <td>{{meter.code}}</td>
-                <td>{{meter.type_name}}</td>
-                <td>{{meter.parent ? meter.parent.name : ''}}</td>
-                <td>{{meter.begin}}</td>
-                <td>{{meter.nameplate}}</td>
-                <td>{{meter.manufacturers}}</td>
-                <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
-                <td>{{meter.purchaser}}</td>
-                <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
-                <td>{{meter.cost}}</td>
-                <td>{{meter.remark}}</td>
-                <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">检查表信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-          <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix" style="display: block;"></div>
-        <!-- /.box-footer -->
-      </div>
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">分表信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive ">
+              <table class="table no-margin table200">
+                <thead>
+                <tr>
+                  <th>表名称</th>
+                  <th>表编号</th>
+                  <th>表类型</th>
+                  <th>主表名称</th>
+                  <th>初始表起度</th>
+                  <th>表铭牌号</th>
+                  <th>生产厂家</th>
+                  <th>生产日期</th>
+                  <th>采购员</th>
+                  <th>采购日期</th>
+                  <th>采购价格</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="meter in meterCheckList">
+                  <td>{{meter.name}}</td>
+                  <td>{{meter.code}}</td>
+                  <td>{{meter.type_name}}</td>
+                  <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                  <td>{{meter.begin}}</td>
+                  <td>{{meter.nameplate}}</td>
+                  <td>{{meter.manufacturers}}</td>
+                  <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
+                  <td>{{meter.purchaser}}</td>
+                  <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
+                  <td>{{meter.cost}}</td>
+                  <td>{{meter.remark}}</td>
+                  <td>
+                    <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
           </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="display: block;"></div>
+          <!-- /.box-footer -->
         </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive ">
-            <table class="table no-margin table200">
-              <thead>
-              <tr>
-                <th>表名称</th>
-                <th>表编号</th>
-                <th>表类型</th>
-                <th>上级表名称</th>
-                <th>初始表起度</th>
-                <th>表铭牌号</th>
-                <th>生产厂家</th>
-                <th>生产日期</th>
-                <th>采购员</th>
-                <th>采购日期</th>
-                <th>采购价格</th>
-                <th>备注</th>
-                <th>操作</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="meter in meterChildren">
-                <td>{{meter.name}}</td>
-                <td>{{meter.code}}</td>
-                <td>{{meter.type_name}}</td>
-                <td>{{meter.parent ? meter.parent.name : ''}}</td>
-                <td>{{meter.begin}}</td>
-                <td>{{meter.nameplate}}</td>
-                <td>{{meter.manufacturers}}</td>
-                <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
-                <td>{{meter.purchaser}}</td>
-                <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
-                <td>{{meter.cost}}</td>
-                <td>{{meter.remark}}</td>
-                <td>
-                  <a class="label label-danger" href="javascript:void(0);">编辑</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">分表信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-          <!-- /.table-responsive -->
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive ">
+              <table class="table no-margin table200">
+                <thead>
+                <tr>
+                  <th>表名称</th>
+                  <th>表编号</th>
+                  <th>表类型</th>
+                  <th>上级表名称</th>
+                  <th>初始表起度</th>
+                  <th>表铭牌号</th>
+                  <th>生产厂家</th>
+                  <th>生产日期</th>
+                  <th>采购员</th>
+                  <th>采购日期</th>
+                  <th>采购价格</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="meter in meterChildren">
+                  <td>{{meter.name}}</td>
+                  <td>{{meter.code}}</td>
+                  <td>{{meter.type_name}}</td>
+                  <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                  <td>{{meter.begin}}</td>
+                  <td>{{meter.nameplate}}</td>
+                  <td>{{meter.manufacturers}}</td>
+                  <td>{{new Date(meter.product_time * 1000).toLocaleDateString()}}</td>
+                  <td>{{meter.purchaser}}</td>
+                  <td>{{new Date(meter.buy_time * 1000).toLocaleDateString()}}</td>
+                  <td>{{meter.cost}}</td>
+                  <td>{{meter.remark}}</td>
+                  <td>
+                    <a class="label label-danger" href="javascript:void(0);">编辑</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="display: block;"></div>
+          <!-- /.box-footer -->
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix" style="display: block;"></div>
-        <!-- /.box-footer -->
       </div>
     </div>
-  </div>
+  </section>
 </template>
 <style>
   .user-tree-box {
@@ -435,11 +440,13 @@
   }
 </style>
 <script>
+  import ContentHeader from '../../widgets/admin/content-header.vue'
   import Core from '../../../core/core'
   import Modal from '../../widgets/Modal.vue'
 
   export default {
     components: {
+      'content-header': ContentHeader,
       'modal': Modal
     },
     data () {

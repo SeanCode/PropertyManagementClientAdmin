@@ -1,324 +1,331 @@
 <template>
-  <div class="row">
-    <div class="col-md-3">
-      <price></price>
-      <div class="box box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">机构</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" @click="refreshTable()">
-              <i class="fa fa-refresh"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+  <!-- Content Header (Page header) -->
+  <content-header parent="水电气录入" child="机构录入"></content-header>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-3">
+        <price></price>
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">机构</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" @click="refreshTable()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <v-client-table :data='institutionList' :columns='columns' :options='options'
+                            class='institution-list-table'></v-client-table>
+          </div>
+          <!--  boxbody -->
         </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <v-client-table :data='institutionList' :columns='columns' :options='options'
-                          class='institution-list-table'></v-client-table>
+        <!-- boxinfo -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">机构节点</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" @click="refreshNodeTree()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="institution-tree-box">
+              <ul id="nodeInstitutionTree" class="ztree"></ul>
+            </div>
+          </div>
+          <!--  boxbody -->
         </div>
-        <!--  boxbody -->
+        <!-- boxinfo -->
       </div>
-      <!-- boxinfo -->
-      <div class="box box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">机构节点</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" @click="refreshNodeTree()">
-              <i class="fa fa-refresh"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+      <div class="col-md-9">
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">机构信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="institution-tree-box">
-            <ul id="nodeInstitutionTree" class="ztree"></ul>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <tr>
+                  <th>名称</th>
+                  <th>负责人</th>
+                  <th>联系方式</th>
+                  <th>组织机构代码</th>
+                  <th>描述</th>
+                  <th>备注</th>
+                </tr>
+                <tr v-show="institution.id">
+                  <td>{{institution.name}}</td>
+                  <td>{{institution.people}}</td>
+                  <td>{{institution.contact}}</td>
+                  <td>{{institution.code}}</td>
+                  <td>{{institution.description}}</td>
+                  <td>{{institution.remark}}</td>
+                </tr>
+              </table>
+            </div>
+
           </div>
+          <!--  boxbody -->
         </div>
-        <!--  boxbody -->
+        <!-- boxinfo -->
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">节点信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin table200">
+                <tr>
+                  <th>节点名</th>
+                  <th>地址编号</th>
+                  <th>完整地址</th>
+                  <th>类型</th>
+                  <th>房间面积(平方米)</th>
+                  <th>物管价(元/每平方米)</th>
+                  <th>其他费用</th>
+                  <th>物管费(元)</th>
+                  <th>所有权</th>
+                  <th>备注</th>
+                </tr>
+                <tr v-show="node.id">
+                  <td>{{node.name}}</td>
+                  <td>{{node.code}}</td>
+                  <td>{{node.path}}</td>
+                  <td>{{node.type_name}}</td>
+                  <td>{{node.area}}</td>
+                  <td>{{node.price}}</td>
+                  <td>{{node.fee}}</td>
+                  <td>{{node.area * node.price + node.fee}}</td>
+                  <td>{{node.ownership}}</td>
+                  <td>{{node.remark}}</td>
+                </tr>
+              </table>
+            </div>
+            <!-- table-->
+          </div>
+          <!--  boxbody -->
+        </div>
+        <!-- boxinfo -->
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">主表信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table ">
+                <thead>
+                <tr>
+                  <th>表名称</th>
+                  <th>表编号</th>
+                  <th>表类型</th>
+                  <th>本月起度</th>
+                  <th>本月止度</th>
+                  <th>单价</th>
+                  <th>用度</th>
+                  <th>费用</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="bg-red">
+                  <td>水表1(错误)</td>
+                  <td>sbwj01yly03jf</td>
+                  <td>水表</td>
+                  <td>555</td>
+                  <td>
+                    <input type="number" id="test"
+                           class="popover-show text-black" data-container="body"
+                           data-toggle="popover" data-placement="bottom"
+                           data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
+                           data-trigger="focous"> <a href="#"
+                                                     class="btn btn-sm btn-info">提交</a></td>
+                  <td>0.5</td>
+                  <td>223</td>
+                  <td>234</td>
+                </tr>
+                <tr class="bg-yellow">
+                  <td>水表1(警告)</td>
+                  <td>sbwj01yly03jf</td>
+                  <td>水表</td>
+                  <td>555</td>
+                  <td><input type="number" id="test"
+                             class="popover-show text-black" data-container="body"
+                             data-toggle="popover" data-placement="bottom"
+                             data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
+                             data-trigger="focous"> <a href="#"
+                                                       class="btn btn-sm btn-info">提交</a></td>
+                  <td>0.5</td>
+                  <td>223</td>
+                  <td>234</td>
+                </tr>
+                <tr class="bg-green">
+                  <td>水表1</td>
+                  <td>sbwj01yly03jf</td>
+                  <td>水表</td>
+                  <td>555</td>
+                  <td><input type="number" id="test"
+                             class="popover-show text-black" data-container="body"
+                             data-toggle="popover" data-placement="bottom"
+                             data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
+                             data-trigger="focous"> <a href="#"
+                                                       class="btn btn-sm btn-info">提交</a></td>
+                  <td>0.5</td>
+                  <td>223</td>
+                  <td>234</td>
+                </tr>
+                <tr class="">
+                  <td>水表1</td>
+                  <td>sbwj01yly03jf</td>
+                  <td>水表</td>
+                  <td>555</td>
+                  <td><input type="number" id="test"
+                             class="popover-show text-black" data-container="body"
+                             data-toggle="popover" data-placement="bottom"
+                             data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
+                             data-trigger="focous"> <a href="#"
+                                                       class="btn btn-sm btn-info">提交</a></td>
+                  <td>0.5</td>
+                  <td>223</td>
+                  <td>234</td>
+                </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="display: block;"></div>
+          <!-- /.box-footer -->
+        </div>
+        <!-- 主表信息 -->
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">检查表信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive ">
+              <table class="table no-margin">
+                <thead>
+                <tr>
+                  <th>表名称</th>
+                  <th>表编号</th>
+                  <th>表类型</th>
+                  <th>本月起度</th>
+                  <th>本月止度</th>
+                  <th>单价</th>
+                  <th>用度</th>
+                  <th>费用</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="bg-red">
+                  <td>水表1(错误)</td>
+                  <td>sbwj01yly03jf</td>
+                  <td>水表</td>
+                  <td>555</td>
+                  <td><input type="number" id="test"
+                             class="popover-show text-black" data-container="body"
+                             data-toggle="popover" data-placement="bottom"
+                             data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
+                             data-trigger="focous"> <a href="#"
+                                                       class="btn btn-sm btn-info">提交</a></td>
+                  <td>0.5</td>
+                  <td>223</td>
+                  <td>234</td>
+                </tr>
+                <tr class="bg-yellow">
+                  <td>水表1(警告)</td>
+                  <td>sbwj01yly03jf</td>
+                  <td>水表</td>
+                  <td>555</td>
+                  <td><input type="number" id="test"
+                             class="popover-show text-black" data-container="body"
+                             data-toggle="popover" data-placement="bottom"
+                             data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
+                             data-trigger="focous"> <a href="#"
+                                                       class="btn btn-sm btn-info">提交</a></td>
+                  <td>0.5</td>
+                  <td>223</td>
+                  <td>234</td>
+                </tr>
+                <tr class="bg-green">
+                  <td>水表1</td>
+                  <td>sbwj01yly03jf</td>
+                  <td>水表</td>
+                  <td>555</td>
+                  <td><input type="number" id="test"
+                             class="popover-show text-black" data-container="body"
+                             data-toggle="popover" data-placement="bottom"
+                             data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
+                             data-trigger="focous"> <a href="#"
+                                                       class="btn btn-sm btn-info">提交</a></td>
+                  <td>0.5</td>
+                  <td>223</td>
+                  <td>234</td>
+                </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="display: block;"></div>
+          <!-- /.box-footer -->
+        </div>
       </div>
-      <!-- boxinfo -->
     </div>
-    <div class="col-md-9">
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">机构信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin">
-              <tr>
-                <th>名称</th>
-                <th>负责人</th>
-                <th>联系方式</th>
-                <th>组织机构代码</th>
-                <th>描述</th>
-                <th>备注</th>
-              </tr>
-              <tr v-show="institution.id">
-                <td>{{institution.name}}</td>
-                <td>{{institution.people}}</td>
-                <td>{{institution.contact}}</td>
-                <td>{{institution.code}}</td>
-                <td>{{institution.description}}</td>
-                <td>{{institution.remark}}</td>
-              </tr>
-            </table>
-          </div>
-
-        </div>
-        <!--  boxbody -->
-      </div>
-      <!-- boxinfo -->
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">节点信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin table200">
-              <tr>
-                <th>节点名</th>
-                <th>地址编号</th>
-                <th>完整地址</th>
-                <th>类型</th>
-                <th>房间面积(平方米)</th>
-                <th>物管价(元/每平方米)</th>
-                <th>其他费用</th>
-                <th>物管费(元)</th>
-                <th>所有权</th>
-                <th>备注</th>
-              </tr>
-              <tr v-show="node.id">
-                <td>{{node.name}}</td>
-                <td>{{node.code}}</td>
-                <td>{{node.path}}</td>
-                <td>{{node.type_name}}</td>
-                <td>{{node.area}}</td>
-                <td>{{node.price}}</td>
-                <td>{{node.fee}}</td>
-                <td>{{node.area * node.price + node.fee}}</td>
-                <td>{{node.ownership}}</td>
-                <td>{{node.remark}}</td>
-              </tr>
-            </table>
-          </div>
-          <!-- table-->
-        </div>
-        <!--  boxbody -->
-      </div>
-      <!-- boxinfo -->
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">主表信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table ">
-              <thead>
-              <tr>
-                <th>表名称</th>
-                <th>表编号</th>
-                <th>表类型</th>
-                <th>本月起度</th>
-                <th>本月止度</th>
-                <th>单价</th>
-                <th>用度</th>
-                <th>费用</th>
-              </tr>
-              </thead>
-              <tbody>
-
-              <tr class="bg-red">
-                <td>水表1(错误)</td>
-                <td>sbwj01yly03jf</td>
-                <td>水表</td>
-                <td>555</td>
-                <td>
-                  <input type="number" id="test"
-                         class="popover-show text-black" data-container="body"
-                         data-toggle="popover" data-placement="bottom"
-                         data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
-                         data-trigger="focous"> <a href="#"
-                                                   class="btn btn-sm btn-info">提交</a></td>
-                <td>0.5</td>
-                <td>223</td>
-                <td>234</td>
-              </tr>
-              <tr class="bg-yellow">
-                <td>水表1(警告)</td>
-                <td>sbwj01yly03jf</td>
-                <td>水表</td>
-                <td>555</td>
-                <td><input type="number" id="test"
-                           class="popover-show text-black" data-container="body"
-                           data-toggle="popover" data-placement="bottom"
-                           data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
-                           data-trigger="focous"> <a href="#"
-                                                     class="btn btn-sm btn-info">提交</a></td>
-                <td>0.5</td>
-                <td>223</td>
-                <td>234</td>
-              </tr>
-              <tr class="bg-green">
-                <td>水表1</td>
-                <td>sbwj01yly03jf</td>
-                <td>水表</td>
-                <td>555</td>
-                <td><input type="number" id="test"
-                           class="popover-show text-black" data-container="body"
-                           data-toggle="popover" data-placement="bottom"
-                           data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
-                           data-trigger="focous"> <a href="#"
-                                                     class="btn btn-sm btn-info">提交</a></td>
-                <td>0.5</td>
-                <td>223</td>
-                <td>234</td>
-              </tr>
-              <tr class="">
-                <td>水表1</td>
-                <td>sbwj01yly03jf</td>
-                <td>水表</td>
-                <td>555</td>
-                <td><input type="number" id="test"
-                           class="popover-show text-black" data-container="body"
-                           data-toggle="popover" data-placement="bottom"
-                           data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
-                           data-trigger="focous"> <a href="#"
-                                                     class="btn btn-sm btn-info">提交</a></td>
-                <td>0.5</td>
-                <td>223</td>
-                <td>234</td>
-              </tr>
-
-
-              </tbody>
-            </table>
-          </div>
-          <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix" style="display: block;"></div>
-        <!-- /.box-footer -->
-      </div>
-      <!-- 主表信息 -->
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">检查表信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive ">
-            <table class="table no-margin">
-              <thead>
-              <tr>
-                <th>表名称</th>
-                <th>表编号</th>
-                <th>表类型</th>
-                <th>本月起度</th>
-                <th>本月止度</th>
-                <th>单价</th>
-                <th>用度</th>
-                <th>费用</th>
-              </tr>
-              </thead>
-              <tbody>
-
-              <tr class="bg-red">
-                <td>水表1(错误)</td>
-                <td>sbwj01yly03jf</td>
-                <td>水表</td>
-                <td>555</td>
-                <td><input type="number" id="test"
-                           class="popover-show text-black" data-container="body"
-                           data-toggle="popover" data-placement="bottom"
-                           data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
-                           data-trigger="focous"> <a href="#"
-                                                     class="btn btn-sm btn-info">提交</a></td>
-                <td>0.5</td>
-                <td>223</td>
-                <td>234</td>
-              </tr>
-              <tr class="bg-yellow">
-                <td>水表1(警告)</td>
-                <td>sbwj01yly03jf</td>
-                <td>水表</td>
-                <td>555</td>
-                <td><input type="number" id="test"
-                           class="popover-show text-black" data-container="body"
-                           data-toggle="popover" data-placement="bottom"
-                           data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
-                           data-trigger="focous"> <a href="#"
-                                                     class="btn btn-sm btn-info">提交</a></td>
-                <td>0.5</td>
-                <td>223</td>
-                <td>234</td>
-              </tr>
-              <tr class="bg-green">
-                <td>水表1</td>
-                <td>sbwj01yly03jf</td>
-                <td>水表</td>
-                <td>555</td>
-                <td><input type="number" id="test"
-                           class="popover-show text-black" data-container="body"
-                           data-toggle="popover" data-placement="bottom"
-                           data-content="上月用度：100度;    去年同月用度为：150度;去年平均用度：230"
-                           data-trigger="focous"> <a href="#"
-                                                     class="btn btn-sm btn-info">提交</a></td>
-                <td>0.5</td>
-                <td>223</td>
-                <td>234</td>
-              </tr>
-
-
-              </tbody>
-            </table>
-          </div>
-          <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix" style="display: block;"></div>
-        <!-- /.box-footer -->
-      </div>
-    </div>
-  </div>
+  </section>
 </template>
 <style>
 </style>
 <script>
+  import ContentHeader from '../../widgets/admin/content-header.vue'
   import Core from '../../../core/core'
   import Price from '../../widgets/Price.vue'
 
   export default {
     components: {
+      'content-header': ContentHeader,
       'price': Price
     },
     data () {

@@ -21,121 +21,6 @@
               </div>
             </div>
             <div class='col-md-9 no-padding-left'>
-              <div class="box box-solid box-info" v-show="node.id&&users.length==0">
-                <div class="box-header with-border">
-                  <h3 class="box-title">机构信息</h3>
-                  <div class="box-tools pull-right">
-                    <button v-show="institution.id" class="btn btn-box-tool" @click="toggleRemoveInstitutionOwner()">
-                      <i class="fa fa-sign-out" title="搬出"></i>
-                    </button>
-                    <button v-show="!institution.id" class="btn btn-box-tool" @click="toggleAddInstitutionOwner()">
-                      <i class="fa fa-suitcase" title="入住"></i>
-                    </button>
-                    <button class="btn btn-box-tool" data-widget="collapse">
-                      <i class="fa fa-minus"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body" style="display: block;">
-                  <div class="table-responsive">
-                    <table class="table no-margin">
-                      <tr>
-                        <th>名称</th>
-                        <th>负责人</th>
-                        <th>联系方式</th>
-                        <th>组织机构代码</th>
-                        <th>描述</th>
-                        <th>备注</th>
-                      </tr>
-                      <tr v-show="institution.id">
-                        <td>{{institution.name}}</td>
-                        <td>{{institution.people}}</td>
-                        <td>{{institution.contact}}</td>
-                        <td>{{institution.code}}</td>
-                        <td>{{institution.description}}</td>
-                        <td>{{institution.remark}}</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-                <!--  boxbody -->
-                <modal title="机构入住" :show.sync="showAddInstitutionOwner" effect="fade" large="true">
-                  <div slot="modal-body" class="modal-body">
-                    <v-client-table :data='institutionList'
-                                    :columns='table_setting.columns'
-                                    :options='table_setting.options'
-                                    class='institution-list-table'>
-                    </v-client-table>
-                  </div>
-                  <div slot="modal-footer" class="modal-footer">
-                    <button type="button" class="btn btn-default" @click='showAddInstitutionOwner = false'>取消</button>
-                  </div>
-                </modal>
-                <modal title="警告" :show.sync="showRemoveInstitutionOwner" effect="fade">
-                  <div slot="modal-body" class="modal-body">确认搬出?</div>
-                  <div slot="modal-footer" class="modal-footer">
-                    <button type="button" class="btn btn-default" @click='showRemoveInstitutionOwner = false'>取消
-                    </button>
-                    <button type="button" class="btn label-danger" @click='removeInstitutionOwner()'>搬出</button>
-                  </div>
-                </modal>
-              </div>
-              <div class="box box-solid box-info" v-show="node.id&&(!institution.id)">
-                <div class="box-header with-border">
-                  <h3 class="box-title">个人信息</h3>
-                  <div class="box-tools pull-right">
-                    <button v-show="users.length > 0" class="btn btn-box-tool">
-                      <i class="fa fa-sign-out" title="搬出" @click="toggleRemoveUserOwner()"></i>
-                    </button>
-                    <button v-show="users.length==0" class="btn btn-box-tool" @click="toggleAddUserOwner()">
-                      <i class="fa fa-suitcase" title="入住"></i>
-                    </button>
-                    <button class="btn btn-box-tool" data-widget="collapse">
-                      <i class="fa fa-minus"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body" style="display: block;">
-                  <div class="table-responsive">
-                    <table class="table no-margin">
-                      <tr>
-                        <th>姓名</th>
-                        <th>电话</th>
-                        <th>一卡通</th>
-                        <th>身份证</th>
-                        <th>备注</th>
-                      </tr>
-                      <tr v-for="user in users">
-                        <td>{{user.name}}</td>
-                        <td>{{user.phone}}</td>
-                        <td>{{user.school_card}}</td>
-                        <td>{{user.id_card}}</td>
-                        <td>{{user.remark}}</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-                <!--  boxbody -->
-                <modal title="个人入住" :show.sync="showAddUserOwner" effect="fade" width="800">
-                  <div slot="modal-body" class="modal-body modal-user-tree">
-                    <div class="user-tree-box">
-                      <ul id="addUserOwnerTree" class="ztree"></ul>
-                    </div>
-                  </div>
-                  <div slot="modal-footer" class="modal-footer">
-                    <button type="button" class="btn btn-default" @click='showAddUserOwner = false'>取消</button>
-                  </div>
-                </modal>
-                <modal title="警告" :show.sync="showRemoveUserOwner" effect="fade">
-                  <div slot="modal-body" class="modal-body">确认搬出?</div>
-                  <div slot="modal-footer" class="modal-footer">
-                    <button type="button" class="btn btn-default" @click='showRemoveUserOwner = false'>取消</button>
-                    <button type="button" class="btn label-danger" @click='removeUserOwner()'>搬出</button>
-                  </div>
-                </modal>
-              </div>
               <div class="box box-solid box-info">
                 <div class="box-header with-border">
                   <h3 class="box-title">节点信息</h3>
@@ -252,11 +137,129 @@
                   </div>
                 </modal>
               </div>
+              <div class="box box-solid box-info" v-show="node.id&&users.length==0">
+                <div class="box-header with-border">
+                  <h3 class="box-title">机构信息</h3>
+                  <div class="box-tools pull-right">
+                    <button v-show="institution.id" class="btn btn-box-tool" @click="toggleRemoveInstitutionOwner()">
+                      <i class="fa fa-sign-out" title="搬出"></i>
+                    </button>
+                    <button v-show="!institution.id" class="btn btn-box-tool" @click="toggleAddInstitutionOwner()">
+                      <i class="fa fa-suitcase" title="入住"></i>
+                    </button>
+                    <button class="btn btn-box-tool" data-widget="collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="display: block;">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <tr>
+                        <th>名称</th>
+                        <th>负责人</th>
+                        <th>联系方式</th>
+                        <th>组织机构代码</th>
+                        <th>描述</th>
+                        <th>备注</th>
+                      </tr>
+                      <tr v-show="institution.id">
+                        <td>{{institution.name}}</td>
+                        <td>{{institution.people}}</td>
+                        <td>{{institution.contact}}</td>
+                        <td>{{institution.code}}</td>
+                        <td>{{institution.description}}</td>
+                        <td>{{institution.remark}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!--  boxbody -->
+                <modal title="机构入住" :show.sync="showAddInstitutionOwner" effect="fade" large="true">
+                  <div slot="modal-body" class="modal-body">
+                    <v-client-table :data='institutionList'
+                                    :columns='table_setting.columns'
+                                    :options='table_setting.options'
+                                    class='institution-list-table'>
+                    </v-client-table>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showAddInstitutionOwner = false'>取消</button>
+                  </div>
+                </modal>
+                <modal title="警告" :show.sync="showRemoveInstitutionOwner" effect="fade">
+                  <div slot="modal-body" class="modal-body">确认搬出?</div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showRemoveInstitutionOwner = false'>取消
+                    </button>
+                    <button type="button" class="btn label-danger" @click='removeInstitutionOwner()'>搬出</button>
+                  </div>
+                </modal>
+              </div>
+              <div class="box box-solid box-info" v-show="node.id&&(!institution.id)">
+                <div class="box-header with-border">
+                  <h3 class="box-title">个人信息</h3>
+                  <div class="box-tools pull-right">
+                    <button v-show="users.length > 0" class="btn btn-box-tool">
+                      <i class="fa fa-sign-out" title="搬出" @click="toggleRemoveUserOwner()"></i>
+                    </button>
+                    <button v-show="users.length==0" class="btn btn-box-tool" @click="toggleAddUserOwner()">
+                      <i class="fa fa-suitcase" title="入住"></i>
+                    </button>
+                    <button class="btn btn-box-tool" data-widget="collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="display: block;">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <tr>
+                        <th>姓名</th>
+                        <th>电话</th>
+                        <th>一卡通</th>
+                        <th>身份证</th>
+                        <th>备注</th>
+                      </tr>
+                      <tr v-for="user in users">
+                        <td>{{user.name}}</td>
+                        <td>{{user.phone}}</td>
+                        <td>{{user.school_card}}</td>
+                        <td>{{user.id_card}}</td>
+                        <td>{{user.remark}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!--  boxbody -->
+                <modal title="个人入住" :show.sync="showAddUserOwner" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body modal-user-tree">
+                    <div class="user-tree-box">
+                      <ul id="addUserOwnerTree" class="ztree"></ul>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showAddUserOwner = false'>取消</button>
+                  </div>
+                </modal>
+                <modal title="警告" :show.sync="showRemoveUserOwner" effect="fade">
+                  <div slot="modal-body" class="modal-body">确认搬出?</div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showRemoveUserOwner = false'>取消</button>
+                    <button type="button" class="btn label-danger" @click='removeUserOwner()'>搬出</button>
+                  </div>
+                </modal>
+              </div>
               <!-- boxinfo -->
               <div class="box box-solid box-info">
                 <div class="box-header with-border">
                   <h3 class="box-title">主表信息</h3>
                   <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" @click="toggleAddNormalMeter()">
+                      <i class="fa fa-plus-square"></i>
+                    </button>
                     <button class="btn btn-box-tool" data-widget="collapse">
                       <i class="fa fa-minus"></i>
                     </button>
@@ -291,13 +294,15 @@
                           <a class="label label-primary" href="javascript:void(0);"
                              @click="toggleEditMeter(meter)">编辑</a></td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">移除</a></td>
+                          <a class="label label-danger" href="javascript:void(0);"
+                             @click="toggleRemoveMeter(meter)">移除</a></td>
                         <td>
                           <a class="label label-danger" href="javascript:void(0);">设置上级表</a></td>
                         <td>
                           <a class="label label-danger" href="javascript:void(0);">更换</a></td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">添加检查表</a>
+                          <a class="label label-danger" href="javascript:void(0);"
+                             @click="toggleAddCheckMeter(meter)">添加检查表</a>
                         </td>
                       </tr>
                       </tbody>
@@ -314,13 +319,13 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.name">
+                          <input class="form-control" :disabled="meterEditing.node_id!==node.id" v-model="meterEditing.name">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">编号</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.code">
+                          <input class="form-control" :disabled="meterEditing.node_id!==node.id" v-model="meterEditing.code">
                         </div>
                       </div>
                       <div class="form-group">
@@ -395,6 +400,180 @@
                     <button type="button" class="btn btn-success" @click='updateMeter'>更新</button>
                   </div>
                 </modal>
+                <modal title="添加主表" :show.sync="showAddNormalMeter" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">名称 *</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.code">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">类型 *</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" v-model="meterEditing.type">
+                            <option value="1">水表</option>
+                            <option value="2">电表</option>
+                            <option value="3">气表</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">初始起度</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.begin">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">铭牌</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.nameplate">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产厂家</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.manufacturers">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.product_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购员</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.purchaser">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.buy_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购价格</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.cost">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.remark">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showAddNormalMeter = false'>取消</button>
+                    <button type="button" class="btn btn-success" @click='addNormalMeter'>确定</button>
+                  </div>
+                </modal>
+                <modal title="添加检查表" :show.sync="showAddCheckMeter" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">名称 *</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">上级表</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled v-model="meterParent.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.code">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">类型 *</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" v-model="meterEditing.type">
+                            <option value="4">水表检查表</option>
+                            <option value="5">电表检查表</option>
+                            <option value="6">气表检查表</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">初始起度</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.begin">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">铭牌</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.nameplate">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产厂家</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.manufacturers">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.product_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购员</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.purchaser">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.buy_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购价格</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.cost">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.remark">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showAddCheckMeter = false'>取消</button>
+                    <button type="button" class="btn btn-success" @click='addCheckMeter'>确定</button>
+                  </div>
+                </modal>
+
+                <modal title="警告!!!" :show.sync="showRemoveMeter" effect="fade">
+                  <div slot="modal-body" class="modal-body">确认移除该表? <br>请先确定已经移除了该表的 检查表 和所有 分表 !</div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showRemoveMeter = false'>取消</button>
+                    <button type="button" class="btn label-danger" @click="removeMeter()">删除</button>
+                  </div>
+                </modal>
               </div>
               <div class="box box-solid box-info">
                 <div class="box-header with-border">
@@ -433,7 +612,8 @@
                              @click="toggleEditMeter(meter)">编辑</a>
                         </td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">移除</a>
+                          <a class="label label-danger" href="javascript:void(0);"
+                             @click="toggleRemoveMeter(meter)">移除</a>
                         </td>
                         <td>
                           <a class="label label-danger" href="javascript:void(0);">更换</a>
@@ -524,6 +704,12 @@
         nodeEditing: {},
         showEditMeter: false,
         meterEditing: {},
+        meterParent: {},
+        showRemoveMeter: false,
+        showReplaceMeter: false,
+        showSetParentMeter: false,
+        showAddNormalMeter: false,
+        showAddCheckMeter: false,
         showAddUserOwner: false,
         showRemoveUserOwner: false,
         showAddInstitutionOwner: false,
@@ -546,6 +732,13 @@
             keep: {
               parent: true
             }
+          },
+          edit: {
+            enable: true,
+            drag: {
+              autoExpandTrigger: false
+            },
+            showRenameBtn: false
           },
           callback: {
             onClick: onNodeSelected
@@ -653,6 +846,39 @@
       },
       removeInstitutionOwner: function () {
         removeNodeInstitution()
+      },
+      toggleAddNormalMeter: function () {
+        if (this.node.id === undefined) {
+          Core.Toast.error(this, '请先选择节点')
+          return
+        }
+        this.showAddNormalMeter = true
+        this.meterEditing = {}
+      },
+      addNormalMeter: function () {
+        addNormalMeter(this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, this.meterEditing.buy_time, this.meterEditing.product_time, this.meterEditing.remark)
+      },
+      toggleAddCheckMeter: function (meter) {
+        if (this.node.id === undefined) {
+          Core.Toast.error(this, '请先选择节点')
+          return
+        }
+        if (meter.check_meter_id > 0) {
+          Core.Toast.error(this, '一个表只能对应一个检查表')
+          return
+        }
+        this.meterParent = meter
+        this.showAddCheckMeter = true
+      },
+      addCheckMeter: function () {
+        addCheckMeter(this.meterEditing.name, this.meterParent.id, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, this.meterEditing.buy_time, this.meterEditing.product_time, this.meterEditing.remark)
+      },
+      toggleRemoveMeter: function (meter) {
+        this.showRemoveMeter = true
+        this.meterEditing = meter
+      },
+      removeMeter: function () {
+        removeMeter(this.meterEditing.id, this.meterEditing.node_id, this.meterEditing.type)
       }
     }
   }
@@ -886,6 +1112,44 @@
       getOwnerByNode(context.node.id)
     }, function (error) {
       Core.Toast.error(context, '搬出失败: ' + error.message)
+    })
+  }
+
+  function addNormalMeter (name, type, code, rate, begin, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
+    Core.Api.METER.addNormal(name, context.node.id, code, type, rate, begin, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark).then(function (data) {
+      context.showAddNormalMeter = false
+      context.meterEditing = {}
+      getMeterNormalList(context.node)
+      Core.Toast.success(context, '添加成功')
+    }, function (error) {
+      Core.Toast.error(context, '添加失败: ' + error.message)
+    })
+  }
+
+  function addCheckMeter (name, parentId, type, code, rate, begin, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
+    Core.Api.METER.addCheck(name, parentId, code, type, rate, begin, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark).then(function (data) {
+      context.showAddCheckMeter = false
+      context.meterEditing = {}
+      context.meterParent = {}
+      getMeterCheckList(context.node)
+      Core.Toast.success(context, '添加成功')
+    }, function (error) {
+      Core.Toast.error(context, '添加失败: ' + error.message)
+    })
+  }
+
+  function removeMeter (id, nodeId, type) {
+    Core.Api.METER.remove(id, nodeId).then(function (data) {
+      context.showRemoveMeter = false
+      context.meterEditing = {}
+      if (type > 3) {
+        getMeterCheckList(context.node)
+      } else {
+        getMeterNormalList(context.node)
+      }
+      Core.Toast.success(context, '移除表成功')
+    }, function (error) {
+      Core.Toast.error(context, '移除表失败: ' + error.message)
     })
   }
 

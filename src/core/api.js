@@ -137,6 +137,17 @@ export default {
       return post(Const.NET.API.USER_DELETE, {
         id: id
       })
+    },
+    addUser: function (departmentId, name, username, phone, idCard, schoolCard, remark) {
+      return post(Const.NET.API.USER_ADD, {
+        department_id: departmentId,
+        name: name,
+        username: username,
+        phone: phone,
+        id_card: idCard,
+        school_card: schoolCard,
+        remark: remark
+      })
     }
   },
   NODE: {
@@ -313,6 +324,9 @@ function transformObjectToUrlencodedData (obj) {
   if (obj) {
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
+        if (obj[key] === undefined) {
+          obj[key] = ''
+        }
         p.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
       }
     }

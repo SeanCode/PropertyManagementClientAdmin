@@ -1,277 +1,284 @@
 <template>
-  <div class="row">
-    <div class="col-md-3">
-      <price></price>
-      <div class="box box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">部门与个人</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" @click="refreshUserTree()">
-              <i class="fa fa-refresh"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+  <!-- Content Header (Page header) -->
+  <content-header parent="水电气录入" child="个人录入"></content-header>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-3">
+        <price></price>
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">部门与个人</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" @click="refreshUserTree()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="user-tree-box">
-            <ul id="userTree" class="ztree"></ul>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="user-tree-box">
+              <ul id="userTree" class="ztree"></ul>
+            </div>
           </div>
+          <!--  boxbody -->
         </div>
-        <!--  boxbody -->
+        <!-- boxinfo -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">个人节点</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" @click="refreshNodeTree()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="user-tree-box">
+              <ul id="nodeUserTree" class="ztree"></ul>
+            </div>
+          </div>
+          <!--  boxbody -->
+        </div>
+        <!-- boxinfo -->
       </div>
-      <!-- boxinfo -->
-      <div class="box box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">个人节点</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" @click="refreshNodeTree()">
-              <i class="fa fa-refresh"></i>
-            </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
+      <div class="col-md-9" id="panel">
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">个人信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <tr>
+                  <th>姓名</th>
+                  <th>部门</th>
+                  <th>电话</th>
+                  <th>一卡通</th>
+                  <th>身份证</th>
+                  <th>标记用户</th>
+                  <th>职称</th>
+                  <th>备注</th>
+                </tr>
+                <tr v-for="user in users">
+                  <td>{{user.name}}</td>
+                  <td>{{user.department}}</td>
+                  <td>{{user.phone}}</td>
+                  <td>{{user.school_card}}</td>
+                  <td>{{user.id_card}}</td>
+                  <td>{{user.important}}</td>
+                  <td>{{user.title}}</td>
+                  <td>{{user.remark}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <!--  boxbody -->
+        </div>
+        <!-- boxinfo -->
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">节点信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin table200">
+                <tr>
+                  <th>节点名</th>
+                  <th>地址编号</th>
+                  <th>完整地址</th>
+                  <th>类型</th>
+                  <th>房间面积(平方米)</th>
+                  <th>物管价(元/每平方米)</th>
+                  <th>其他费用</th>
+                  <th>物管费(元)</th>
+                  <th>所有权</th>
+                  <th>备注</th>
+                </tr>
+                <tr v-show="node.id">
+                  <td>{{node.name}}</td>
+                  <td>{{node.code}}</td>
+                  <td>{{node.path}}</td>
+                  <td>{{node.type_name}}</td>
+                  <td>{{node.area}}</td>
+                  <td>{{node.price}}</td>
+                  <td>{{node.fee}}</td>
+                  <td>{{node.area * node.price + node.fee}}</td>
+                  <td>{{node.ownership}}</td>
+                  <td>{{node.remark}}</td>
+                </tr>
+              </table>
+            </div>
+            <!-- table-->
+          </div>
+          <!--  boxbody -->
+        </div>
+        <!-- boxinfo -->
+        <div class="well bg-aqua-gradient text-black">
+          <label class="label la text-black">当前抄表时间为：</label>
+          <select v-model="date">
+            <option v-for="t in inputDate"><span>{{t}}</span></option>
+          </select>
+          <input type="date" v-show="newDate" id="newDate">
+          <label class="btn btn-primary" v-show="!newDate" @click="showNewDate()">新增</label>
+          <label class="btn btn-primary" v-show="newDate" @click="showNewDate()">取消</label>
+          <label class="btn btn-primary" v-show="newDate" @click="NewDate()">确定</label>
+          <div>
+            <label class="label la text-black">筛选类型:</label>
+            <input type="checkbox" v-model="checkbox.water" value="水表">水表
+            <input type="checkbox" v-model="checkbox.ele" value="电表">电表
+            <input type="checkbox" v-model="checkbox.gas" data-value="气表">气表
           </div>
         </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="user-tree-box">
-            <ul id="nodeUserTree" class="ztree"></ul>
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">主表信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <!--  boxbody -->
-      </div>
-      <!-- boxinfo -->
-    </div>
-    <div class="col-md-9" id="panel">
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">个人信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin">
-              <tr>
-                <th>姓名</th>
-                <th>部门</th>
-                <th>电话</th>
-                <th>一卡通</th>
-                <th>身份证</th>
-                <th>标记用户</th>
-                <th>职称</th>
-                <th>备注</th>
-              </tr>
-              <tr v-for="user in users">
-                <td>{{user.name}}</td>
-                <td>{{user.department}}</td>
-                <td>{{user.phone}}</td>
-                <td>{{user.school_card}}</td>
-                <td>{{user.id_card}}</td>
-                <td>{{user.important}}</td>
-                <td>{{user.title}}</td>
-                <td>{{user.remark}}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <!--  boxbody -->
-      </div>
-      <!-- boxinfo -->
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">节点信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin table200">
-              <tr>
-                <th>节点名</th>
-                <th>地址编号</th>
-                <th>完整地址</th>
-                <th>类型</th>
-                <th>房间面积(平方米)</th>
-                <th>物管价(元/每平方米)</th>
-                <th>其他费用</th>
-                <th>物管费(元)</th>
-                <th>所有权</th>
-                <th>备注</th>
-              </tr>
-              <tr v-show="node.id">
-                <td>{{node.name}}</td>
-                <td>{{node.code}}</td>
-                <td>{{node.path}}</td>
-                <td>{{node.type_name}}</td>
-                <td>{{node.area}}</td>
-                <td>{{node.price}}</td>
-                <td>{{node.fee}}</td>
-                <td>{{node.area * node.price + node.fee}}</td>
-                <td>{{node.ownership}}</td>
-                <td>{{node.remark}}</td>
-              </tr>
-            </table>
-          </div>
-          <!-- table-->
-        </div>
-        <!--  boxbody -->
-      </div>
-      <!-- boxinfo -->
-      <div class="well bg-aqua-gradient text-black">
-        <label class="label la text-black">当前抄表时间为：</label>
-        <select v-model="date">
-          <option v-for="t in inputDate"><span>{{t}}</span></option>
-        </select>
-        <input type="date" v-show="newDate" id="newDate">
-        <label class="btn btn-primary" v-show="!newDate" @click="showNewDate()">新增</label>
-        <label class="btn btn-primary" v-show="newDate" @click="showNewDate()">取消</label>
-        <label class="btn btn-primary" v-show="newDate" @click="NewDate()">确定</label>
-        <div>
-          <label class="label la text-black">筛选类型:</label>
-          <input type="checkbox" v-model="checkbox.water" value="水表">水表
-          <input type="checkbox" v-model="checkbox.ele" value="电表">电表
-          <input type="checkbox" v-model="checkbox.gas" data-value="气表">气表
-        </div>
-      </div>
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">主表信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive">
-            <table class="table no-margin">
-              <thead>
-              <tr>
-                <th>表名称</th>
-                <th>表编号</th>
-                <th>表类型</th>
-                <th>本月起度</th>
-                <th>本月止度</th>
-                <th>单价</th>
-                <th>用度</th>
-                <th>该表费用</th>
-                <th>操作</th>
-              </tr>
-              </thead>
-              <tbody>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <thead>
+                <tr>
+                  <th>表名称</th>
+                  <th>表编号</th>
+                  <th>表类型</th>
+                  <th>本月起度</th>
+                  <th>本月止度</th>
+                  <th>单价</th>
+                  <th>用度</th>
+                  <th>该表费用</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
 
-              <tr v-for=" m in temp.meter" v-bind:class="m.sign">
-                <td>{{m.name}}</td>
-                <td>{{m.code}}</td>
-                <td>{{m.type}}</td>
-                <td>{{m.start}}</td>
-                <td>
-                  <input v-model="m.input|input m" type="number"
-                         class="popover-show text-black" data-container="body"
-                         data-toggle="popover" data-html="true"
-                         data-placement="bottom" min="0"
-                         data-content="{{m.content}}" data-trigger="focous">
-                  <button @click="uploadMeter($index)" class="btn btn-sm btn-info">提交</button>
-                </td>
-                <td>{{m.price }}</td>
-                <td>{{m.used}}</td>
-                <td>{{m.fee }}</td>
-                <td>
-                  <button @click="showChangeMeter($index)" class="btn btn-sm btn-info">换表</button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix" style="display: block;"></div>
-        <!-- /.box-footer -->
-      </div>
-      <!-- 主表信息 -->
-      <div class="box box-solid box-info">
-        <div class="box-header with-border">
-          <h3 class="box-title">检查表信息</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: block;">
-          <div class="table-responsive ">
-            <table class="table no-margin">
-              <thead>
-              <tr>
-                <th>表名称</th>
-                <th>表编号</th>
-                <th>表类型</th>
-                <th>本月起度</th>
-                <th>本月止度</th>
-                <th>单价</th>
-                <th>用度</th>
-                <th>该表费用</th>
-                <th>操作</th>
-              </tr>
-              </thead>
-              <tbody>
-
-              <tr v-for=" m in temp.check" v-bind:class="m.sign">
-                <td>{{m.name}}</td>
-                <td>{{m.code}}</td>
-                <td>{{m.type}}</td>
-                <td>{{m.start}}</td>
-                <td><input v-model="m.input|input m" type="number"
+                <tr v-for=" m in temp.meter" v-bind:class="m.sign">
+                  <td>{{m.name}}</td>
+                  <td>{{m.code}}</td>
+                  <td>{{m.type}}</td>
+                  <td>{{m.start}}</td>
+                  <td>
+                    <input v-model="m.input|input m" type="number"
                            class="popover-show text-black" data-container="body"
                            data-toggle="popover" data-html="true"
                            data-placement="bottom" min="0"
-                           data-content="上月用度：100度;<br>    去年同月用度为：150度;去年平均用度：230"
-                           data-trigger="focous"> <a @click="upload($index)"
-                                                     class="btn btn-sm btn-info">提交</a></td>
-                <td>{{m.price}}</td>
-                <td>{{m.used}}</td>
-                <td>{{m.fee}}</td>
-                <td>
-                  <button @click="showChangeCheck($index)"
-                          class="btn btn-sm btn-info">换表
-                  </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                           data-content="{{m.content}}" data-trigger="focous">
+                    <button @click="uploadMeter($index)" class="btn btn-sm btn-info">提交</button>
+                  </td>
+                  <td>{{m.price }}</td>
+                  <td>{{m.used}}</td>
+                  <td>{{m.fee }}</td>
+                  <td>
+                    <button @click="showChangeMeter($index)" class="btn btn-sm btn-info">换表</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
           </div>
-          <!-- /.table-responsive -->
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="display: block;"></div>
+          <!-- /.box-footer -->
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix" style="display: block;"></div>
-        <!-- /.box-footer -->
+        <!-- 主表信息 -->
+        <div class="box box-solid box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">检查表信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive ">
+              <table class="table no-margin">
+                <thead>
+                <tr>
+                  <th>表名称</th>
+                  <th>表编号</th>
+                  <th>表类型</th>
+                  <th>本月起度</th>
+                  <th>本月止度</th>
+                  <th>单价</th>
+                  <th>用度</th>
+                  <th>该表费用</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr v-for=" m in temp.check" v-bind:class="m.sign">
+                  <td>{{m.name}}</td>
+                  <td>{{m.code}}</td>
+                  <td>{{m.type}}</td>
+                  <td>{{m.start}}</td>
+                  <td><input v-model="m.input|input m" type="number"
+                             class="popover-show text-black" data-container="body"
+                             data-toggle="popover" data-html="true"
+                             data-placement="bottom" min="0"
+                             data-content="上月用度：100度;<br>    去年同月用度为：150度;去年平均用度：230"
+                             data-trigger="focous"> <a @click="upload($index)"
+                                                       class="btn btn-sm btn-info">提交</a></td>
+                  <td>{{m.price}}</td>
+                  <td>{{m.used}}</td>
+                  <td>{{m.fee}}</td>
+                  <td>
+                    <button @click="showChangeCheck($index)"
+                            class="btn btn-sm btn-info">换表
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="display: block;"></div>
+          <!-- /.box-footer -->
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 <style>
 </style>
 <script>
+  import ContentHeader from '../../widgets/admin/content-header.vue'
   import Core from '../../../core/core'
   import Price from '../../widgets/Price.vue'
 
   export default {
     components: {
+      'content-header': ContentHeader,
       'price': Price
     },
     data () {
