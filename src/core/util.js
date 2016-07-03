@@ -169,9 +169,9 @@ function timeFormat (time) {
 
 function getTimestamp (time) {
   if (time === undefined) {
-    time = new Date()
+    time = new Date().getTime()
   }
-  return parseInt(time.getTime() / 1000, 10)
+  return parseInt(time / 1000, 10)
 }
 
 function isMobile (phone) {

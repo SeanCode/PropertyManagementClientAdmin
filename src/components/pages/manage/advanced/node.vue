@@ -132,8 +132,79 @@
                     </div>
                   </div>
                   <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-extra label-danger" v-show="nodeEditing.id!=1"
+                            @click="deleteNode()">彻底删除
+                    </button>
                     <button type="button" class="btn btn-default" @click='showEditNode = false'>取消</button>
                     <button type="button" class="btn btn-success" @click='updateNode'>更新</button>
+                  </div>
+                </modal>
+                <modal title="添加节点" :show.sync="showAddNode" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.code">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">完整地址</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.path">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" v-model="nodeEditing.type">
+                            <option value="1">一般</option>
+                            <option value="2">房间</option>
+                            <option value="3">机构</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">面积</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="nodeEditing.area">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">物管单价</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="nodeEditing.price">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">其他费用</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="nodeEditing.fee">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">所有权</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.ownership">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="nodeEditing.contract">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showAddNode = false'>取消</button>
+                    <button type="button" class="btn btn-success" @click='addNode'>更新</button>
                   </div>
                 </modal>
               </div>
@@ -292,15 +363,19 @@
                         <td>{{meter.remark}}</td>
                         <td>
                           <a class="label label-primary" href="javascript:void(0);"
-                             @click="toggleEditMeter(meter)">编辑</a></td>
+                             @click="toggleEditMeter(meter)">编辑</a>
+                        </td>
                         <td>
                           <a class="label label-danger" href="javascript:void(0);"
                              @click="toggleRemoveMeter(meter)">移除</a></td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">设置上级表</a></td>
+                          <a class="label label-danger" href="javascript:void(0);"
+                             @click="toggleShowSetParentMeter(meter)">设置上级表</a>
+                        </td>
                         <td>
                           <a class="label label-danger" href="javascript:void(0);"
-                             @click="toggleReplaceMeter(meter)">更换</a></td>
+                             @click="toggleReplaceMeter(meter)">更换</a>
+                        </td>
                         <td>
                           <a class="label label-danger" href="javascript:void(0);"
                              @click="toggleAddCheckMeter(meter)">添加检查表</a>
@@ -314,6 +389,45 @@
                 <!-- /.box-body -->
                 <div class="box-footer clearfix" style="display: block;"></div>
                 <!-- /.box-footer -->
+                <modal title="设置上级表" :show.sync="showSetParentMeter" effect="fade" large=true>
+                  <div slot="modal-body" class="modal-body modal-node-tree">
+                    <div class="row">
+                      <div class="node-tree-box col-md-4">
+                        <ul id="setParentMeterTree" class="ztree"></ul>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="table-responsive ">
+                          <table class="table no-margin table200">
+                            <thead>
+                            <tr>
+                              <th>表名称</th>
+                              <th>表编号</th>
+                              <th>表类型</th>
+                              <th>上级表名称</th>
+                              <th>设置</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="meter in meterParentList">
+                              <td>{{meter.name}}</td>
+                              <td>{{meter.code}}</td>
+                              <td>{{meter.type_name}}</td>
+                              <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                              <td>
+                                <a class="label label-primary" href="javascript:void(0);"
+                                   @click="setParentMeter(meter)">设置为上级表</a>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showSetParentMeter = false'>取消</button>
+                  </div>
+                </modal>
                 <modal title="修改表信息" :show.sync="showEditMeter" effect="fade" width="800">
                   <div slot="modal-body" class="modal-body">
                     <div class="form-horizontal">
@@ -760,20 +874,20 @@
                     <table class="table no-margin table200">
                       <thead>
                       <tr>
+                        <th>上级表名称</th>
+                        <th>表类型</th>
                         <th>表名称</th>
                         <th>表编号</th>
-                        <th>表类型</th>
-                        <th>上级表名称</th>
                         <th>备注</th>
                         <th>详情</th>
                       </tr>
                       </thead>
                       <tbody>
                       <tr v-for="meter in meterChildren">
+                        <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                        <td>{{meter.type_name}}</td>
                         <td>{{meter.name}}</td>
                         <td>{{meter.code}}</td>
-                        <td>{{meter.type_name}}</td>
-                        <td>{{meter.parent ? meter.parent.name : ''}}</td>
                         <td>{{meter.remark}}</td>
                         <td>
                           <a class="label label-primary" href="javascript:void(0);"
@@ -805,6 +919,19 @@
   .modal-user-tree {
     padding: 0 15px;
   }
+
+  .modal-node-tree {
+    padding: 0 15px;
+  }
+
+  .node-tree-box {
+    overflow: auto;
+    max-height: 800px;
+  }
+
+  .btn-extra {
+    float: left;
+  }
 </style>
 <script>
   import Core from '../../../../core/core'
@@ -821,6 +948,8 @@
       return {
         // modal
         showEditNode: false,
+        showAddNode: false,
+        showCopyNode: false,
         nodeEditing: {},
         showEditMeter: false,
         meterEditing: {},
@@ -858,10 +987,12 @@
             drag: {
               autoExpandTrigger: false
             },
-            showRenameBtn: false
+            showRenameBtn: false,
+            showRemoveBtn: setRemoveBtn
           },
           callback: {
-            onClick: onNodeSelected
+            onClick: onNodeSelected,
+            beforeRemove: beforeRemoveNode
           }
         },
         user_tree_setting: {
@@ -885,6 +1016,23 @@
           },
           callback: {
             onClick: onUserNodeSelected
+          }
+        },
+        node_tree_setting: {
+          async: {
+            enable: true,
+            url: 'http://localhost:8080/api/private/v1/node/children',
+            autoParam: ['id'],
+            dataType: 'json',
+            dataFilter: ajaxNodeDataFilter
+          },
+          data: {
+            keep: {
+              parent: true
+            }
+          },
+          callback: {
+            onClick: onMeterParentNodeSelected
           }
         },
         table_setting: {
@@ -916,12 +1064,14 @@
         },
         // data
         nodeList: [],
+        nodeTreeList: [],
         node: {},
         users: [],
         institution: {},
         meterNormalList: [],
         meterCheckList: [],
         meterChildren: [],
+        meterParentList: [],
         userTreeList: [],
         institutionList: []
       }
@@ -939,6 +1089,14 @@
       },
       updateNode: function () {
         updateNodeInfo(this.nodeEditing.id, this.nodeEditing.name, this.nodeEditing.code, this.nodeEditing.path, this.nodeEditing.type, this.nodeEditing.area, this.nodeEditing.price, this.nodeEditing.fee, this.nodeEditing.ownership, this.nodeEditing.remark)
+      },
+      deleteNode: function () {
+        if (window.confirm('危险操作!!! 确定移除该节点?')) {
+          deleteNode(this.node.id)
+        }
+      },
+      addNode: function () {
+        addNode(this.nodeEditing.name, this.nodeEditing.parent_id, this.nodeEditing.code, this.nodeEditing.path, this.nodeEditing.type, this.nodeEditing.area, this.nodeEditing.price, this.nodeEditing.fee, this.nodeEditing.ownership, this.nodeEditing.remark)
       },
       toggleEditMeter: function (meter) {
         getMeterEditing(meter.id)
@@ -1012,6 +1170,17 @@
           return
         }
         replaceMeter(this.meterEditing.id, this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.end, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, Core.Util.getTimestamp(this.meterEditing.buy_time), Core.Util.getTimestamp(this.meterEditing.product_time), this.meterEditing.remark)
+      },
+      toggleShowSetParentMeter: function (meter) {
+        this.meterEditing = meter
+        getNodeTreeList()
+      },
+      setParentMeter: function (meter) {
+        if (meter.node_id === this.meterEditing.node_id) {
+          Core.Toast.error(this, '不能设置自己节点的表为上级表')
+          return
+        }
+        setParentMeter(this.meterEditing.id, this.meterEditing.node_id, meter.id)
       }
     }
   }
@@ -1050,18 +1219,45 @@
     })
   }
 
+  function setRemoveBtn (treeId, treeNode) {
+    return treeNode.id !== 1
+  }
+
+  var curSrcNode
+
   function addHoverDom (treeId, treeNode) {
     var sObj = window.$('#' + treeNode.tId + '_span')
-    var zTree = window.$.fn.zTree.getZTreeObj('nodeTree')
-    if (!zTree.setting.edit.showRemoveBtn || treeNode.editNameFlag || window.$('#addBtn_' + treeNode.tId).length > 0) {
+    if (treeNode.editNameFlag || window.$('#addBtn_' + treeNode.tId).length > 0 || window.$('#copyBtn_' + treeNode.tId).length > 0) {
       return
+    }
+    var pasteStr = '<span class="button paste" id=' + 'pasteBtn_' + treeNode.tId + ' title="粘贴节点" onfocus="this.blur()"></span>'
+    sObj.after(pasteStr)
+    var pasteBtn = window.$('#pasteBtn_' + treeNode.tId)
+    if (pasteBtn) {
+      pasteBtn.bind('click', function () {
+        paste()
+        return false
+      })
+    }
+    var copyStr = '<span class="button copy" id=' + 'copyBtn_' + treeNode.tId + ' title="复制节点" onfocus="this.blur()"></span>'
+    sObj.after(copyStr)
+    var copyBtn = window.$('#copyBtn_' + treeNode.tId)
+    if (copyBtn) {
+      copyBtn.bind('click', function () {
+        copy()
+        return false
+      })
     }
     var addStr = '<span class="button add" id=' + 'addBtn_' + treeNode.tId + ' title="新增" onfocus="this.blur()"></span>'
     sObj.after(addStr)
-    var btn = window.$('#addBtn_' + treeNode.tId)
-    if (btn) {
-      btn.bind('click', function () {
-        Core.Log.d('click to new model')
+    var addBtn = window.$('#addBtn_' + treeNode.tId)
+    if (addBtn) {
+      addBtn.bind('click', function () {
+        var treeObj = window.$.fn.zTree.getZTreeObj('nodeTree')
+        treeObj.selectNode(treeNode, false, false)
+        context.nodeEditing = {}
+        context.nodeEditing.parent_id = treeNode.id
+        context.showAddNode = true
         return false
       })
     }
@@ -1069,6 +1265,69 @@
 
   function removeHoverDom (treeId, treeNode) {
     window.$('#addBtn_' + treeNode.tId).unbind().remove()
+    window.$('#copyBtn_' + treeNode.tId).unbind().remove()
+    window.$('#pasteBtn_' + treeNode.tId).unbind().remove()
+  }
+
+  function setCurSrcNode (treeNode) {
+    var zTree = window.$.fn.zTree.getZTreeObj('nodeTree')
+    if (curSrcNode) {
+      delete curSrcNode.isCur
+      var tmpNode = curSrcNode
+      curSrcNode = null
+      fontCss(tmpNode)
+    }
+    curSrcNode = treeNode
+    if (!treeNode) return
+    curSrcNode.isCur = true
+    zTree.cancelSelectedNode()
+    fontCss(curSrcNode)
+  }
+
+  function fontCss (treeNode) {
+    var aObj = window.$('#' + treeNode.tId + '_a')
+    aObj.removeClass('copy')
+    if (treeNode === curSrcNode) {
+      aObj.addClass('copy')
+    }
+  }
+
+  function copy () {
+    var zTree = window.$.fn.zTree.getZTreeObj('nodeTree')
+    var nodes = zTree.getSelectedNodes()
+    if (nodes.length === 0) {
+      window.alert('请先选择一个节点')
+      return
+    }
+    setCurSrcNode(nodes[0])
+  }
+
+  function paste () {
+    if (!curSrcNode) {
+      window.alert('请先选择一个节点进行 复制 / 剪切')
+      return
+    }
+    var zTree = window.$.fn.zTree.getZTreeObj('nodeTree')
+    var nodes = zTree.getSelectedNodes()
+    var targetNode = nodes.length > 0 ? nodes[0] : null
+    if (curSrcNode === targetNode) {
+      window.alert('不能移动，源节点 与 目标节点相同')
+      return
+    } else if ((!!targetNode && curSrcNode.parentTId === targetNode.tId) || (!targetNode && !curSrcNode.parentTId)) {
+      window.alert('不能移动，源节点 已经存在于 目标节点中')
+      return
+    } else {
+      Core.Api.NODE.copyNode(targetNode.id, curSrcNode.id).then(function (data) {
+        targetNode = zTree.copyNode(targetNode, curSrcNode, 'inner')
+        initNodeTree()
+        Core.Toast.success(context, '粘贴节点成功')
+      }, function (error) {
+        Core.Toast.error(context, '粘贴节点失败: ' + error.message)
+      })
+    }
+    setCurSrcNode()
+    delete targetNode.isCur
+    zTree.selectNode(targetNode)
   }
 
   function onNodeSelected (event, treeId, treeNode, clickFlag) {
@@ -1114,7 +1373,7 @@
     Core.Api.METER.getNormalList(node.id).then(function (data) {
       context.meterNormalList = data.meter_normal_list
     }, function (error) {
-      Core.Log.e(error)
+      Core.Toast.error(context, '获取该节点主表失败: ' + error.message)
     })
   }
 
@@ -1122,7 +1381,7 @@
     Core.Api.METER.getCheckList(node.id).then(function (data) {
       context.meterCheckList = data.meter_check_list
     }, function (error) {
-      Core.Log.e(error)
+      Core.Toast.error(context, '获取该节点检查表失败: ' + error.message)
     })
   }
 
@@ -1130,7 +1389,7 @@
     Core.Api.METER.getChildren(node.id).then(function (data) {
       context.meterChildren = data.meter_children
     }, function (error) {
-      Core.Log.e(error)
+      Core.Toast.error(context, '获取该节点分表失败: ' + error.message)
     })
   }
 
@@ -1170,6 +1429,58 @@
     }, function (error) {
       Core.Toast.error(context, '更新表信息失败: ' + error.message)
     })
+  }
+
+  function beforeRemoveNode (treeId, treeNode) {
+    var zTree = window.$.fn.zTree.getZTreeObj('nodeTree')
+    var nodes = zTree.getSelectedNodes()
+    if (nodes.length === 0) {
+      Core.Toast.error(context, '请先选择一个节点')
+      return false
+    }
+    var parent = nodes[0].getParentNode()
+    var result = false
+    Core.Api.NODE.removeNode(parent.id, treeNode.id).then(function (data) {
+      result = true
+      Core.Toast.success(context, '节点移除成功')
+      initNodeTree()
+      clear()
+    }, function (error) {
+      result = false
+      Core.Toast.error(context, '节点移除失败: ' + error.message)
+    })
+    return result
+  }
+
+  function addNode (name, parentId, code, path, type, area, price, fee, ownership, remark) {
+    Core.Api.NODE.addNode(name, parentId, code, path, type, area, price, fee, ownership, remark).then(function (data) {
+      context.showAddNode = false
+      Core.Toast.success(context, '添加节点成功')
+      context.nodeEditing = {}
+      initNodeTree()
+    }, function (error) {
+      Core.Toast.error(context, '添加节点失败: ' + error.message)
+    })
+  }
+
+  function deleteNode (id) {
+    Core.Api.NODE.deleteNode(id).then(function (data) {
+      context.showEditNode = false
+      Core.Toast.success(context, '节点删除成功')
+      initNodeTree()
+      clear()
+    }, function (error) {
+      Core.Toast.error(context, '节点删除失败: ' + error.message)
+    })
+  }
+
+  function clear () {
+    context.node = {}
+    context.meterNormalList = []
+    context.meterCheckList = []
+    context.meterChildren = []
+    context.users = []
+    context.institutionEditing = {}
   }
 
   function getUserTree () {
@@ -1296,6 +1607,43 @@
       Core.Toast.success(context, '换表成功')
     }, function (error) {
       Core.Toast.error(context, '换表失败: ' + error.message)
+    })
+  }
+
+  function getNodeTreeList () {
+    Core.Api.NODE.getNodeTreeRoot().then(function (data) {
+      context.nodeTreeList = data.tree_root
+      window.$.fn.zTree.init(window.$('#setParentMeterTree'), context.node_tree_setting, context.nodeTreeList)
+      var treeObj = window.$.fn.zTree.getZTreeObj('setParentMeterTree')
+      var nodes = treeObj.getNodes()
+      if (data.tree_root) {
+        treeObj.expandNode(nodes[0], true, false, true)
+      }
+      context.showSetParentMeter = true
+    }, function (error) {
+      Core.Toast.error(context, '获取节点失败: ' + error)
+    })
+  }
+
+  function onMeterParentNodeSelected (event, treeId, node, clickFlag) {
+    getMeterParentList(node.id)
+  }
+
+  function getMeterParentList (nodeId) {
+    Core.Api.METER.getNormalList(nodeId).then(function (data) {
+      context.meterParentList = data.meter_normal_list
+    }, function (error) {
+      Core.Toast.error(context, '获取该节点主表失败: ' + error.message)
+    })
+  }
+
+  function setParentMeter (id, nodeId, parentId) {
+    Core.Api.METER.setAsChild(id, nodeId, parentId).then(function (data) {
+      context.showSetParentMeter = false
+      getMeterNormalList(context.node)
+      Core.Toast.success(context, '设置上级表成功')
+    }, function (error) {
+      Core.Toast.error(context, '设置上级表失败: ' + error.message)
     })
   }
 

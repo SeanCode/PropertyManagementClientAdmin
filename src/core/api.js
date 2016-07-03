@@ -177,6 +177,37 @@ export default {
         ownership: ownership,
         remark: remark
       })
+    },
+    addNode: function (name, parentId, code, path, type, area, price, fee, ownership, remark) {
+      return post(Const.NET.API.NODE_ADD, {
+        name: name,
+        parent_id: parentId,
+        code: code,
+        path: path,
+        type: type,
+        area: area,
+        price: price,
+        fee: fee,
+        ownership: ownership,
+        remark: remark
+      })
+    },
+    copyNode: function (parentId, id) {
+      return post(Const.NET.API.NODE_COPY, {
+        parent_id: parentId,
+        id: id
+      })
+    },
+    removeNode: function (parentId, id) {
+      return post(Const.NET.API.NODE_REMOVE, {
+        parent_id: parentId,
+        id: id
+      })
+    },
+    deleteNode: function (id) {
+      return post(Const.NET.API.NODE_DELETE, {
+        id: id
+      })
     }
   },
   METER: {
