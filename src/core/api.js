@@ -218,9 +218,10 @@ export default {
         remark: remark
       })
     },
-    setAsChild: function (id, parentId) {
+    setAsChild: function (id, nodeId, parentId) {
       return post(Const.NET.API.METER_SET_AS_CHILD, {
         id: id,
+        child_node_id: nodeId,
         parent_id: parentId
       })
     },

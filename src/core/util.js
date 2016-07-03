@@ -168,6 +168,9 @@ function timeFormat (time) {
 }
 
 function getTimestamp (time) {
+  if (time === undefined) {
+    time = new Date()
+  }
   return parseInt(time.getTime() / 1000, 10)
 }
 

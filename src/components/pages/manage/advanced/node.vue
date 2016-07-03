@@ -375,7 +375,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">生产日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" disabled v-model="meterEditing.product_time">
+                          <date-picker disabled :time.sync="meterEditing.product_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
@@ -387,7 +387,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" disabled v-model="meterEditing.buy_time">
+                          <date-picker disabled :time.sync="meterEditing.buy_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
@@ -461,7 +461,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">生产日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.product_time">
+                          <date-picker :time.sync="meterEditing.product_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
@@ -473,7 +473,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.buy_time">
+                          <date-picker :time.sync="meterEditing.buy_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
@@ -519,7 +519,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">类型 *</label>
                         <div class="col-sm-10">
-                          <select class="form-control" v-model="meterEditing.type">
+                          <select class="form-control" disabled v-model="meterEditing.type">
                             <option value="4">水表检查表</option>
                             <option value="5">电表检查表</option>
                             <option value="6">气表检查表</option>
@@ -553,7 +553,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">生产日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.product_time">
+                          <date-picker :time.sync="meterEditing.product_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
@@ -565,7 +565,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.buy_time">
+                          <date-picker :time.sync="meterEditing.buy_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
@@ -656,7 +656,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">生产日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.product_time">
+                          <date-picker :time.sync="meterEditing.product_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
@@ -668,13 +668,13 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购日期</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.buy_time">
+                          <date-picker :time.sync="meterEditing.buy_time"></date-picker>
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购价格</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="number" v-model="meterEditing.cost">
+                          <input class="form-control" v-model="meterEditing.cost">
                         </div>
                       </div>
                       <div class="form-group">
@@ -809,10 +809,13 @@
 <script>
   import Core from '../../../../core/core'
   import Modal from '../../../widgets/Modal.vue'
+  import DatePicker from '../../../widgets/DatePicker.vue'
 
   export default {
+    name: 'node',
     components: {
-      'modal': Modal
+      'modal': Modal,
+      'date-picker': DatePicker
     },
     data () {
       return {
@@ -973,7 +976,7 @@
         this.meterEditing = {}
       },
       addNormalMeter: function () {
-        addNormalMeter(this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, this.meterEditing.buy_time, this.meterEditing.product_time, this.meterEditing.remark)
+        addNormalMeter(this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, Core.Util.getTimestamp(this.meterEditing.buy_time), Core.Util.getTimestamp(this.meterEditing.product_time), this.meterEditing.remark)
       },
       toggleAddCheckMeter: function (meter) {
         if (this.node.id === undefined) {
@@ -985,11 +988,12 @@
           return
         }
         this.meterEditing = {}
+        this.meterEditing.type = meter.type + 3
         this.meterParent = meter
         this.showAddCheckMeter = true
       },
       addCheckMeter: function () {
-        addCheckMeter(this.meterEditing.name, this.meterParent.id, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, this.meterEditing.buy_time, this.meterEditing.product_time, this.meterEditing.remark)
+        addCheckMeter(this.meterEditing.name, this.meterParent.id, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, Core.Util.getTimestamp(this.meterEditing.buy_time), Core.Util.getTimestamp(this.meterEditing.product_time), this.meterEditing.remark)
       },
       toggleRemoveMeter: function (meter) {
         this.showRemoveMeter = true
@@ -1007,7 +1011,7 @@
           Core.Toast.error(this, '请输入旧表止度')
           return
         }
-        replaceMeter(this.meterEditing.id, this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.end, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, this.meterEditing.buy_time, this.meterEditing.product_time, this.meterEditing.remark)
+        replaceMeter(this.meterEditing.id, this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.end, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, Core.Util.getTimestamp(this.meterEditing.buy_time), Core.Util.getTimestamp(this.meterEditing.product_time), this.meterEditing.remark)
       }
     }
   }
@@ -1161,11 +1165,8 @@
     Core.Api.METER.updateMeterInfo(id, name, code, remark).then(function (data) {
       context.showEditMeter = false
       context.meterEditing = {}
-      if (data.meter.type < 4) {
-        getMeterNormalList(context.node)
-      } else {
-        getMeterCheckList(context.node)
-      }
+      getMeterNormalList(context.node)
+      getMeterCheckList(context.node)
     }, function (error) {
       Core.Toast.error(context, '更新表信息失败: ' + error.message)
     })
