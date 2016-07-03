@@ -201,6 +201,23 @@ export default {
         node_id: nodeId
       })
     },
+    replace: function (id, name, code, rate, begin, end, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
+      return post(Const.NET.API.METER_REPLACE, {
+        id: id,
+        name: name,
+        code: code,
+        rate: rate,
+        begin: begin,
+        end: end,
+        nameplate: nameplate,
+        manufacturers: manufacturers,
+        purchaser: purchaser,
+        cost: cost,
+        buy_time: buyTime,
+        product_time: productTime,
+        remark: remark
+      })
+    },
     setAsChild: function (id, parentId) {
       return post(Const.NET.API.METER_SET_AS_CHILD, {
         id: id,

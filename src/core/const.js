@@ -36,6 +36,7 @@ export default {
       METER_ADD_CHECK: '/meter/add-check',
       METER_INFO_UPDATE: '/meter/info-update',
       METER_REMOVE: '/meter/remove',
+      METER_REPLACE: '/meter/replace',
       METER_DETAIL: '/meter/detail',
       METER_SET_AS_CHILD: '/meter/set-as-child',
       NODE_OWNER_NODE: '/node-owner/node',

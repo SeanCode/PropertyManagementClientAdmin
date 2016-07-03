@@ -299,7 +299,8 @@
                         <td>
                           <a class="label label-danger" href="javascript:void(0);">设置上级表</a></td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">更换</a></td>
+                          <a class="label label-danger" href="javascript:void(0);"
+                             @click="toggleReplaceMeter(meter)">更换</a></td>
                         <td>
                           <a class="label label-danger" href="javascript:void(0);"
                              @click="toggleAddCheckMeter(meter)">添加检查表</a>
@@ -319,13 +320,15 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-10">
-                          <input class="form-control" :disabled="meterEditing.node_id!==node.id" v-model="meterEditing.name">
+                          <input class="form-control" :disabled="meterEditing.node_id!==node.id"
+                                 v-model="meterEditing.name">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">编号</label>
                         <div class="col-sm-10">
-                          <input class="form-control" :disabled="meterEditing.node_id!==node.id" v-model="meterEditing.code">
+                          <input class="form-control" :disabled="meterEditing.node_id!==node.id"
+                                 v-model="meterEditing.code">
                         </div>
                       </div>
                       <div class="form-group">
@@ -348,7 +351,13 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">初始起度</label>
                         <div class="col-sm-10">
-                          <input class="form-control" disabled v-model="meterEditing.begin">
+                          <input class="form-control" type="number" disabled v-model="meterEditing.begin">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">倍率</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" disabled v-model="meterEditing.rate">
                         </div>
                       </div>
                       <div class="form-group">
@@ -384,7 +393,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购价格</label>
                         <div class="col-sm-10">
-                          <input class="form-control" disabled v-model="meterEditing.cost">
+                          <input class="form-control" type="number" disabled v-model="meterEditing.cost">
                         </div>
                       </div>
                       <div class="form-group">
@@ -428,7 +437,13 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">初始起度</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.begin">
+                          <input class="form-control" type="number" v-model="meterEditing.begin">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">倍率 *</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="meterEditing.rate">
                         </div>
                       </div>
                       <div class="form-group">
@@ -464,7 +479,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购价格</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.cost">
+                          <input class="form-control" type="number" v-model="meterEditing.cost">
                         </div>
                       </div>
                       <div class="form-group">
@@ -514,7 +529,13 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">初始起度</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.begin">
+                          <input class="form-control" type="number" v-model="meterEditing.begin">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">倍率 *</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="meterEditing.rate">
                         </div>
                       </div>
                       <div class="form-group">
@@ -550,7 +571,7 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">采购价格</label>
                         <div class="col-sm-10">
-                          <input class="form-control" v-model="meterEditing.cost">
+                          <input class="form-control" type="number" v-model="meterEditing.cost">
                         </div>
                       </div>
                       <div class="form-group">
@@ -572,6 +593,101 @@
                   <div slot="modal-footer" class="modal-footer">
                     <button type="button" class="btn btn-default" @click='showRemoveMeter = false'>取消</button>
                     <button type="button" class="btn label-danger" @click="removeMeter()">删除</button>
+                  </div>
+                </modal>
+                <modal title="换表 (请先录入并通过审核旧表数据)" :show.sync="showReplaceMeter" effect="fade" width="800">
+                  <div slot="modal-body" class="modal-body">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.name">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.code">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" disabled v-model="meterEditing.type">
+                            <option value="1">水表</option>
+                            <option value="2">电表</option>
+                            <option value="3">气表</option>
+                            <option value="4">水表检查表</option>
+                            <option value="5">电表检查表</option>
+                            <option value="6">气表检查表</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">旧表止度 *</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="meterEditing.end">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">新表起度</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="meterEditing.begin">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">倍率 *</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="meterEditing.rate">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">铭牌</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.nameplate">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产厂家</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.manufacturers">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">生产日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.product_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购员</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.purchaser">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购日期</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.buy_time">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">采购价格</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="number" v-model="meterEditing.cost">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" v-model="meterEditing.remark">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div slot="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-default" @click='showReplaceMeter = false'>取消</button>
+                    <button type="button" class="btn btn-success" @click='replaceMeter'>确定</button>
                   </div>
                 </modal>
               </div>
@@ -616,7 +732,8 @@
                              @click="toggleRemoveMeter(meter)">移除</a>
                         </td>
                         <td>
-                          <a class="label label-danger" href="javascript:void(0);">更换</a>
+                          <a class="label label-danger" href="javascript:void(0);"
+                             @click="toggleReplaceMeter(meter)">更换</a>
                         </td>
                       </tr>
                       </tbody>
@@ -867,6 +984,7 @@
           Core.Toast.error(this, '一个表只能对应一个检查表')
           return
         }
+        this.meterEditing = {}
         this.meterParent = meter
         this.showAddCheckMeter = true
       },
@@ -879,6 +997,17 @@
       },
       removeMeter: function () {
         removeMeter(this.meterEditing.id, this.meterEditing.node_id, this.meterEditing.type)
+      },
+      toggleReplaceMeter: function (meter) {
+        this.meterEditing = meter
+        this.showReplaceMeter = true
+      },
+      replaceMeter: function () {
+        if (this.meterEditing.end === undefined) {
+          Core.Toast.error(this, '请输入旧表止度')
+          return
+        }
+        replaceMeter(this.meterEditing.id, this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.end, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, this.meterEditing.buy_time, this.meterEditing.product_time, this.meterEditing.remark)
       }
     }
   }
@@ -1031,6 +1160,7 @@
   function updateMeterInfo (id, name, code, remark) {
     Core.Api.METER.updateMeterInfo(id, name, code, remark).then(function (data) {
       context.showEditMeter = false
+      context.meterEditing = {}
       if (data.meter.type < 4) {
         getMeterNormalList(context.node)
       } else {
@@ -1150,6 +1280,21 @@
       Core.Toast.success(context, '移除表成功')
     }, function (error) {
       Core.Toast.error(context, '移除表失败: ' + error.message)
+    })
+  }
+
+  function replaceMeter (id, name, type, code, rate, begin, end, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
+    Core.Api.METER.replace(id, name, code, rate, begin, end, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark).then(function (data) {
+      context.showReplaceMeter = false
+      context.meterEditing = {}
+      if (type > 3) {
+        getMeterCheckList(context.node)
+      } else {
+        getMeterNormalList(context.node)
+      }
+      Core.Toast.success(context, '换表成功')
+    }, function (error) {
+      Core.Toast.error(context, '换表失败: ' + error.message)
     })
   }
 
