@@ -74,7 +74,8 @@
       }
     },
     ready () {
-      getPriceConfig(this)
+      initContext(this)
+      getPriceConfig()
     },
     methods: {
       showWaterInput: function () {
@@ -88,30 +89,38 @@
       },
       saveWater: function () {
         this.isWaterInputShowing = false
-        updatePrice(this)
+        updatePrice()
       },
       saveEle: function () {
         this.isEleInputShowing = false
-        updatePrice(this)
+        updatePrice()
       },
       saveGas: function () {
         this.isGasInputShowing = false
-        updatePrice(this)
+        updatePrice()
       },
       refresh: function () {
-        getPriceConfig(this)
+        getPriceConfig()
       }
     }
   }
 
-  function getPriceConfig (context) {
+  var context
+
+  function initContext (c) {
+    context = c
+  }
+
+  function getPriceConfig () {
     var date = new Date()
     Core.Api.CONFIG.getPrice(date.getFullYear(), date.getMonth() + 1).then(function (data) {
       context.price = data.config.price
+    }, function (error) {
+      Core.Toast.error(context, '获取价格失败: ' + error.message)
     })
   }
 
-  function updatePrice (context) {
+  function updatePrice () {
     var date = new Date()
     Core.Api.CONFIG.saveSpecificPrice(date.getFullYear(), date.getMonth() + 1, context.price.water, context.price.ele, context.price.gas).then(function (data) {
       context.price = data.config.price

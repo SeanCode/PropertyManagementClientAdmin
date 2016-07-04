@@ -20,6 +20,11 @@ module.exports = [
         name: '机构录入',
         link: '/dashboard/sdq/input/institution',
         icon: 'fa-circle-o'
+      },
+      {
+        name: '高级录入',
+        link: '/dashboard/sdq/input/advanced',
+        icon: 'fa-circle-o'
       }
     ]
   },

@@ -1,6 +1,6 @@
 <template>
   <!-- Content Header (Page header) -->
-  <content-header parent="水电气录入" child="个人录入"></content-header>
+  <content-header parent="水电气录入" child="高级录入"></content-header>
   <!-- Main content -->
   <section class="content">
     <div class="row">
@@ -8,28 +8,7 @@
         <price></price>
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">部门与个人</h3>
-            <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" @click="refreshUserTree()">
-                <i class="fa fa-refresh"></i>
-              </button>
-              <button class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body" style="display: block;">
-            <div class="user-tree-box">
-              <ul id="userTree" class="ztree"></ul>
-            </div>
-          </div>
-          <!--  boxbody -->
-        </div>
-        <!-- boxinfo -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">个人节点</h3>
+            <h3 class="box-title">节点</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" @click="refreshNodeTree()">
                 <i class="fa fa-refresh"></i>
@@ -41,8 +20,8 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body" style="display: block;">
-            <div class="user-tree-box">
-              <ul id="nodeUserTree" class="ztree"></ul>
+            <div class="nod-tree-box">
+              <ul id="nodeTree" class="ztree"></ul>
             </div>
           </div>
           <!--  boxbody -->
@@ -50,41 +29,6 @@
         <!-- boxinfo -->
       </div>
       <div class="col-md-9" id="panel">
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">个人信息</h3>
-            <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body" style="display: block;">
-            <div class="table-responsive">
-              <table class="table no-margin">
-                <tr>
-                  <th>姓名</th>
-                  <th>电话</th>
-                  <th>一卡通</th>
-                  <th>身份证</th>
-                  <th>标记用户</th>
-                  <th>备注</th>
-                </tr>
-                <tr v-for="user in users">
-                  <td>{{user.name}}</td>
-                  <td>{{user.phone}}</td>
-                  <td>{{user.school_card}}</td>
-                  <td>{{user.id_card}}</td>
-                  <td>{{user.important}}</td>
-                  <td>{{user.remark}}</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          <!--  boxbody -->
-        </div>
-        <!-- boxinfo -->
         <div class="box box-solid box-info">
           <div class="box-header with-border">
             <h3 class="box-title">节点信息</h3>
@@ -128,10 +72,71 @@
           </div>
           <!--  boxbody -->
         </div>
-        <!-- boxinfo -->
-        <div class="well bg-aqua-gradient text-black">
-          <label class="label la text-black">当前抄表时间为：</label>
+        <div class="box box-solid box-info" v-show="institution.id">
+          <div class="box-header with-border">
+            <h3 class="box-title">机构信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <tr>
+                  <th>名称</th>
+                  <th>负责人</th>
+                  <th>联系方式</th>
+                  <th>组织机构代码</th>
+                  <th>描述</th>
+                  <th>备注</th>
+                </tr>
+                <tr v-show="institution.id">
+                  <td>{{institution.name}}</td>
+                  <td>{{institution.people}}</td>
+                  <td>{{institution.contact}}</td>
+                  <td>{{institution.code}}</td>
+                  <td>{{institution.description}}</td>
+                  <td>{{institution.remark}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
+        <div class="box box-solid box-info" v-show="users.length > 0">
+          <div class="box-header with-border">
+            <h3 class="box-title">个人信息</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" style="display: block;">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <tr>
+                  <th>姓名</th>
+                  <th>电话</th>
+                  <th>一卡通</th>
+                  <th>身份证</th>
+                  <th>备注</th>
+                </tr>
+                <tr v-for="user in users">
+                  <td>{{user.name}}</td>
+                  <td>{{user.phone}}</td>
+                  <td>{{user.school_card}}</td>
+                  <td>{{user.id_card}}</td>
+                  <td>{{user.remark}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- boxinfo -->
         <div class="box box-solid box-info">
           <div class="box-header with-border">
             <h3 class="box-title">主表信息</h3>
@@ -476,7 +481,7 @@
   import Modal from '../../widgets/Modal.vue'
   import DatePicker from '../../widgets/DatePicker.vue'
 
-  export default {
+  export default{
     components: {
       'content-header': ContentHeader,
       'price': Price,
@@ -485,45 +490,21 @@
     },
     data () {
       return {
-        users: [],
         node: {},
-        departmentList: [],
         nodeList: [],
+        users: [],
+        institution: {},
         meterEditing: {},
         meterNormalList: [],
         meterCheckList: [],
         meterChildren: [],
         showReplaceMeter: false,
         showEditMeter: false,
-        user_tree_setting: {
-          async: {
-            enable: true,
-            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
-            autoParam: ['id=department_id'],
-            dataType: 'json',
-            dataFilter: ajaxUserDataFilter
-          },
-          data: {
-            keep: {
-              parent: true
-            },
-            simpleData: {
-              enable: true,
-              idKey: 'id',
-              pIdKey: 'parent_id',
-              rootPId: 1
-            }
-          },
-          callback: {
-            onClick: onUserNodeSelected
-          }
-        },
         node_setting: {
           async: {
             enable: true,
             url: 'http://localhost:8080/api/private/v1/node/children',
             autoParam: ['id'],
-            otherParam: {'type': '2'},
             dataType: 'json',
             dataFilter: ajaxNodeDataFilter
           },
@@ -540,16 +521,9 @@
     },
     ready () {
       initContext(this)
-      initUserTree()
       initNodeTree()
     },
     methods: {
-      refreshNodeTree: function () {
-        initNodeTree()
-      },
-      refreshUserTree: function () {
-        initUserTree()
-      },
       toggleReplaceMeter: function (meter) {
         this.meterEditing = meter
         this.showReplaceMeter = true
@@ -576,13 +550,6 @@
     context = c
   }
 
-  function ajaxUserDataFilter (treeId, parentNode, responseData) {
-    if (!responseData || responseData.code !== 0 || responseData.data.user_list === undefined || responseData.data.user_list.length <= 0) {
-      return null
-    }
-    return responseData.data.user_list
-  }
-
   function ajaxNodeDataFilter (treeId, parentNode, responseData) {
     if (!responseData || responseData.code !== 0 || responseData.data.children === undefined || responseData.data.children.length <= 0) {
       return null
@@ -590,32 +557,11 @@
     return responseData.data.children
   }
 
-  function initUserTree () {
-    Core.Api.DEPARTMENT.getTreeList(1).then(function (data) {
-      context.departmentList = data.department_list
-      window.$.fn.zTree.init(window.$('#userTree'), context.user_tree_setting, context.departmentList)
-      var treeObj = window.$.fn.zTree.getZTreeObj('userTree')
-      var nodes = treeObj.getNodes()
-      if (data.department_list.length > 0) {
-        treeObj.expandNode(nodes[0], true, false, true)
-      }
-    })
-  }
-
-  function onUserNodeSelected (event, treeId, node, clickFlag) {
-    if (node.hasOwnProperty('department_id')) {
-      context.users = [node]
-      getNodeByOwner(node.id, Core.Const.TYPE.OWNER_TYPE_USER)
-    } else {
-      context.users = []
-    }
-  }
-
   function initNodeTree () {
     Core.Api.NODE.getNodeTreeRoot().then(function (data) {
       context.nodeList = data.tree_root
-      window.$.fn.zTree.init(window.$('#nodeUserTree'), context.node_setting, context.nodeList)
-      var treeObj = window.$.fn.zTree.getZTreeObj('nodeUserTree')
+      window.$.fn.zTree.init(window.$('#nodeTree'), context.node_setting, context.nodeList)
+      var treeObj = window.$.fn.zTree.getZTreeObj('nodeTree')
       var nodes = treeObj.getNodes()
       if (data.tree_root) {
         treeObj.expandNode(nodes[0], true, false, true)
@@ -632,29 +578,6 @@
     getMeterNormalList(treeNode)
     getMeterCheckList(treeNode)
     getMeterChildren(treeNode)
-  }
-
-  function getNodeByOwner (ownerId, ownerType) {
-    Core.Api.NODE_OWNER.getNodeByOwner(ownerId, ownerType).then(function (data) {
-      var node = data.node_owner.node
-      context.node = node
-      getMeterNormalList(node)
-      getMeterCheckList(node)
-      getMeterChildren(node)
-    }, function (error) {
-      Core.Log.e(error)
-      context.node = {}
-    })
-  }
-
-  function getOwnerByNode (nodeId, ownerType) {
-    Core.Api.NODE_OWNER.getOwnerByNode(nodeId, ownerType).then(function (data) {
-      var owner = data.node_owner.user
-      context.users = [owner]
-    }, function (error) {
-      Core.Log.e(error)
-      context.users = []
-    })
   }
 
   function replaceMeter (id, name, type, code, rate, begin, end, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
@@ -677,6 +600,28 @@
       context.node = data.node
     }, function (error) {
       Core.Toast.error(context, '获取节点该最新信息失败: ' + error.message)
+    })
+  }
+
+  function getOwnerByNode (nodeId) {
+    Core.Api.NODE_OWNER.getOwnerByNode(nodeId).then(function (data) {
+      var nodeOwner = data.node_owner
+      if (nodeOwner.owner_type === Core.Const.TYPE.OWNER_TYPE_USER) {
+        var user = nodeOwner.user
+        context.users = [user]
+        context.institution = {}
+      } else if (nodeOwner.owner_type === Core.Const.TYPE.OWNER_TYPE_INSTITUTION) {
+        var institution = nodeOwner.institution
+        context.institution = institution
+        context.users = []
+      } else {
+        context.users = []
+        context.institution = {}
+      }
+    }, function (error) {
+      Core.Log.e(error)
+      context.users = []
+      context.institution = {}
     })
   }
 
