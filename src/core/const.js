@@ -46,7 +46,11 @@ export default {
       NODE_OWNER_NODE: '/node-owner/node',
       NODE_OWNER_OWNER: '/node-owner/owner',
       NODE_OWNER_ADD: '/node-owner/add',
-      NODE_OWNER_INVALID: '/node-owner/invalid'
+      NODE_OWNER_INVALID: '/node-owner/invalid',
+      RECORD_INPUT: '/record/input',
+      RECORD_TEMP_LIST: '/record/temp-list-by-node',
+      RECORD_LAST: '/record/last',
+      RECORD_UPDATE: '/record/update'
     }
   },
 

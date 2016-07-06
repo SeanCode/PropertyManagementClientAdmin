@@ -4,7 +4,8 @@
 export default {
   success: success,
   error: error,
-  info: info
+  info: info,
+  warning: warning
 }
 
 function error (context, msg) {
@@ -32,6 +33,16 @@ function info (context, msg) {
   }
   toast(context, {
     info: msg,
+    duration: 5000
+  })
+}
+
+function warning (context, msg) {
+  if (!msg) {
+    msg = '警告'
+  }
+  toast(context, {
+    warning: msg,
     duration: 5000
   })
 }

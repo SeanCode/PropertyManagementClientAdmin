@@ -330,6 +330,37 @@ export default {
         node_id: nodeId
       })
     }
+  },
+  RECORD: {
+    input: function (meterId, value, time, reader, remark) {
+      return post(Const.NET.API.RECORD_INPUT, {
+        meter_id: meterId,
+        value: value,
+        time: time,
+        reader: reader,
+        remark: remark
+      })
+    },
+    getTempList: function (nodeId, year, month) {
+      return post(Const.NET.API.RECORD_TEMP_LIST, {
+        node_id: nodeId,
+        year: year,
+        month: month
+      })
+    },
+    getLastRecord: function (meterId) {
+      return post(Const.NET.API.RECORD_LAST, {
+        meter_id: meterId
+      })
+    },
+    updateRecord: function (id, end, reader, remark) {
+      return post(Const.NET.API.RECORD_UPDATE, {
+        id: id,
+        end: end,
+        reader: reader,
+        remark: remark
+      })
+    }
   }
 }
 

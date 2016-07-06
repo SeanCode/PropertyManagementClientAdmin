@@ -129,9 +129,6 @@
           <!--  boxbody -->
         </div>
         <!-- boxinfo -->
-        <div class="well bg-aqua-gradient text-black">
-          <label class="label la text-black">当前抄表时间为：</label>
-        </div>
         <div class="box box-solid box-info">
           <div class="box-header with-border">
             <h3 class="box-title">主表信息</h3>
@@ -151,7 +148,11 @@
                   <th>表编号</th>
                   <th>表类型</th>
                   <th>上级表名称</th>
+                  <th>当前度数</th>
                   <th>备注</th>
+                  <th>上次录入</th>
+                  <th>录入</th>
+                  <th>本月记录</th>
                   <th>详情</th>
                   <th>更换</th>
                 </tr>
@@ -162,7 +163,15 @@
                   <td>{{meter.code}}</td>
                   <td>{{meter.type_name}}</td>
                   <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                  <td>{{meter.current}}</td>
                   <td>{{meter.remark}}</td>
+                  <td>{{meter.last_input_time == 0 ? '' : new Date(meter.last_input_time * 1000).toLocaleString()}}</td>
+                  <td>
+                    <a class="label label-primary" href="javascript:void(0);" @click="toggleInputMeter(meter)">录入</a>
+                  </td>
+                  <td>
+                    <a class="label label-primary" href="javascript:void(0);" @click="toggleRecordList(meter)">记录</a>
+                  </td>
                   <td>
                     <a class="label label-primary" href="javascript:void(0);"
                        @click="toggleEditMeter(meter)">编辑</a>
@@ -179,6 +188,210 @@
           </div>
           <!-- /.box-body -->
           <div class="box-footer clearfix" style="display: block;"></div>
+          <modal title="录入(请先检查后提交录入)" :show.sync="showInputMeter" effect="fade" width=800>
+            <div slot="modal-body" class="modal-body">
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">名称</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled v-model="meterEditing.name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">编号</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled v-model="meterEditing.code">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">类型</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" disabled v-model="meterEditing.type">
+                      <option value="1">水表</option>
+                      <option value="2">电表</option>
+                      <option value="3">气表</option>
+                      <option value="4">水表检查表</option>
+                      <option value="5">电表检查表</option>
+                      <option value="6">气表检查表</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">当前度数</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" disabled v-model="meterEditing.current">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">上月用度</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled value="{{recordLast.month.end - recordLast.month.begin}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">去年同月用度</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled value="{{recordLast.year.end - recordLast.year.begin}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">抄表日期</label>
+                  <div class="col-sm-10">
+                    <date-picker :time.sync="meterEditing.time"></date-picker>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">抄表度数</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" v-model="meterEditing.value">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">抄表员</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="meterEditing.reader">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">备注</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="meterEditing.input_remark">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div slot="modal-footer" class="modal-footer">
+              <button type="button" class="btn btn-default" @click='showInputMeter = false'>取消</button>
+              <button type="button" class="btn btn-success" @click='inputCheck()'>检查</button>
+              <button type="button" class="btn btn-danger" @click='inputMeter()'>提交</button>
+            </div>
+          </modal>
+          <modal title="修改录入" :show.sync="showModifyRecord" effect="fade" width=800>
+            <div slot="modal-body" class="modal-body">
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">名称</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled v-model="meterEditing.name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">编号</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled v-model="meterEditing.code">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">类型</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" disabled v-model="meterEditing.type">
+                      <option value="1">水表</option>
+                      <option value="2">电表</option>
+                      <option value="3">气表</option>
+                      <option value="4">水表检查表</option>
+                      <option value="5">电表检查表</option>
+                      <option value="6">气表检查表</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">当前度数</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" disabled v-model="meterEditing.current">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">上月用度</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled value="{{recordLast.month.end - recordLast.month.begin}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">去年同月用度</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" disabled value="{{recordLast.year.end - recordLast.year.begin}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">抄表日期</label>
+                  <div class="col-sm-10">
+                    <date-picker :time.sync="recordEditing.time"></date-picker>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">抄表度数</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" v-model="recordEditing.end">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">抄表员</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="recordEditing.reader">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">备注</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" v-model="recordEditing.remark">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div slot="modal-footer" class="modal-footer">
+              <button type="button" class="btn btn-default" @click='showModifyRecord = false'>取消</button>
+              <button type="button" class="btn btn-success" @click='checkRecordModify()'>检查</button>
+              <button type="button" class="btn btn-danger" @click='updateRecord()'>提交</button>
+            </div>
+          </modal>
+          <modal title="录入历史(本月)" :show.sync="showRecordList" effect="fade" large>
+            <div slot="modal-body" class="modal-body">
+              <div class="table-responsive ">
+                <table class="table no-margin table200">
+                  <thead>
+                  <tr>
+                    <th>表名称</th>
+                    <th>起度</th>
+                    <th>止度</th>
+                    <th>用度</th>
+                    <th>抄表员</th>
+                    <th>录入员</th>
+                    <th>状态</th>
+                    <th>审核人</th>
+                    <th>标记</th>
+                    <th>备注</th>
+                    <th>抄表时间</th>
+                    <th>录入时间</th>
+                    <th>修改</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="record in recordTempList | filterBy meterEditing.id in 'meter_id'">
+                    <td>{{meterEditing.name}}</td>
+                    <td>{{record.begin}}</td>
+                    <td>{{record.end}}</td>
+                    <td>{{record.end - record.begin}}</td>
+                    <td>{{record.reader}}</td>
+                    <td>{{record.operator.name}}</td>
+                    <td>{{record.status_name}}</td>
+                    <td>{{record.reviewer ? record.reviewer.name : ''}}</td>
+                    <td>{{record.tag_name}}</td>
+                    <td>{{record.remark}}</td>
+                    <td>{{new Date(record.time * 1000).toLocaleString()}}</td>
+                    <td>{{new Date(record.create_time * 1000).toLocaleString()}}</td>
+                    <td>
+                      <a class="label label-danger" href="javascript:void(0);"
+                         @click="toggleModifyRecord(record)">修改</a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div slot="modal-footer" class="modal-footer">
+              <button type="button" class="btn btn-default" @click='showRecordList = false'>取消</button>
+            </div>
+          </modal>
           <modal title="表信息" :show.sync="showEditMeter" effect="fade" width="800">
             <div slot="modal-body" class="modal-body">
               <div class="form-horizontal">
@@ -389,7 +602,11 @@
                   <th>表编号</th>
                   <th>表类型</th>
                   <th>上级表名称</th>
+                  <th>当前度数</th>
                   <th>备注</th>
+                  <th>上次录入</th>
+                  <th>录入</th>
+                  <th>本月记录</th>
                   <th>详情</th>
                   <th>更换</th>
                 </tr>
@@ -400,7 +617,15 @@
                   <td>{{meter.code}}</td>
                   <td>{{meter.type_name}}</td>
                   <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                  <td>{{meter.current}}</td>
                   <td>{{meter.remark}}</td>
+                  <td>{{meter.last_input_time == 0 ? '' : new Date(meter.last_input_time * 1000).toLocaleString()}}</td>
+                  <td>
+                    <a class="label label-primary" href="javascript:void(0);" @click="toggleInputMeter(meter)">录入</a>
+                  </td>
+                  <td>
+                    <a class="label label-primary" href="javascript:void(0);" @click="toggleRecordList(meter)">记录</a>
+                  </td>
                   <td>
                     <a class="label label-primary" href="javascript:void(0);"
                        @click="toggleEditMeter(meter)">编辑</a>
@@ -438,7 +663,9 @@
                   <th>表类型</th>
                   <th>表名称</th>
                   <th>表编号</th>
+                  <th>当前度数</th>
                   <th>备注</th>
+                  <th>上次录入</th>
                   <th>详情</th>
                 </tr>
                 </thead>
@@ -448,7 +675,9 @@
                   <td>{{meter.type_name}}</td>
                   <td>{{meter.name}}</td>
                   <td>{{meter.code}}</td>
+                  <td>{{meter.current}}</td>
                   <td>{{meter.remark}}</td>
+                  <td>{{meter.last_input_time == 0 ? '' : new Date(meter.last_input_time * 1000).toLocaleString()}}</td>
                   <td>
                     <a class="label label-primary" href="javascript:void(0);"
                        @click="toggleEditMeter(meter)">编辑</a>
@@ -495,6 +724,22 @@
         meterChildren: [],
         showReplaceMeter: false,
         showEditMeter: false,
+        showInputMeter: false,
+        inputChecked: false,
+        showModifyRecord: false,
+        recordEditing: {},
+        showRecordList: false,
+        recordTempList: [],
+        recordLast: {
+          year: {
+            begin: 0,
+            end: 0
+          },
+          month: {
+            begin: 0,
+            end: 0
+          }
+        },
         columns: ['id', 'name'],
         options: {
           highlightMatches: true,
@@ -561,6 +806,42 @@
       },
       updateMeter: function () {
         updateMeterInfo(this.meterEditing.id, this.meterEditing.name, this.meterEditing.code, this.meterEditing.remark)
+      },
+      toggleInputMeter: function (meter) {
+        this.meterEditing = meter
+        this.meterEditing.time = new Date().getTime()
+        this.showInputMeter = true
+        getLastRecord(meter.id)
+      },
+      inputMeter: function () {
+        inputMeter(this.meterEditing.id, this.meterEditing.value, Core.Util.getTimestamp(this.meterEditing.time), this.meterEditing.reader, this.meterEditing.input_remark)
+      },
+      inputCheck: function () {
+        checkMeterInput()
+      },
+      toggleRecordList: function (meter) {
+        context.meterEditing = meter
+        getTempRecordList(meter.node_id)
+      },
+      toggleModifyRecord: function (record) {
+        var date = new Date()
+        var day = date.getDay()
+        date.setTime(record.create_time * 1000)
+        var _day = date.getDay()
+        if (day !== _day || record.status !== 0) {
+          Core.Toast._error(this, '只可修改当天未审核数据')
+          return
+        }
+        this.recordEditing = record
+        this.showRecordList = false
+        this.showModifyRecord = true
+        getLastRecord(record.meter_id)
+      },
+      checkRecordModify: function () {
+        checkRecordModify()
+      },
+      updateRecord: function () {
+        updateRecord(this.recordEditing.id, this.recordEditing.end, this.recordEditing.reader, this.recordEditing.remark)
       }
     }
   }
@@ -695,10 +976,110 @@
 
   function getOwnerByNode (nodeId) {
     Core.Api.NODE_OWNER.getOwnerByNode(nodeId).then(function (data) {
-      context.institution = data.node_owner.institution
+      if (data.node_owner.institution !== null) {
+        context.institution = data.node_owner.institution
+      }
     }, function (error) {
       Core.Log.e(error)
       context.institution = {}
+    })
+  }
+
+  function getTempRecordList (nodeId) {
+    var date = new Date()
+    var year = date.getFullYear()
+    var month = date.getMonth() + 1
+    Core.Api.RECORD.getTempList(nodeId, year, month).then(function (data) {
+      context.recordTempList = data.record_list
+      context.showRecordList = true
+    }, function (error) {
+      Core.Toast.error(context, '获取录入记录失败: ' + error.message)
+    })
+  }
+
+  function inputMeter (meterId, value, time, reader, remark) {
+    Core.Api.RECORD.input(meterId, value, time, reader, remark).then(function (data) {
+      context.showInputMeter = false
+      context.meterEditing = {}
+      Core.Toast.success(context, '录入成功')
+    }, function (error) {
+      Core.Toast.error(context, '录入失败: ' + error.message)
+    })
+  }
+
+  function checkMeterInput () {
+    if (context.recordLast.year.id === undefined || context.recordLast.month.id === undefined) {
+      Core.Toast.error(context, '检查失败, 请重新点击')
+      getLastRecord(context.meterEditing.id)
+      return false
+    }
+    if (context.meterEditing.value === undefined || context.meterEditing.value < context.recordLast.month.end) {
+      Core.Toast.error(context, '检查未通过!!!请检查本月止度')
+      return false
+    }
+    // 假设超过50这个阈值 就警告
+    var usage = context.meterEditing.value - context.meterEditing.current
+    var lastMonthUsage = context.recordLast.month.begin - context.recordLast.month.end
+    if (usage - lastMonthUsage > 50) {
+      Core.Toast.warning(context, '警告!本月用度远超上月用度')
+      return
+    }
+    var lastYearMonthUsage = context.recordLast.year.begin - context.recordLast.year.end
+    if (usage - lastYearMonthUsage > 50) {
+      Core.Toast.warning(context, '警告!本月用度远超去年同月用度')
+      return
+    }
+    Core.Toast.success(context, '检查通过')
+  }
+
+  function checkRecordModify () {
+    if (context.recordLast.year.id === undefined || context.recordLast.month.id === undefined) {
+      Core.Toast.error(context, '检查失败, 请重新点击')
+      getLastRecord(context.meterEditing.id)
+      return false
+    }
+    if (context.recordEditing.end === undefined || context.recordEditing.end < context.recordLast.month.end) {
+      Core.Toast.error(context, '检查未通过!!!请检查本月止度')
+      return false
+    }
+    // 假设超过50这个阈值 就警告
+    var usage = context.recordEditing.end - context.recordEditing.begin
+    var lastMonthUsage = context.recordLast.month.begin - context.recordLast.month.end
+    if (usage - lastMonthUsage > 50) {
+      Core.Toast.warning(context, '警告!本月用度远超上月用度')
+      return
+    }
+    var lastYearMonthUsage = context.recordLast.year.begin - context.recordLast.year.end
+    if (usage - lastYearMonthUsage > 50) {
+      Core.Toast.warning(context, '警告!本月用度远超去年同月用度')
+      return
+    }
+    Core.Toast.success(context, '检查通过')
+  }
+
+  function getLastRecord (meterId) {
+    Core.Api.RECORD.getLastRecord(meterId).then(function (data) {
+      if (data.last_year_month !== null) {
+        context.recordLast.year = data.last_year_month
+      } else {
+        context.recordLast.year.id = 0
+      }
+      if (data.last_month !== null) {
+        context.recordLast.month = data.last_month
+      } else {
+        context.recordLast.month.id = 0
+      }
+    }, function (error) {
+      Core.Toast.error(context, '获取历史记录失败: ' + error.message)
+    })
+  }
+
+  function updateRecord (id, end, reader, remark) {
+    Core.Api.RECORD.updateRecord(id, end, reader, remark).then(function (data) {
+      context.showModifyRecord = false
+      Core.Toast.success(context, '修改录入成功')
+    }, function (error) {
+      Core.Toast.error(context, '修改录入失败: ' + error.message)
     })
   }
 </script>
