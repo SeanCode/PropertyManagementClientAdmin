@@ -1440,15 +1440,17 @@
     }
     var parent = nodes[0].getParentNode()
     var result = false
-    Core.Api.NODE.removeNode(parent.id, treeNode.id).then(function (data) {
-      result = true
-      Core.Toast.success(context, '节点移除成功')
-      initNodeTree()
-      clear()
-    }, function (error) {
-      result = false
-      Core.Toast.error(context, '节点移除失败: ' + error.message)
-    })
+    if (window.confirm('确认移除该节点?不会直接删除该节点而是会移动到根节点下面')) {
+      Core.Api.NODE.removeNode(parent.id, treeNode.id).then(function (data) {
+        result = true
+        Core.Toast.success(context, '节点移除成功')
+        initNodeTree()
+        clear()
+      }, function (error) {
+        result = false
+        Core.Toast.error(context, '节点移除失败: ' + error.message)
+      })
+    }
     return result
   }
 

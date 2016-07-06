@@ -50,7 +50,10 @@ export default {
       RECORD_INPUT: '/record/input',
       RECORD_TEMP_LIST: '/record/temp-list-by-node',
       RECORD_LAST: '/record/last',
-      RECORD_UPDATE: '/record/update'
+      RECORD_UPDATE: '/record/update',
+      RECORD_LIST_PENDING: '/record/list-pending',
+      RECORD_LIST_CHECKED: '/record/list-checked',
+      RECORD_CHECK: '/record/check'
     }
   },
 

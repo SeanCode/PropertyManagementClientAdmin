@@ -360,6 +360,23 @@ export default {
         reader: reader,
         remark: remark
       })
+    },
+    getPendingList: function (page) {
+      return post(Const.NET.API.RECORD_LIST_PENDING, {
+        page: page
+      })
+    },
+    getCheckedList: function (page, all) {
+      return post(Const.NET.API.RECORD_LIST_CHECKED, {
+        page: page,
+        all: all
+      })
+    },
+    checkRecord: function (id, status) {
+      return post(Const.NET.API.RECORD_CHECK, {
+        id: id,
+        status: status
+      })
     }
   }
 }

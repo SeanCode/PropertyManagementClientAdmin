@@ -373,7 +373,7 @@
                     <td>{{record.end}}</td>
                     <td>{{record.end - record.begin}}</td>
                     <td>{{record.reader}}</td>
-                    <td>{{record.operator.name}}</td>
+                    <td>{{record.operator.username}}</td>
                     <td>{{record.status_name}}</td>
                     <td>{{record.reviewer ? record.reviewer.name : ''}}</td>
                     <td>{{record.tag_name}}</td>
