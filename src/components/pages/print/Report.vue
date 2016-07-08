@@ -3,7 +3,6 @@
   <content-header parent="打印" child="报表"></content-header>
   <!-- Main content -->
   <section class="content">
-    <div>this is template body</div>
   </section>
 </template>
 <style>

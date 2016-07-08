@@ -7,6 +7,13 @@ export default {
     API: {
       ADMIN_LOGIN: '/admin/login',
       ADMIN_LIST: '/admin/list',
+      ADMIN_ADD: '/admin/add',
+      ADMIN_INFO: '/admin/info',
+      ADMIN_STATUS_UPDATE: '/admin/status-update',
+      ADMIN_DELETE: '/admin/delete',
+      ADMIN_RESET: '/admin/password-reset',
+      ADMIN_PASSWORD_UPDATE: '/admin/password-update',
+      ADMIN_PRIVILEGE_UPDATE: '/admin/privilege-update',
       CONFIG_PRICE: '/config/price',
       CONFIG_UPDATE_DEFAULT_PRICE: '/config/price-default-update',
       CONFIG_SAVE_SPECIFIC_PRICE: '/config/price-specific-save',
@@ -25,6 +32,7 @@ export default {
       USER_INFO_UPDATE: '/user/info-update',
       USER_DELETE: '/user/delete',
       USER_ADD: '/user/add',
+      USER_AMOUNT: '/user/amount',
       NODE_CHILDREN: '/node/children',
       NODE_DETAIL: '/node/detail',
       NODE_INFO_UPDATE: '/node/info-update',
@@ -53,7 +61,8 @@ export default {
       RECORD_UPDATE: '/record/update',
       RECORD_LIST_PENDING: '/record/list-pending',
       RECORD_LIST_CHECKED: '/record/list-checked',
-      RECORD_CHECK: '/record/check'
+      RECORD_CHECK: '/record/check',
+      RECORD_PENDING_COUNT: '/record/pending-count'
     }
   },
 

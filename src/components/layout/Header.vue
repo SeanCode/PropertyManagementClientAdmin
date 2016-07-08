@@ -17,212 +17,23 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="/static/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
-                      </div>
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="/static/img/user3-128x128.jpg" class="img-circle" alt="User Image"/>
-                      </div>
-                      <h4>
-                        AdminLTE Design Team
-                        <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="/static/img/user4-128x128.jpg" class="img-circle" alt="User Image"/>
-                      </div>
-                      <h4>
-                        Developers
-                        <small><i class="fa fa-clock-o"></i> Today</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="/static/img/user3-128x128.jpg" class="img-circle" alt="User Image"/>
-                      </div>
-                      <h4>
-                        Sales Department
-                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="/static/img/user4-128x128.jpg" class="img-circle" alt="User Image"/>
-                      </div>
-                      <h4>
-                        Reviewers
-                        <small><i class="fa fa-clock-o"></i> 2 days</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
-          <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-warning text-yellow"></i> Very long description here that
-                      may not fit into the
-                      page and may cause design problems
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-red"></i> 5 new members joined
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">View all</a></li>
-            </ul>
-          </li>
           <!-- Tasks: style can be found in dropdown.less -->
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">9</span>
+              <span class="label label-danger" v-show="recordPendingCount != 0">{{recordPendingCount}}</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 9 tasks</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Design some buttons
-                        <small class="pull-right">20%</small>
-                      </h3>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-aqua" style="width: 20%"
-                             role="progressbar" aria-valuenow="20" aria-valuemin="0"
-                             aria-valuemax="100">
-                          <span class="sr-only">20% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Create a nice theme
-                        <small class="pull-right">40%</small>
-                      </h3>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-green" style="width: 40%"
-                             role="progressbar" aria-valuenow="20" aria-valuemin="0"
-                             aria-valuemax="100">
-                          <span class="sr-only">40% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Some task I need to do
-                        <small class="pull-right">60%</small>
-                      </h3>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-red" style="width: 60%"
-                             role="progressbar" aria-valuenow="20" aria-valuemin="0"
-                             aria-valuemax="100">
-                          <span class="sr-only">60% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Make beautiful transitions
-                        <small class="pull-right">80%</small>
-                      </h3>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-yellow" style="width: 80%"
-                             role="progressbar" aria-valuenow="20" aria-valuemin="0"
-                             aria-valuemax="100">
-                          <span class="sr-only">80% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                </ul>
-              </li>
+              <li class="header">你有{{recordPendingCount}}条待审核记录</li>
               <li class="footer">
-                <a href="#">View all tasks</a>
+                <a v-link="{ path: '/dashboard/sdq/check/pending'}">查看所有</a>
               </li>
             </ul>
           </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">{{adminName}}</span>
+              <span class="hidden-xs">{{admin.name}}</span>
               <strong class="caret"></strong>
             </a>
             <ul class="dropdown-menu">
@@ -230,29 +41,14 @@
               <li class="user-header">
                 <img src="/static/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
                 <p>
-                  {{adminName}}
-                  <small>Member since Nov. 2016</small>
+                  {{admin.name}}
+                  <small>{{admin.username}}</small>
                 </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
-                </div>
-                <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">个人中心</a>
+                  <a href="#" class="btn btn-default btn-flat" @click="toggleShowUpdatePassword()">修改密码</a>
                 </div>
                 <div class="pull-right">
                   <a v-link="{ path: '/logout' }" class="btn btn-default btn-flat">退出</a>
@@ -263,24 +59,100 @@
         </ul>
       </div>
     </nav>
+    <modal title="修改密码" :show.sync="showUpdatePassword" effect="fade">
+      <div slot="modal-body" class="modal-body">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">旧密码</label>
+            <div class="col-sm-10">
+              <input class="form-control" v-model="adminEditing.password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">新密码</label>
+            <div class="col-sm-10">
+              <input class="form-control" v-model="adminEditing.new_password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">确认密码</label>
+            <div class="col-sm-10">
+              <input class="form-control" v-model="adminEditing.ensure_password">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div slot="modal-footer" class="modal-footer">
+        <button type="button" class="btn btn-default" @click='showUpdatePassword = false'>取消</button>
+        <button type="button" class="btn label-danger" @click="updatePassword()">确定</button>
+      </div>
+    </modal>
   </header>
 </template>
 <script>
   import Core from '../../core/core'
+  import Modal from '../widgets/Modal.vue'
 
   module.exports = {
+    components: {
+      'modal': Modal
+    },
     data () {
       return {
-        adminName: ''
+        admin: {},
+        adminEditing: {},
+        recordPendingCount: 0,
+        showUpdatePassword: false
       }
     },
     ready () {
-      this.adminName = Core.Data.getAdminName()
+      initContext(this)
+      this.admin = Core.Data.getAdmin()
+      getPendingCount()
     },
     events: {
       'login-msg': function () {
-        this.adminName = Core.Data.getAdminName()
+        this.admin = Core.Data.getAdmin()
+      }
+    },
+    methods: {
+      toggleShowUpdatePassword: function () {
+        this.showUpdatePassword = true
+      },
+      updatePassword: function () {
+        if (this.adminEditing.new_password !== this.adminEditing.ensure_password) {
+          Core.Toast.error(this, '密码不一致!')
+          return
+        }
+        updatePassword(this.admin.name, this.adminEditing.password, this.adminEditing.new_password)
       }
     }
+  }
+
+  var context
+
+  function initContext (c) {
+    context = c
+  }
+
+  function getPendingCount () {
+    Core.Api.RECORD.getPendingCount().then(function (data) {
+      context.recordPendingCount = data.pending_count
+    }, function (error) {
+      Core.Toast.error(context, '获取待审核记录失败: ' + error.message)
+    })
+  }
+
+  function updatePassword (name, oldPassword, password) {
+    Core.Api.ADMIN.updateAdminPassword(name, password, oldPassword).then(function (data) {
+      context.showUpdatePassword = false
+      Core.Data.clear()
+      Core.Toast.success(context, '密码修改成功')
+      setTimeout(function () {
+        window.router.go('/login')
+      }, 2000)
+    }, function (error) {
+      Core.Toast.error(context, '密码修改失败: ' + error.message)
+    })
   }
 </script>

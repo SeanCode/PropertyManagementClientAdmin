@@ -5,10 +5,13 @@
         <div class='box-header with-border'>
           <h3 class='box-title'>机构管理</h3>
           <div class='box-tools pull-right'>
-            <button class='btn btn-box-tool' @click='refresh'>
+            <button class='btn btn-box-tool' @click='toggleAddInstitution()' title="添加机构">
+              <i class='fa fa-plus-square'></i>
+            </button>
+            <button class='btn btn-box-tool' @click='refresh()' title="刷新">
               <i class='fa fa-refresh'></i>
             </button>
-            <button class="btn btn-box-tool" data-widget="collapse">
+            <button class="btn btn-box-tool" data-widget="collapse" title="折叠/展开">
               <i class="fa fa-minus"></i>
             </button>
           </div>
@@ -74,6 +77,52 @@
           <button type="button" class="btn label-danger" @click='delete'>删除</button>
         </div>
       </modal>
+      <modal title="添加机构" :show.sync="showAddModal" effect="fade" width="800">
+        <div slot="modal-body" class="modal-body">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">名称 *</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="modelEditing.name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">负责人</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="modelEditing.people">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">联系方式</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="modelEditing.contact">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">机构代码</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="modelEditing.code">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">描述</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="modelEditing.description">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">备注</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="modelEditing.remark">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div slot="modal-footer" class="modal-footer">
+          <button type="button" class="btn btn-default" @click='showAddModal = false'>取消</button>
+          <button type="button" class="btn btn-success" @click='addInstitution()'>添加</button>
+        </div>
+      </modal>
     </div>
   </div>
 </template>
@@ -93,6 +142,7 @@
         modelEditing: {},
         institutionList: [],
         showDeleteModal: false,
+        showAddModal: false,
         columns: ['id', 'name', 'people', 'contact', 'code', 'description', 'remark'],
         options: {
           compileTemplates: true,
@@ -143,6 +193,13 @@
       },
       'updateInstitution': function () {
         updateInstitutionInfo(this.modelEditing.id, this.modelEditing.name, this.modelEditing.people, this.modelEditing.contact, this.modelEditing.description, this.modelEditing.remark, this.modelEditing.code)
+      },
+      'toggleAddInstitution': function () {
+        this.modelEditing = {}
+        this.showAddModal = true
+      },
+      'addInstitution': function () {
+        addInstitution(this.modelEditing.name, this.modelEditing.people, this.modelEditing.contact, this.modelEditing.description, this.modelEditing.remark, this.modelEditing.code)
       }
     }
   }
@@ -186,6 +243,16 @@
       getInstitutionList()
     }, function (error) {
       Core.Toast.error(context, '更新失败: ' + error.message)
+    })
+  }
+
+  function addInstitution (name, people, contact, description, remark, code) {
+    Core.Api.INSTITUTION.addInstitution(name, people, contact, description, remark, code).then(function (data) {
+      Core.Toast.success(context, '添加成功')
+      context.showAddModal = false
+      getInstitutionList()
+    }, function (error) {
+      Core.Toast.error(context, '添加失败: ' + error.message)
     })
   }
 

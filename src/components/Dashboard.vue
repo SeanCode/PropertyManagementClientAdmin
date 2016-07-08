@@ -10,7 +10,7 @@
           <span class="info-box-icon bg-aqua"><i class="fa fa-tint"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">水</span>
-            <span class="info-box-number">90<small>%</small></span>
+            <span class="info-box-number">{{water}}</span>
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
       </div><!-- /.col -->
@@ -19,7 +19,7 @@
           <span class="info-box-icon bg-red"><i class="fa fa-bolt"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">电</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number">{{ele}}</span>
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
       </div><!-- /.col -->
@@ -32,7 +32,7 @@
           <span class="info-box-icon bg-green"><i class="fa fa-fire"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">天然气</span>
-            <span class="info-box-number">760</span>
+            <span class="info-box-number">{{gas}}</span>
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
       </div><!-- /.col -->
@@ -40,8 +40,8 @@
         <div class="info-box">
           <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
           <div class="info-box-content">
-            <span class="info-box-text">用户</span>
-            <span class="info-box-number">2,000</span>
+            <span class="info-box-text">用户总数</span>
+            <span class="info-box-number">{{userAmount}}</span>
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
       </div><!-- /.col -->
@@ -149,60 +149,47 @@
         </div><!-- /.box -->
       </div><!-- /.col -->
     </div><!-- /.row -->
-
-    <!-- Main row -->
-    <div class="row">
-      <!-- Left col -->
-      <div class="col-md-8">
-        <!-- MAP & BOX PANE -->
-        <div class="box box-success">
-          <div class="box-header with-border">
-            <h3 class="box-title">Visitors Report</h3>
-            <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-              <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-          </div><!-- /.box-header -->
-          <div class="box-body no-padding">
-            <div class="row">
-              <div class="col-md-9 col-sm-8">
-                <div class="pad">
-                  <!-- Map will be created here -->
-                  <div id="world-map-markers" style="height: 325px;"></div>
-                </div>
-              </div><!-- /.col -->
-              <div class="col-md-3 col-sm-4">
-                <div class="pad box-pane-right bg-green" style="min-height: 280px">
-                  <div class="description-block margin-bottom">
-                    <div class="sparkbar pad" data-color="#fff">90,70,90,70,75,80,70</div>
-                    <h5 class="description-header">8390</h5>
-                    <span class="description-text">Visits</span>
-                  </div><!-- /.description-block -->
-                  <div class="description-block margin-bottom">
-                    <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
-                    <h5 class="description-header">30%</h5>
-                    <span class="description-text">Referrals</span>
-                  </div><!-- /.description-block -->
-                  <div class="description-block">
-                    <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
-                    <h5 class="description-header">70%</h5>
-                    <span class="description-text">Organic</span>
-                  </div><!-- /.description-block -->
-                </div>
-              </div><!-- /.col -->
-            </div><!-- /.row -->
-          </div><!-- /.box-body -->
-        </div><!-- /.box -->
-      </div><!-- /.col -->
-    </div><!-- /.row -->
   </section>
 </template>
 <script>
   import ContentHeader from './widgets/admin/content-header.vue'
+  import Core from '../core/core'
 
   export default {
     components: {
       'content-header': ContentHeader
+    },
+    data () {
+      return {
+        water: 900,
+        ele: 1000,
+        userAmount: 0
+      }
+    },
+    ready () {
+      initContext(this)
+      updateAdmin()
+      getUserAmount()
     }
+  }
+
+  var context
+
+  function initContext (c) {
+    context = c
+  }
+
+  function updateAdmin () {
+    var admin = Core.Data.getAdmin()
+
+    Core.Api.ADMIN.getAdminInfo(admin.id).then(function (data) {
+      Core.Data.setAdmin(data.admin)
+    })
+  }
+
+  function getUserAmount () {
+    Core.Api.USER.getUserAmount().then(function (data) {
+      context.userAmount = data.user_amount
+    })
   }
 </script>

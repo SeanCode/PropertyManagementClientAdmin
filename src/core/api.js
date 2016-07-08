@@ -20,6 +20,46 @@ export default {
   ADMIN: {
     getAdminList: function () {
       return get(Const.NET.API.ADMIN_LIST)
+    },
+    addAdmin: function (name, username) {
+      return post(Const.NET.API.ADMIN_ADD, {
+        name: name,
+        username: username
+      })
+    },
+    getAdminInfo: function (id) {
+      return post(Const.NET.API.ADMIN_INFO, {
+        id: id
+      })
+    },
+    updateAdminStatus: function (id, status) {
+      return post(Const.NET.API.ADMIN_STATUS_UPDATE, {
+        id: id,
+        status: status
+      })
+    },
+    deleteAdmin: function (id) {
+      return post(Const.NET.API.ADMIN_DELETE, {
+        id: id
+      })
+    },
+    resetAdmin: function (id) {
+      return post(Const.NET.API.ADMIN_RESET, {
+        id: id
+      })
+    },
+    updateAdminPrivilege: function (id, index) {
+      return post(Const.NET.API.ADMIN_PRIVILEGE_UPDATE, {
+        id: id,
+        index: index
+      })
+    },
+    updateAdminPassword: function (name, password, oldPassword) {
+      return post(Const.NET.API.ADMIN_PASSWORD_UPDATE, {
+        name: name,
+        password: password,
+        old_password: oldPassword
+      })
     }
   },
   CONFIG: {
@@ -148,6 +188,9 @@ export default {
         school_card: schoolCard,
         remark: remark
       })
+    },
+    getUserAmount: function () {
+      return post(Const.NET.API.USER_AMOUNT, {})
     }
   },
   NODE: {
@@ -377,6 +420,9 @@ export default {
         id: id,
         status: status
       })
+    },
+    getPendingCount: function () {
+      return post(Const.NET.API.RECORD_PENDING_COUNT, {})
     }
   }
 }
