@@ -902,7 +902,8 @@
         modal_user_tree_setting: {
           async: {
             enable: true,
-            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
+//            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
+            url: 'http://202.202.43.93:8080/api/private/v1/user/list-by-department',
             autoParam: ['id=department_id'],
             dataType: 'json',
             dataFilter: ajaxUserDataFilter
@@ -925,7 +926,8 @@
         user_tree_setting: {
           async: {
             enable: true,
-            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
+//            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
+            url: 'http://202.202.43.93:8080/api/private/v1/user/list-by-department',
             autoParam: ['id=department_id'],
             dataType: 'json',
             dataFilter: ajaxUserDataFilter
@@ -948,7 +950,7 @@
         node_setting: {
           async: {
             enable: true,
-            url: 'http://localhost:8080/api/private/v1/node/children',
+            url: 'http://202.202.43.93:8080/api/private/v1/node/children',
             autoParam: ['id'],
             otherParam: {'type': '2'},
             dataType: 'json',
@@ -966,7 +968,7 @@
         node_tree_setting: {
           async: {
             enable: true,
-            url: 'http://localhost:8080/api/private/v1/node/children',
+            url: 'http://202.202.43.93:8080/api/private/v1/node/children',
             autoParam: ['id'],
             dataType: 'json',
             dataFilter: ajaxNodeDataFilter

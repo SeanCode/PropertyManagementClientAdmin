@@ -53,6 +53,12 @@ router.start(app, '#app');
 $.ajaxSetup({
   headers: {
     Authorization: 'Basic ' + Core.Data.getToken()
+  },
+  beforeSend: function (evt, xhr) {
+    if (Core.Config.IS_DEBUG) {
+      xhr.url = xhr.url.replace(Core.Const.NET.END_POINT_RELEASE, Core.Const.NET.END_POINT_DEBUG)
+    }
+    Core.Log.d(xhr.url)
   }
 })
 

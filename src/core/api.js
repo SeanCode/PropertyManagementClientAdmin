@@ -5,6 +5,7 @@ import Const from './const'
 import Log from './log'
 import Data from './data'
 import Util from './util'
+import Config from './config'
 import Vue from 'vue'
 
 export default {
@@ -428,7 +429,8 @@ export default {
 }
 
 function post (api, data, requestHeaders, raw) {
-  var url = Const.NET.END_POINT + api
+  var endPoint = Config.IS_DEBUG ? Const.NET.END_POINT_DEBUG : Const.NET.END_POINT_RELEASE
+  var url = endPoint + Const.NET.API_PATH + api
   Log.d(url + '?' + transformObjectToUrlencodedData(data))
 
   return Vue.http.post(url, transformObjectToUrlencodedData(data), {
@@ -445,7 +447,8 @@ function post (api, data, requestHeaders, raw) {
 }
 
 function get (api, params, requestHeaders, raw) {
-  var url = Const.NET.END_POINT + api
+  var endPoint = Config.IS_DEBUG ? Const.NET.END_POINT_DEBUG : Const.NET.END_POINT_RELEASE
+  var url = endPoint + Const.NET.API_PATH + api
   Log.d(url + '?' + transformObjectToUrlencodedData(params))
 
   return Vue.http.get(url, {}, {
