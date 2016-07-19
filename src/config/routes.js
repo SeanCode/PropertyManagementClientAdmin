@@ -30,7 +30,7 @@ export function configRouter (router) {
     '*': {
       component: NotFound
     },
-    '/login': {
+    '/dashboard/login': {
       component: Login
     },
     '/dashboard': {
@@ -95,19 +95,18 @@ export function configRouter (router) {
   })
 
   router.redirect({
-    '/': '/dashboard/index',
-    '/dashboard/': '/dashboard/index'
+    '/': '/dashboard/index'
   })
 
   router.beforeEach(function (transition) {
     if (Core.Data.isGuest() && Core.Config.ROUTE_LIST_GUEST_CAN_VISIT.indexOf(transition.to.path) === -1) {
       transition.abort()
-      router.go('/login')
+      router.go('/dashboard/login')
     } else if (transition.to.path === '/logout') {
       transition.abort()
       Core.Data.clear()
       setTimeout(function () {
-        router.go('/login')
+        router.go('/dashboard/login')
       }, 500)
     } else {
       transition.next()

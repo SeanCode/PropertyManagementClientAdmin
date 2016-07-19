@@ -73,7 +73,7 @@
     Core.Api.COMMON.login(name, password).then(function (response) {
       Core.Data.setAdmin(response.data.data['admin'])
       Core.Data.setToken(Core.Util.Base64.encode(name + ':' + password))
-      window.router.go('/')
+      window.router.go('/dashboard/index')
     }, function () {
       window.alert('登录失败')
     })

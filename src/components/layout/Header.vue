@@ -1,7 +1,7 @@
 <template>
   <header class="main-header">
     <!-- Logo -->
-    <a v-link="{ path: '/' }" class="logo">
+    <a v-link="{ path: '/dashboard/index' }" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">物管</span>
       <!-- logo for regular state and mobile devices -->
@@ -149,7 +149,7 @@
       Core.Data.clear()
       Core.Toast.success(context, '密码修改成功')
       setTimeout(function () {
-        window.router.go('/login')
+        window.router.go('/dashboard/login')
       }, 2000)
     }, function (error) {
       Core.Toast.error(context, '密码修改失败: ' + error.message)
