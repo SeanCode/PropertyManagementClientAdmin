@@ -64,7 +64,7 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath(path.join(config.build.assetsProjectDirectory, 'img/[name].[hash:7].[ext]'))
         }
       },
       {
@@ -72,7 +72,7 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath(path.join(config.build.assetsProjectDirectory, 'fonts/[name].[hash:7].[ext]'))
         }
       }
     ]
