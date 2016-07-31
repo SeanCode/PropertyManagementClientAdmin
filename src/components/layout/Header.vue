@@ -39,7 +39,7 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="/static/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+                <img src="/static/dashboard/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
                 <p>
                   {{admin.name}}
                   <small>{{admin.username}}</small>
