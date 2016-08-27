@@ -64,7 +64,13 @@ export default {
       RECORD_LIST_PENDING: '/record/list-pending',
       RECORD_LIST_CHECKED: '/record/list-checked',
       RECORD_CHECK: '/record/check',
-      RECORD_PENDING_COUNT: '/record/pending-count'
+      RECORD_PENDING_COUNT: '/record/pending-count',
+      ARTICLE_LIST: '/article/',
+      ARTICLE_LIST_TYPE: '/article/{type}',
+      ARTICLE_CONTENT: '/article/{type}/{id}',
+      ARTICLE_SAVE: '/article/save',
+      ARTICLE_UPDATE: '/article/update',
+      ARTICLE_DELETE: '/article/delete'
     }
   },
 

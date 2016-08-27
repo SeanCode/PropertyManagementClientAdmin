@@ -18,8 +18,7 @@ Vue.use(VueTables.client)
 // create router
 const router = new VueRouter({
   history: true,
-  saveScrollPosition: true,
-  linkActiveClass: 'active'
+  saveScrollPosition: true
 })
 
 // configure router

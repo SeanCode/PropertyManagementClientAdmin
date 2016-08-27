@@ -174,6 +174,7 @@
       context.showApproveRecord = false
       Core.Toast.success(context, '操作成功')
       context.recordList = context.recordList.slice(record.index + 1)
+      context.$broadcast('approve-pended')
     }, function (error) {
       Core.Toast.error(context, '操作失败: ' + error.message)
     })
@@ -184,6 +185,7 @@
       context.showRejectRecord = false
       Core.Toast.success(context, '操作成功')
       context.recordList = context.recordList.slice(record.index + 1)
+      context.$broadcast('approve-pended')
     }, function (error) {
       Core.Toast.error(context, '操作失败: ' + error.message)
     })

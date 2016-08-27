@@ -9,7 +9,6 @@
       <li v-show="child" v-bind:class="{ 'active': child }">{{child ? child : ''}}</li>
     </ol>
   </section>
-
 </template>
 <style>
 </style>

@@ -1,3 +1,8 @@
+<style>
+  .logo {
+    position: fixed;
+  }
+</style>
 <template>
   <header class="main-header">
     <!-- Logo -->
@@ -113,6 +118,9 @@
     events: {
       'login-msg': function () {
         this.admin = Core.Data.getAdmin()
+      },
+      'approve-pended': function () {
+        getPendingCount()
       }
     },
     methods: {

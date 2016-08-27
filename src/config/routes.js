@@ -21,6 +21,12 @@ import StatisticsMonth from '../components/pages/statistics/Month.vue'
 import StatisticsAll from '../components/pages/statistics/All.vue'
 import SystemAdmin from '../components/pages/system/Admin.vue'
 import SystemData from '../components/pages/system/Data.vue'
+import HomeArticle from '../components/pages/home/Article.vue'
+import HomeBanner from '../components/pages/home/Banner.vue'
+import HomePicture from '../components/pages/home/Picture.vue'
+import HomePictureManage from '../components/pages/home/PictureManage.vue'
+import HomeArticleManage from '../components/pages/home/ArticleManage.vue'
+import HomeIntroManage from '../components/pages/home/IntroManage.vue'
 import Core from '../core/core'
 
 export function configRouter (router) {
@@ -86,6 +92,24 @@ export function configRouter (router) {
         },
         '/system/data': {
           component: SystemData
+        },
+        '/home/article': {
+          component: HomeArticle
+        },
+        '/home/banner': {
+          component: HomeBanner
+        },
+        '/home/picture': {
+          component: HomePicture
+        },
+        '/home/manage-picture': {
+          component: HomePictureManage
+        },
+        '/home/manage-article': {
+          component: HomeArticleManage
+        },
+        '/home/manage-intro': {
+          component: HomeIntroManage
         },
         '*': {
           component: NotFound

@@ -10,6 +10,7 @@ module.exports = [
   {
     name: '水电气录入',
     icon: 'fa-pencil',
+    link: '/dashboard/sdq/input',
     children: [
       {
         name: '个人录入',
@@ -31,6 +32,7 @@ module.exports = [
   {
     name: '水电气审核',
     icon: 'fa-check',
+    link: '/dashboard/sdq/check',
     children: [
       {
         name: '待审核',
@@ -52,6 +54,7 @@ module.exports = [
   {
     name: '水电气管理',
     icon: 'fa-sitemap',
+    link: '/dashboard/sdq/manage',
     children: [
       {
         name: '个人管理',
@@ -73,6 +76,7 @@ module.exports = [
   {
     name: '打印',
     icon: 'fa-print',
+    link: '/dashboard/print',
     children: [
       {
         name: '报表',
@@ -94,6 +98,7 @@ module.exports = [
   {
     name: '统计',
     icon: 'fa-pie-chart',
+    link: '/dashboard/stat',
     children: [
       {
         name: '本月报表',
@@ -110,6 +115,7 @@ module.exports = [
   {
     name: '系统',
     icon: 'fa-cogs',
+    link: '/dashboard/system',
     children: [
       {
         name: '管理员管理',
@@ -126,6 +132,38 @@ module.exports = [
   {
     name: '门户管理',
     icon: 'fa-desktop',
-    children: []
+    link: '/dashboard/home',
+    children: [
+      {
+        name: '轮播图管理',
+        link: '/dashboard/home/banner',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '文章发布',
+        link: '/dashboard/home/article',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '风采发表',
+        link: '/dashboard/home/picture',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '文章管理',
+        link: '/dashboard/home/manage-article',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '风采管理',
+        link: '/dashboard/home/manage-picture',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '机构设置管理',
+        link: '/dashboard/home/manage-intro',
+        icon: 'fa-circle-o'
+      }
+    ]
   }
 ]

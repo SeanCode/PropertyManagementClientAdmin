@@ -425,6 +425,26 @@ export default {
     getPendingCount: function () {
       return post(Const.NET.API.RECORD_PENDING_COUNT, {})
     }
+  },
+  ARTICLE: {
+    getArticleList: function (type, page) {
+      if (type === undefined) {
+        return get(Const.NET.API.ARTICLE_LIST, {page: page})
+      }
+      return get(Const.NET.API.ARTICLE_LIST_TYPE, {type: type, page: page})
+    },
+    getArticleContent: function (type, id) {
+      return get((Const.NET.API.ARTICLE_CONTENT, {type: type, id: id}))
+    },
+    saveArticle: function (type, title, content, attachments, imgs) {
+      return post(Const.NET.API.ARTICLE_SAVE, {type: type, title: title, content: content, attachments: attachments, imgs: imgs})
+    },
+    updateArticle: function (id, title, content, attachments, imgs) {
+      return post(Const.NET.API.ARTICLE_UPDATE, {id: id, title: title, content: content, attachments: attachments, imgs: imgs})
+    },
+    deleteArticle: function (id) {
+      return post(Const.NET.API.ARTICLE_DELETE, {id: id})
+    }
   }
 }
 
@@ -451,7 +471,7 @@ function get (api, params, requestHeaders, raw) {
   var url = endPoint + Const.NET.API_PATH + api
   Log.d(url + '?' + transformObjectToUrlencodedData(params))
 
-  return Vue.http.get(url, {}, {
+  return Vue.http.get(url, {
     params: params,
     headers: configureGetHeaders(requestHeaders)
   }).then(function (response) {

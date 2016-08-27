@@ -13,6 +13,12 @@
 
 </template>
 
+<style>
+  .main-sidebar {
+    position: fixed;
+  }
+</style>
+
 <script>
   import SidebarSearch from './../widgets/admin/sidebar-search.vue'
   import SidebarUserPanel from './../widgets/admin/sidebar-user-panel.vue'
