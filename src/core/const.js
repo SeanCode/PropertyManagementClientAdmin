@@ -70,7 +70,11 @@ export default {
       ARTICLE_CONTENT: '/article/{type}/{id}',
       ARTICLE_SAVE: '/article/save',
       ARTICLE_UPDATE: '/article/update',
-      ARTICLE_DELETE: '/article/delete'
+      ARTICLE_DELETE: '/article/delete',
+      PHOTO_COVER_LIST: '/photo/{type}',
+      PHOTO_LIST: '/photo/{type}/{cover_id}',
+      PHOTO_COVER_DELETE: '/photo/cover-delete',
+      PHOTO_DELETE: '/photo/photo-delete'
     }
   },
 

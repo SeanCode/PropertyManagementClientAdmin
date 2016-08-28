@@ -3,6 +3,7 @@
  */
 export default {
   ROUTE_LIST_GUEST_CAN_VISIT: ['/dashboard/login'],
+  IS_DEBUG: true,
   ARTICLE_CATEGORY_LIST: {
     all: [
       {name: '全部', value: 0},
@@ -37,5 +38,12 @@ export default {
       {name: '物业巡查', value: 30004}
     ]
   },
-  IS_DEBUG: true
+  PHOTO_TYPE_LIST: [
+    {name: '全部', value: 0},
+    {name: '领导关怀', value: 1},
+    {name: '荣誉奖励', value: 2},
+    {name: '会议纪实', value: 3},
+    {name: '物业动态', value: 4},
+    {name: '校园绿化', value: 5}
+  ]
 }

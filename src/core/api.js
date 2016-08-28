@@ -445,6 +445,20 @@ export default {
     deleteArticle: function (id) {
       return post(Const.NET.API.ARTICLE_DELETE, {id: id})
     }
+  },
+  PHOTO: {
+    getCoverList: function (type, page) {
+      return get(Const.NET.API.PHOTO_COVER_LIST, {type: type, page: page})
+    },
+    getPhotoList: function (type, coverId, page) {
+      return get(Const.NET.API.PHOTO_LIST, {type: type, cover_id: coverId, page: page})
+    },
+    deleteCover: function (id) {
+      return post(Const.NET.API.PHOTO_COVER_DELETE, {id: id})
+    },
+    deletePhoto: function (id) {
+      return post(Const.NET.API.PHOTO_DELETE, {id: id})
+    }
   }
 }
 
@@ -476,12 +490,12 @@ function get (api, params, requestHeaders, raw) {
     headers: configureGetHeaders(requestHeaders)
   }).then(function (response) {
     if (!response.data.hasOwnProperty('code') || response.data.code !== 0) {
-      return Promise.reject(JSON.stringify(response.data))
+      return Promise.reject(response.data)
     }
     return raw ? response : response.data.data
   }, function (error) {
     Log.e(error)
-    return error
+    return Promise.reject(error)
   })
 }
 

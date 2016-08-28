@@ -73,7 +73,7 @@
           <div class="box-footer text-center">
             <a v-bind:class="{ 'pagination_link_disabled': page <= 1, 'pagination_link': page > 1 }"
                @click="clickToPrevious()">上一页</a>
-            <span>{{page}}/{{pageAll}}</span>
+            <span>&nbsp;&nbsp;&nbsp;{{page}}/{{pageAll}}&nbsp;&nbsp;&nbsp;</span>
             <a v-bind:class="{ 'pagination_link_disabled': page >= pageAll, 'pagination_link': page < pageAll }"
                @click='clickToNext()'>下一页</a>
           </div>
@@ -103,7 +103,7 @@
     },
     data () {
       return {
-        page: 0,
+        page: 1,
         pageAll: 0,
         articleList: [],
         typeKind: 'all',
@@ -145,9 +145,8 @@
       },
       typeCategory: function (type) {
         this.typeCategory = type
-        this.page = 0
-        getArticleList(type, 1)
-        ++this.page
+        this.page = 1
+        getArticleList(type, this.page)
       }
     },
     methods: {

@@ -26,28 +26,7 @@ configRouter(router)
 
 // boostrap the app
 const app = Vue.extend(require('./App.vue'))
-router.start(app, '#app');
-
-// add interceptor
-(function () {
-  Vue.http.interceptors.push({
-
-    request: function (request) {
-      if (!request.headers.hasOwnProperty('Authorization')) {
-        request.headers['Authorization'] = 'Basic ' + Core.Data.getToken()
-      }
-      return request
-    },
-
-    response: function (response) {
-      if (response.status !== 200) {
-        Core.Log.t(response.statusText)
-      }
-      return response
-    }
-
-  })
-})()
+router.start(app, '#app')
 
 $.ajaxSetup({
   headers: {
