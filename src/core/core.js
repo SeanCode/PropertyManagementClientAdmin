@@ -8,6 +8,7 @@ import Log from './log'
 import Util from './util'
 import Config from './config'
 import Toast from './toast'
+import Progress from './progress'
 
 export default {
   Api: Api,
@@ -16,5 +17,6 @@ export default {
   Log: Log,
   Util: Util,
   Config: Config,
-  Toast: Toast
+  Toast: Toast,
+  Progress: Progress
 }

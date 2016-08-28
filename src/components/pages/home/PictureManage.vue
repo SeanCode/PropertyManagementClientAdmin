@@ -9,6 +9,7 @@
     width: 240px;
     height: 160px;
     margin: 10px;
+    overflow: hidden;
   }
 
   .photo_box img {
@@ -22,6 +23,12 @@
   .clear {
     clear: both;
   }
+
+  .btn-upload span {
+    color: #97a0b3 !important;
+    background-color: transparent !important;;
+  }
+
 </style>
 <template>
   <!-- Content Header (Page header) -->
@@ -67,8 +74,8 @@
               <button class="btn btn-box-tool" v-show="coverEditing.id" title="修改">
                 <i class="fa fa-pencil"></i>
               </button>
-              <button class="btn btn-box-tool" title="添加照片">
-                <i class="fa fa-plus"></i>
+              <button class="btn btn-box-tool btn-upload" v-show="coverEditing.id" title="添加照片">
+                <file-upload icon="fa fa-plus" label="" :url="uploadUrl()" :files.sync="files" :filters="filters" :events='cbEvents' :request-options="reqopts"></file-upload>
               </button>
             </div>
           </div>
@@ -101,6 +108,13 @@
           <button type="button" class="btn label-danger" @click="deletePhoto()">删除</button>
         </div>
       </modal>
+      <modal title="确认" :show.sync="showUploadPhoto" effect="fade">
+        <div slot="modal-body" class="modal-body">确认上传该照片?</div>
+        <div slot="modal-footer" class="modal-footer">
+          <button type="button" class="btn btn-default" @click='toggleUploadImg()'>取消</button>
+          <button type="button" class="btn label-info" @click="uploadImg()">删除</button>
+        </div>
+      </modal>
     </div>
   </section>
 </template>
@@ -108,11 +122,13 @@
   import ContentHeader from '../../widgets/admin/content-header.vue'
   import Core from '../../../core/core'
   import Modal from '../../widgets/Modal.vue'
+  import VueFileUpload from 'vue-file-upload'
 
   export default {
     components: {
       'content-header': ContentHeader,
-      'modal': Modal
+      'modal': Modal,
+      'file-upload': VueFileUpload
     },
     data () {
       return {
@@ -130,7 +146,37 @@
         coverEditing: {},
         showDeletePhoto: false,
         showDeleteCover: false,
-        showEditCover: false
+        showEditCover: false,
+        showUploadPhoto: false,
+        files: [],
+        filters: [{
+          name: 'imageFilter',
+          fn (file) {
+            var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|'
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1
+          }}
+        ],
+        cbEvents: {
+          onCompleteUpload: (file, response, status, header) => {
+            Core.Progress.hide(this)
+          },
+          onProgressUpload: (file, progress) => {
+            Core.Progress.update(this, progress)
+          },
+          onSuccessUpload: (file, response, status, headers) => {
+            console.log(response)
+          },
+          onAddFileSuccess: (file) => {
+            this.toggleUploadImg()
+          }
+        },
+        reqopts: {
+          responseType: 'json',
+          withCredentials: false,
+          headers: {
+            Authorization: 'Basic ' + Core.Data.getToken()
+          }
+        }
       }
     },
     watch: {
@@ -221,6 +267,26 @@
           this.showDeletePhoto = false
           Core.Toast.error(this, '删除失败: ' + error.message)
         })
+      },
+      uploadImg: function () {
+        this.showUploadPhoto = false
+        this.$broadcast('DO_POST_FILE')
+        Core.Progress.show(this)
+      },
+      uploadUrl: function () {
+        var endPoint = Core.Config.IS_DEBUG ? Core.Const.NET.END_POINT_DEBUG : Core.Const.NET.END_POINT_RELEASE
+        return endPoint + Core.Const.NET.API_PATH + Core.Const.NET.API.UPLOAD_IMG
+      },
+      toggleUploadImg: function () {
+        if (!this.showUploadPhoto) {
+          this.showUploadPhoto = true
+        } else {
+          this.showUploadPhoto = false
+          this.files = []
+        }
+      },
+      uploadPhoto: function (imgName) {
+
       }
     }
   }
