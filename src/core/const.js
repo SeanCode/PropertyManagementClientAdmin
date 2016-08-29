@@ -74,7 +74,10 @@ export default {
       PHOTO_COVER_LIST: '/photo/{type}',
       PHOTO_LIST: '/photo/{type}/{cover_id}',
       PHOTO_COVER_DELETE: '/photo/cover-delete',
-      PHOTO_DELETE: '/photo/photo-delete',
+      PHOTO_PHOTO_DELETE: '/photo/photo-delete',
+      PHOTO_PHOTO_ADD: '/photo/photo-add',
+      PHOTO_COVER_ADD: '/photo/cover-add',
+      PHOTO_COVER_UPDATE: '/photo/cover-update',
       UPLOAD_IMG: '/upload/img'
     }
   },

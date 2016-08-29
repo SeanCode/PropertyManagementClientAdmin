@@ -145,11 +145,6 @@ module.exports = [
         icon: 'fa-circle-o'
       },
       {
-        name: '风采发表',
-        link: '/dashboard/home/picture',
-        icon: 'fa-circle-o'
-      },
-      {
         name: '文章管理',
         link: '/dashboard/home/manage-article',
         icon: 'fa-circle-o'

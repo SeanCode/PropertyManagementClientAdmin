@@ -457,7 +457,16 @@ export default {
       return post(Const.NET.API.PHOTO_COVER_DELETE, {id: id})
     },
     deletePhoto: function (id) {
-      return post(Const.NET.API.PHOTO_DELETE, {id: id})
+      return post(Const.NET.API.PHOTO_PHOTO_DELETE, {id: id})
+    },
+    addCover: function (name, url, type) {
+      return post(Const.NET.API.PHOTO_COVER_ADD, {name: name, url: url, type: type})
+    },
+    addPhoto: function (coverId, url) {
+      return post(Const.NET.API.PHOTO_PHOTO_ADD, {cover_id: coverId, url: url})
+    },
+    updateCover: function (id, name, url) {
+      return post(Const.NET.API.PHOTO_COVER_UPDATE, {id: id, name: name, url: url})
     }
   }
 }

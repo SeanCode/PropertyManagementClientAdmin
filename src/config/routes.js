@@ -23,7 +23,6 @@ import SystemAdmin from '../components/pages/system/Admin.vue'
 import SystemData from '../components/pages/system/Data.vue'
 import HomeArticle from '../components/pages/home/Article.vue'
 import HomeBanner from '../components/pages/home/Banner.vue'
-import HomePicture from '../components/pages/home/Picture.vue'
 import HomePictureManage from '../components/pages/home/PictureManage.vue'
 import HomeArticleManage from '../components/pages/home/ArticleManage.vue'
 import HomeIntroManage from '../components/pages/home/IntroManage.vue'
@@ -98,9 +97,6 @@ export function configRouter (router) {
         },
         '/home/banner': {
           component: HomeBanner
-        },
-        '/home/picture': {
-          component: HomePicture
         },
         '/home/manage-picture': {
           component: HomePictureManage

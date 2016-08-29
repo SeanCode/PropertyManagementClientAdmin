@@ -24,9 +24,23 @@
     clear: both;
   }
 
+  .btn-upload-cover {
+    padding: 0;
+  }
+
+  .btn-upload-cover span {
+    color: #fff !important;
+    background-color: transparent !important;;
+  }
+
   .btn-upload span {
     color: #97a0b3 !important;
     background-color: transparent !important;;
+  }
+
+  .modal-cover img {
+    width: 570px;
+    height: 380px;
   }
 
 </style>
@@ -68,11 +82,14 @@
       </div>
       <div class="col-md-8">
         <div class="box box-info">
-          <div class="box-header">
+          <div class="box-header with-border">
             <h3 class="box-title">{{coverEditing.id ? coverEditing.name : '请选择相册'}}({{photoCount}})</h3>
             <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" v-show="coverEditing.id" title="修改">
+              <button class="btn btn-box-tool" v-show="coverEditing.id" title="修改名称" @click="showEditCover = true">
                 <i class="fa fa-pencil"></i>
+              </button>
+              <button class="btn btn-box-tool" v-show="coverEditing.id" title="查看封面" @click="showUpdateCover = true">
+                <i class="fa fa-eye"></i>
               </button>
               <button class="btn btn-box-tool btn-upload" v-show="coverEditing.id" title="添加照片">
                 <file-upload icon="fa fa-plus" label="" :url="uploadUrl()" :files.sync="files" :filters="filters" :events='cbEvents' :request-options="reqopts"></file-upload>
@@ -112,7 +129,34 @@
         <div slot="modal-body" class="modal-body">确认上传该照片?</div>
         <div slot="modal-footer" class="modal-footer">
           <button type="button" class="btn btn-default" @click='toggleUploadImg()'>取消</button>
-          <button type="button" class="btn label-info" @click="uploadImg()">删除</button>
+          <button type="button" class="btn label-info" @click="uploadImg()">上传</button>
+        </div>
+      </modal>
+      <modal title="修改相册名称" :show.sync="showEditCover" effect="fade">
+        <div slot="modal-body" class="modal-body">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">名称</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="coverEditing.name">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div slot="modal-footer" class="modal-footer">
+          <button type="button" class="btn btn-default" @click='showEditCover = false'>取消</button>
+          <button type="button" class="btn label-info" @click="updateCover()">修改</button>
+        </div>
+      </modal>
+      <modal title="查看相册封面" class="modal-cover" :show.sync="showUpdateCover" effect="fade">
+        <div slot="modal-body" class="modal-body">
+          <img :src='photoUrl(coverEditing.cover_url)' v-if="coverEditing.cover_url"/>
+        </div>
+        <div slot="modal-footer" class="modal-footer">
+          <button type="button" class="btn btn-default" @click='showUpdateCover = false'>取消</button>
+          <button type="button" class="btn label-info btn-upload-cover">
+            <file-upload icon="" label="更换封面" :url="uploadUrl()" :files.sync="files" :filters="filters" :events='coverCbEvents' :request-options="reqopts"></file-upload>
+          </button>
         </div>
       </modal>
     </div>
@@ -136,9 +180,9 @@
         type: 0,
         coverList: [],
         coverCount: 0,
-        coverPage: 1,
+        coverPage: 0,
         coverPageAll: 0,
-        photoPage: 1,
+        photoPage: 0,
         photoPageAll: 0,
         photoList: [],
         photoCount: 0,
@@ -146,7 +190,9 @@
         coverEditing: {},
         showDeletePhoto: false,
         showDeleteCover: false,
-        showEditCover: false,
+        showEditCover: false, // 修改相册名称
+        showUpdateCover: false, // 查看相册封面
+        showAddCover: false,
         showUploadPhoto: false,
         files: [],
         filters: [{
@@ -164,7 +210,17 @@
             Core.Progress.update(this, progress)
           },
           onSuccessUpload: (file, response, status, headers) => {
-            console.log(response)
+            if (response && response.data && response.code === 0) {
+              this.uploadPhoto(response.data.img)
+            } else {
+              Core.Toast.error(this, '上传失败')
+            }
+          },
+          onErrorUpload: (file, response, status, headers) => {
+            Core.Toast.error(this, '上传失败')
+          },
+          onAbortUpload: (file, response, status, headers) => {
+            Core.Toast.error(this, '取消上传')
           },
           onAddFileSuccess: (file) => {
             this.toggleUploadImg()
@@ -175,6 +231,34 @@
           withCredentials: false,
           headers: {
             Authorization: 'Basic ' + Core.Data.getToken()
+          }
+        },
+        coverCbEvents: {
+          onCompleteUpload: (file, response, status, header) => {
+            Core.Progress.hide(this)
+          },
+          onProgressUpload: (file, progress) => {
+            Core.Progress.update(this, progress)
+          },
+          onSuccessUpload: (file, response, status, headers) => {
+            if (response && response.data && response.code === 0) {
+              this.coverEditing.cover_url = 'img/' + response.data.img
+              this.updateCover()
+            } else {
+              Core.Toast.error(this, '上传失败')
+            }
+          },
+          onErrorUpload: (file, response, status, headers) => {
+            Core.Toast.error(this, '上传失败')
+          },
+          onAbortUpload: (file, response, status, headers) => {
+            Core.Toast.error(this, '取消上传')
+          },
+          onAddFileSuccess: (file) => {
+            Core.Toast.info(this, '上传中, 请稍后...')
+            this.showUpdateCover = false
+            Core.Progress.show(this)
+            this.$broadcast('DO_POST_FILE')
           }
         }
       }
@@ -218,6 +302,7 @@
       },
       showCoverPhotos: function (cover) {
         this.coverEditing = cover
+        this.photoPage = 1
         getPhotoList(this.type, cover.id, 1)
       },
       clickToPreviousPhoto: function () {
@@ -271,6 +356,7 @@
       uploadImg: function () {
         this.showUploadPhoto = false
         this.$broadcast('DO_POST_FILE')
+        Core.Toast.info(this, '上传中, 请稍后...')
         Core.Progress.show(this)
       },
       uploadUrl: function () {
@@ -286,7 +372,34 @@
         }
       },
       uploadPhoto: function (imgName) {
-
+        Core.Api.PHOTO.addPhoto(this.coverEditing.id, 'img/' + imgName).then((data) => {
+          Core.Toast.success(this, '上传成功')
+          Core.Progress.hide(this)
+          getPhotoList(this.type, this.coverEditing.id, 1)
+        }, (error) => {
+          Core.Toast.error(this, '上传失败: ' + error.message)
+        })
+      },
+      updateCover: function () {
+        Core.Api.PHOTO.updateCover(this.coverEditing.id, this.coverEditing.name, this.coverEditing.cover_url).then(data => {
+          Core.Toast.success(this, '相册更新成功, 刷新中...')
+          this.showEditCover = false
+          Core.Api.PHOTO.getPhotoList(this.type, this.coverEditing.id, 1).then((data) => {
+            this.coverEditing = data.cover
+            Core.Toast.success(this, '相册已刷新')
+          }, () => {
+            Core.Toast.error(this, '相册刷新失败, 请手动刷新')
+          })
+          Core.Api.PHOTO.getCoverList(this.type, this.coverPage).then((data) => {
+            this.coverList = data.cover_list
+            Core.Toast.success(this, '相册列表已刷新')
+          }, () => {
+            Core.Toast.error(this, '相册列表刷新失败, 请手动刷新')
+          })
+        }, (error) => {
+          this.showEditCover = false
+          Core.Toast.error(this, '相册更新失败 ' + error.message)
+        })
       }
     }
   }
@@ -302,6 +415,13 @@
       context.coverList = data.cover_list
       context.coverPageAll = Math.ceil(data.count / 10)
       context.coverCount = data.count
+      if (data.count === 0) {
+        context.coverPage = 0
+      } else {
+        if (page === 1) {
+          context.coverPage = 1
+        }
+      }
     }, (error) => {
       Core.Toast.error(context, error.message)
     })
@@ -312,6 +432,13 @@
       context.photoList = data.photo_list
       context.photoCount = data.count
       context.photoPageAll = Math.ceil(data.count / 9)
+      if (data.count === 0) {
+        context.photoPage = 0
+      } else {
+        if (page === 1) {
+          context.photoPage = 1
+        }
+      }
     }, (error) => {
       Core.Toast.error(context, error.message)
     })

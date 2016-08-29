@@ -9,10 +9,20 @@
 </template>
 <style>
   .progress {
-    position: relative;
+    position: fixed;
     z-index: 1031;
     margin-bottom: 0;
-    height: 4px;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.7;
+  }
+
+  .progress-bar {
+    position: absolute;
+    top: 40%;
+    height: 8px;
+    border-radius: 4px;
   }
 </style>
 <script>
@@ -37,9 +47,13 @@
         if (type) {
           this.type = type
         }
+        this.progressValue = 0
       },
       'progress::hide': function () {
-        this.showProgress = false
+        setTimeout(() => {
+          this.showProgress = false
+          this.progressValue = 0
+        }, 500)
       },
       'progress::update': function (now) {
         this.progressValue = now
