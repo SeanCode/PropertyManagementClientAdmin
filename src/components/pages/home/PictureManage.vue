@@ -40,7 +40,7 @@
 
   .modal-cover img {
     width: 570px;
-    height: 380px;
+    max-height: 380px;
   }
 
 </style>
@@ -53,10 +53,13 @@
         <div class="box box-info">
           <div class="box-header">
             <h3 class="box-title">相册({{coverCount}})</h3>
-            <div class="box-tools">
+            <div class="box-tools pull-right">
               <select v-model="type">
                 <option value="{{type.value}}" v-for="type in typeList">{{type.name}}</option>
               </select>
+              <button class="btn btn-box-tool" @click="showAddCover = true">
+                <i class="fa fa-plus"></i>
+              </button>
             </div>
           </div>
           <div class="box-body table-responsive no-padding" style="display: block;">
@@ -145,7 +148,15 @@
         </div>
         <div slot="modal-footer" class="modal-footer">
           <button type="button" class="btn btn-default" @click='showEditCover = false'>取消</button>
+          <button type="button" class="btn label-danger" @click="toggleDeleteCover()">删除</button>
           <button type="button" class="btn label-info" @click="updateCover()">修改</button>
+        </div>
+      </modal>
+      <modal title="警告" :show.sync="showDeleteCover" effect="fade">
+        <div slot="modal-body" class="modal-body">确认删除该 <strong>相册</strong> ??? 请谨慎操作!!!</div>
+        <div slot="modal-footer" class="modal-footer">
+          <button type="button" class="btn btn-default" @click='showDeleteCover = false'>取消</button>
+          <button type="button" class="btn label-danger" @click="deleteCover()">删除</button>
         </div>
       </modal>
       <modal title="查看相册封面" class="modal-cover" :show.sync="showUpdateCover" effect="fade">
@@ -156,6 +167,36 @@
           <button type="button" class="btn btn-default" @click='showUpdateCover = false'>取消</button>
           <button type="button" class="btn label-info btn-upload-cover">
             <file-upload icon="" label="更换封面" :url="uploadUrl()" :files.sync="files" :filters="filters" :events='coverCbEvents' :request-options="reqopts"></file-upload>
+          </button>
+        </div>
+      </modal>
+      <modal title="添加相册" class="modal-cover" :show.sync="showAddCover" effect="fade">
+        <div slot="modal-body" class="modal-body">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">名称</label>
+              <div class="col-sm-10">
+                <input class="form-control" v-model="coverAdd.name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">类型</label>
+              <div class="col-sm-10">
+                <select class="form-control" v-model="coverAdd.type">
+                  <option value="1" selected>领导关怀</option>
+                  <option value="2">荣誉奖励</option>
+                  <option value="1">会议纪实</option>
+                  <option value="1">物业动态</option>
+                  <option value="1">校园绿化</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div slot="modal-footer" class="modal-footer">
+          <button type="button" class="btn btn-default" @click='showAddCover = false'>取消</button>
+          <button type="button" class="btn label-info btn-upload-cover">
+            <file-upload icon="" label="选择封面" :url="uploadUrl()" :files.sync="files" :filters="filters" :events='addCoverCbEvents' :request-options="reqopts"></file-upload>
           </button>
         </div>
       </modal>
@@ -188,6 +229,7 @@
         photoCount: 0,
         photoEditing: {},
         coverEditing: {},
+        coverAdd: {},
         showDeletePhoto: false,
         showDeleteCover: false,
         showEditCover: false, // 修改相册名称
@@ -257,6 +299,34 @@
           onAddFileSuccess: (file) => {
             Core.Toast.info(this, '上传中, 请稍后...')
             this.showUpdateCover = false
+            Core.Progress.show(this)
+            this.$broadcast('DO_POST_FILE')
+          }
+        },
+        addCoverCbEvents: {
+          onCompleteUpload: (file, response, status, header) => {
+            Core.Progress.hide(this)
+          },
+          onProgressUpload: (file, progress) => {
+            Core.Progress.update(this, progress)
+          },
+          onSuccessUpload: (file, response, status, headers) => {
+            if (response && response.data && response.code === 0) {
+              this.coverAdd.url = 'img/' + response.data.img
+              this.addCover()
+            } else {
+              Core.Toast.error(this, '上传失败')
+            }
+          },
+          onErrorUpload: (file, response, status, headers) => {
+            Core.Toast.error(this, '上传失败')
+          },
+          onAbortUpload: (file, response, status, headers) => {
+            Core.Toast.error(this, '取消上传')
+          },
+          onAddFileSuccess: (file) => {
+            Core.Toast.info(this, '上传中, 请稍后...')
+            this.showAddCover = false
             Core.Progress.show(this)
             this.$broadcast('DO_POST_FILE')
           }
@@ -342,6 +412,10 @@
         this.photoEditing = photo
         this.showDeletePhoto = true
       },
+      toggleDeleteCover: function () {
+        this.showEditCover = false
+        this.showDeleteCover = true
+      },
       deletePhoto: function () {
         Core.Api.PHOTO.deletePhoto(this.photoEditing.id).then((data) => {
           Core.Toast.success(this, '删除成功')
@@ -399,6 +473,39 @@
         }, (error) => {
           this.showEditCover = false
           Core.Toast.error(this, '相册更新失败 ' + error.message)
+        })
+      },
+      addCover: function () {
+        Core.Api.PHOTO.addCover(this.coverAdd.name, this.coverAdd.url, this.coverAdd.type).then((data) => {
+          this.showAddCover = false
+          Core.Toast.success(this, '相册已添加, 刷新中...')
+          this.coverAdd = {}
+          Core.Api.PHOTO.getCoverList(this.type, this.coverPage).then((data) => {
+            this.coverList = data.cover_list
+            Core.Toast.success(this, '相册列表已刷新')
+          }, () => {
+            Core.Toast.error(this, '相册列表刷新失败, 请手动刷新')
+          })
+        }, (error) => {
+          this.showAddCover = false
+          Core.Toast.error(this, '相册添加失败 ' + error.message)
+        })
+      },
+      deleteCover: function () {
+        Core.Api.PHOTO.deleteCover(this.coverEditing.id).then((data) => {
+          this.showDeleteCover = false
+          Core.Toast.success(this, '相册已删除, 刷新中...')
+          this.coverEditing = {}
+          this.photoList = []
+          Core.Api.PHOTO.getCoverList(this.type, this.coverPage).then((data) => {
+            this.coverList = data.cover_list
+            Core.Toast.success(this, '相册列表已刷新')
+          }, () => {
+            Core.Toast.error(this, '相册列表刷新失败, 请手动刷新')
+          })
+        }, (error) => {
+          this.showDeleteCover = false
+          Core.Toast.error(this, '相册删除失败 ' + error.message)
         })
       }
     }
