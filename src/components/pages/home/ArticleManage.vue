@@ -28,7 +28,7 @@
             <h3 class="box-title">文章列表</h3>
             <div class="box-tools">
               <select v-model="typeKind">
-                <option value='all'>全部</option>
+                <option value='all'>请选择分类</option>
                 <option value='guide'>服务指南</option>
                 <option value='news'>新闻公告</option>
                 <option value='log'>安检日志</option>
@@ -84,7 +84,7 @@
           <div slot="modal-body" class="modal-body">确认删除  <strong>{{articleEditing.title}}</strong>  ???</div>
           <div slot="modal-footer" class="modal-footer">
             <button type="button" class="btn btn-default" @click='showDelete = false'>取消</button>
-            <button type="button" class="btn label-danger" @click="delete()">删除</button>
+            <button type="button" class="btn label-danger" @click="deleteArticle()">删除</button>
           </div>
         </modal>
       </div>
@@ -183,7 +183,7 @@
         this.articleEditing = article
         this.showDelete = true
       },
-      delete: function () {
+      deleteArticle: function () {
         this.showDelete = false
         Core.Api.ARTICLE.deleteArticle(this.articleEditing.id).then((data) => {
           this.articleEditing = {}
