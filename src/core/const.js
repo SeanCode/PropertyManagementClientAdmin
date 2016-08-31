@@ -19,6 +19,8 @@ export default {
       CONFIG_PRICE: '/config/price',
       CONFIG_UPDATE_DEFAULT_PRICE: '/config/price-default-update',
       CONFIG_SAVE_SPECIFIC_PRICE: '/config/price-specific-save',
+      CONFIG_BANNER_LIST: '/config/banner-list',
+      CONFIG_BANNER_UPDATE: '/config/banner-update',
       DEPARTMENT_LIST: '/department/list',
       DEPARTMENT_TREE_LIST: '/department/tree-list',
       DEPARTMENT_NAME_UPDATE: '/department/name-update',

@@ -85,6 +85,12 @@ export default {
         ele: ele,
         gas: gas
       })
+    },
+    getBannerList: function () {
+      return get(Const.NET.API.CONFIG_BANNER_LIST, {})
+    },
+    updateBanner: function (id, url) {
+      return post(Const.NET.API.CONFIG_BANNER_UPDATE, {id: id, url: url})
     }
   },
   DEPARTMENT: {
