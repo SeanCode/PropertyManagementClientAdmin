@@ -165,9 +165,9 @@
             institution: '机构管理',
             advanced: '高级管理',
             admin: '管理员管理',
-            article_add: '门户文章发表',
-            picture_add: '门户风采发表',
-            resource_manage: '门户资源管理',
+            article: '门户文章管理',
+            picture: '门户风采管理',
+            suggestion: '门户建议管理',
             banner: '门户轮播图管理',
             delete: '删除',
             ban: '锁定',
@@ -205,14 +205,14 @@
             admin: function (row) {
               return '<input type="checkbox" id="checkbox_' + row.id + '_' + 6 + '"' + (row.auth.admin ? ' checked' : '') + ' @click="$parent.toggleUpdateAdminPrivilege(' + row.id + ',' + 6 + ')"' + '/>'
             },
-            article_add: function (row) {
+            article: function (row) {
               return '<input type="checkbox" id="checkbox_' + row.id + '_' + 7 + '"' + (row.auth.article ? ' checked' : '') + ' @click="$parent.toggleUpdateAdminPrivilege(' + row.id + ',' + 7 + ')"' + '/>'
             },
-            picture_add: function (row) {
+            picture: function (row) {
               return '<input type="checkbox" id="checkbox_' + row.id + '_' + 8 + '"' + (row.auth.picture ? ' checked' : '') + ' @click="$parent.toggleUpdateAdminPrivilege(' + row.id + ',' + 8 + ')"' + '/>'
             },
-            resource_manage: function (row) {
-              return '<input type="checkbox" id="checkbox_' + row.id + '_' + 9 + '"' + (row.auth.resource ? ' checked' : '') + ' @click="$parent.toggleUpdateAdminPrivilege(' + row.id + ',' + 9 + ')"' + '/>'
+            suggestion: function (row) {
+              return '<input type="checkbox" id="checkbox_' + row.id + '_' + 9 + '"' + (row.auth.suggestion ? ' checked' : '') + ' @click="$parent.toggleUpdateAdminPrivilege(' + row.id + ',' + 9 + ')"' + '/>'
             },
             banner: function (row) {
               return '<input type="checkbox" id="checkbox_' + row.id + '_' + 10 + '"' + (row.auth.banner ? ' checked' : '') + ' @click="$parent.toggleUpdateAdminPrivilege(' + row.id + ',' + 10 + ')"' + '/>'

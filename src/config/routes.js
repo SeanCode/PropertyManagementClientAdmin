@@ -21,11 +21,12 @@ import StatisticsMonth from '../components/pages/statistics/Month.vue'
 import StatisticsAll from '../components/pages/statistics/All.vue'
 import SystemAdmin from '../components/pages/system/Admin.vue'
 import SystemData from '../components/pages/system/Data.vue'
-import HomeArticle from '../components/pages/home/Article.vue'
 import HomeBanner from '../components/pages/home/Banner.vue'
-import HomePictureManage from '../components/pages/home/PictureManage.vue'
-import HomeArticleManage from '../components/pages/home/ArticleManage.vue'
-import HomeIntroManage from '../components/pages/home/IntroManage.vue'
+import HomePicture from '../components/pages/home/Picture.vue'
+import HomeArticle from '../components/pages/home/Article.vue'
+import HomeArticleDetail from '../components/pages/home/ArticleDetail.vue'
+import HomeArticleAdd from '../components/pages/home/ArticleAdd.vue'
+import HomeIntro from '../components/pages/home/Intro.vue'
 import Core from '../core/core'
 
 export function configRouter (router) {
@@ -92,20 +93,23 @@ export function configRouter (router) {
         '/system/data': {
           component: SystemData
         },
-        '/home/article': {
-          component: HomeArticle
-        },
         '/home/banner': {
           component: HomeBanner
         },
-        '/home/manage-picture': {
-          component: HomePictureManage
+        '/home/picture': {
+          component: HomePicture
         },
-        '/home/manage-article': {
-          component: HomeArticleManage
+        '/home/article': {
+          component: HomeArticle
         },
-        '/home/manage-intro': {
-          component: HomeIntroManage
+        '/home/article/add': {
+          component: HomeArticleAdd
+        },
+        '/home/article/:type/:id': {
+          component: HomeArticleDetail
+        },
+        '/home/intro': {
+          component: HomeIntro
         },
         '*': {
           component: NotFound

@@ -80,7 +80,9 @@ export default {
       PHOTO_PHOTO_ADD: '/photo/photo-add',
       PHOTO_COVER_ADD: '/photo/cover-add',
       PHOTO_COVER_UPDATE: '/photo/cover-update',
-      UPLOAD_IMG: '/upload/img'
+      UPLOAD_IMG: '/upload/img',
+      INTRODUCTION_LIST: '/org/intro-list',
+      INTRODUCTION_UPDATE: '/org/intro-update'
     }
   },
 

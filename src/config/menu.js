@@ -140,23 +140,18 @@ module.exports = [
         icon: 'fa-circle-o'
       },
       {
-        name: '文章发布',
+        name: '文章管理',
         link: '/dashboard/home/article',
         icon: 'fa-circle-o'
       },
       {
-        name: '文章管理',
-        link: '/dashboard/home/manage-article',
-        icon: 'fa-circle-o'
-      },
-      {
         name: '风采管理',
-        link: '/dashboard/home/manage-picture',
+        link: '/dashboard/home/picture',
         icon: 'fa-circle-o'
       },
       {
-        name: '机构设置管理',
-        link: '/dashboard/home/manage-intro',
+        name: '机构简介管理',
+        link: '/dashboard/home/intro',
         icon: 'fa-circle-o'
       }
     ]

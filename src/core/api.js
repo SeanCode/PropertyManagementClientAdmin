@@ -440,7 +440,7 @@ export default {
       return get(Const.NET.API.ARTICLE_LIST_TYPE, {type: type, page: page})
     },
     getArticleContent: function (type, id) {
-      return get((Const.NET.API.ARTICLE_CONTENT, {type: type, id: id}))
+      return get(Const.NET.API.ARTICLE_CONTENT, {type: type, id: id})
     },
     saveArticle: function (type, title, content, attachments, imgs) {
       return post(Const.NET.API.ARTICLE_SAVE, {type: type, title: title, content: content, attachments: attachments, imgs: imgs})
@@ -473,6 +473,14 @@ export default {
     },
     updateCover: function (id, name, url) {
       return post(Const.NET.API.PHOTO_COVER_UPDATE, {id: id, name: name, url: url})
+    }
+  },
+  INTRODUCTION: {
+    getIntroList: function () {
+      return get(Const.NET.API.INTRODUCTION_LIST, {})
+    },
+    updateIntroduction: function (id, content) {
+      return post(Const.NET.API.INTRODUCTION_UPDATE, {id: id, content: content})
     }
   }
 }
