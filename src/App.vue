@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="progress" v-show="showProgress">
+    <div class="progress-global" v-show="showProgress">
       <progress :now="progressValue" type="success" striped animated></progress>
     </div>
     <router-view transition transition-mode="out-in"></router-view>
@@ -8,7 +8,7 @@
   </div>
 </template>
 <style>
-  .progress {
+  .progress-global {
     position: fixed;
     z-index: 1031;
     margin-bottom: 0;
@@ -18,7 +18,7 @@
     opacity: 0.7;
   }
 
-  .progress-bar {
+  .progress-global .progress-bar {
     position: absolute;
     top: 40%;
     height: 8px;

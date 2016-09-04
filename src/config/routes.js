@@ -27,6 +27,7 @@ import HomeArticle from '../components/pages/home/Article.vue'
 import HomeArticleDetail from '../components/pages/home/ArticleDetail.vue'
 import HomeArticleAdd from '../components/pages/home/ArticleAdd.vue'
 import HomeIntro from '../components/pages/home/Intro.vue'
+import HomeSuggestion from '../components/pages/home/Suggestion.vue'
 import Core from '../core/core'
 
 export function configRouter (router) {
@@ -110,6 +111,9 @@ export function configRouter (router) {
         },
         '/home/intro': {
           component: HomeIntro
+        },
+        '/home/suggestion': {
+          component: HomeSuggestion
         },
         '*': {
           component: NotFound

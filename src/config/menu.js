@@ -153,6 +153,11 @@ module.exports = [
         name: '机构简介管理',
         link: '/dashboard/home/intro',
         icon: 'fa-circle-o'
+      },
+      {
+        name: '意见建议管理',
+        link: '/dashboard/home/suggestion',
+        icon: 'fa-circle-o'
       }
     ]
   }
