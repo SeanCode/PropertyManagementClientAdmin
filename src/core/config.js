@@ -45,5 +45,17 @@ export default {
     {name: '会议纪实', value: 3},
     {name: '物业动态', value: 4},
     {name: '校园绿化', value: 5}
+  ],
+  ARTICLE_SAVE_CATEGORY_LIST: [
+    {name: '服务指南--政策法规', value: 10001},
+    {name: '服务指南--工作简报', value: 10002},
+    {name: '服务指南--流程指南', value: 10003},
+    {name: '服务指南--相关下载', value: 10004},
+    {name: '新闻公告--新闻热点', value: 20001},
+    {name: '新闻公告--公示公告', value: 20002},
+    {name: '安检日志--特种设备', value: 30001},
+    {name: '安检日志--教学巡查', value: 30002},
+    {name: '安检日志--公寓巡查', value: 30003},
+    {name: '安检日志--物业巡查', value: 30004}
   ]
 }

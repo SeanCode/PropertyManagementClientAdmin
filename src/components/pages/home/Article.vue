@@ -16,6 +16,11 @@
     color: #777;
     cursor: text !important;
   }
+
+  .select_inline {
+    float: left;
+    width: auto;
+  }
 </style>
 <template>
   <!-- Content Header (Page header) -->
@@ -27,21 +32,18 @@
           <div class="box-header">
             <h3 class="box-title">文章列表</h3>
             <div class="box-tools">
-              <select v-model="typeKind">
+              <button class='btn btn-box-tool' title="发布文章" @click="goToAddArticle()">
+                <i class='fa fa-plus-square'></i>
+              </button>
+              <select class="form-control select_inline" v-model="typeKind">
                 <option value='all'>请选择分类</option>
                 <option value='guide'>服务指南</option>
                 <option value='news'>新闻公告</option>
                 <option value='log'>安检日志</option>
               </select>
-              <select v-model="typeCategory">
+              <select class="form-control select_inline" v-model="typeCategory">
                 <option value='{{category.value}}' v-for='category in categoryList'>{{category.name}}</option>
               </select>
-              <button class='btn btn-box-tool' title="发布文章" @click="goToAddArticle()">
-                <i class='fa fa-plus-square'></i>
-              </button>
-              <button class="btn btn-box-tool" data-widget="collapse" title="折叠/展开">
-                <i class="fa fa-minus"></i>
-              </button>
             </div>
           </div>
           <!-- /.box-header -->

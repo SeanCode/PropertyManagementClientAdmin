@@ -94,6 +94,9 @@
           },
           onAddFileSuccess: (file) => {
             this.toggleUploadBanner()
+          },
+          onAddFileFail: () => {
+            Core.Toast.error(this, '请选择正确类型的文件')
           }
         },
         reqopts: {
@@ -131,7 +134,13 @@
       },
       uploadBanner: function () {
         this.showUpdateBanner = false
-        this.$broadcast('DO_POST_FILE')
+        // 这里保证一次只上传一张图片
+        var length = this.files.length
+        if (length === 0) {
+          return
+        }
+        var index = length - 1
+        this.files[index].upload()
         Core.Toast.info(this, '上传中, 请稍后...')
         Core.Progress.show(this)
       },

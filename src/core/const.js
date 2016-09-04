@@ -81,6 +81,7 @@ export default {
       PHOTO_COVER_ADD: '/photo/cover-add',
       PHOTO_COVER_UPDATE: '/photo/cover-update',
       UPLOAD_IMG: '/upload/img',
+      UPLOAD_ATTACHMENT: '/upload/attachment',
       INTRODUCTION_LIST: '/org/intro-list',
       INTRODUCTION_UPDATE: '/org/intro-update'
     }
