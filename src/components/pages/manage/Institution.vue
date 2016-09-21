@@ -52,10 +52,10 @@
           <div class="box-header with-border">
             <h3 class="box-title">机构信息</h3>
             <div class="box-tools pull-right">
-              <button v-show="institution.id" class="btn btn-box-tool" @click="toggleRemoveInstitutionOwner()">
+              <button v-show="institution.id&&node.id" class="btn btn-box-tool" @click="toggleRemoveInstitutionOwner()">
                 <i class="fa fa-sign-out" title="搬出"></i>
               </button>
-              <button v-show="(!institution.id)&&(node.id)" class="btn btn-box-tool"
+              <button v-show="(!institution.id)&&node.id" class="btn btn-box-tool"
                       @click="toggleAddInstitutionOwner()">
                 <i class="fa fa-suitcase" title="入住"></i>
               </button>
@@ -1121,6 +1121,10 @@
 
   function onInstitutionRowClick (institution) {
     context.institution = institution
+    context.node = {}
+    context.meterNormalList = []
+    context.meterCheckList = []
+    context.meterChildren = []
     getNodeByOwner(institution.id, Core.Const.TYPE.OWNER_TYPE_INSTITUTION)
   }
 
@@ -1133,6 +1137,7 @@
       getMeterChildren(node)
     }, function (error) {
       Core.Log.e(error)
+      Core.Toast.error(context, '该机构可能尚未入住节点,请先添加节点,然后入住')
       context.node = {}
     })
   }

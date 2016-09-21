@@ -1,17 +1,17 @@
 <template>
   <!-- Content Header (Page header) -->
-  <content-header parent="统计" child="节点统计"></content-header>
+  <content-header parent="统计" child="个人统计"></content-header>
   <!-- Main content -->
   <section class="content">
     <div class="row">
       <div class="col-md-3">
         <div class="box box-solid">
           <div class="box-header with-border">
-            <h3 class="box-title">节点</h3>
+            <h3 class="box-title">部门与个人</h3>
           </div>
           <div class="box-body" style="display: block;">
-            <div class="node-tree-box">
-              <ul id="nodeTree" class="ztree"></ul>
+            <div class="user-tree-box">
+              <ul id="userTree" class="ztree"></ul>
             </div>
           </div>
         </div>
@@ -65,42 +65,36 @@
     },
     data () {
       return {
-        setting: {
-          view: {
-            selectedMulti: false
-          },
+        departmentList: [],
+        user_tree_setting: {
           async: {
             enable: true,
-            url: 'http://202.202.43.93:8080/api/private/v1/node/children',
-            autoParam: ['id'],
+            url: 'http://202.202.43.93:8080/api/private/v1/user/list-by-department',
+            autoParam: ['id=department_id'],
             dataType: 'json',
-            dataFilter: ajaxNodeDataFilter
+            dataFilter: ajaxUserDataFilter
           },
           data: {
             keep: {
               parent: true
+            },
+            simpleData: {
+              enable: true,
+              idKey: 'id',
+              pIdKey: 'parent_id',
+              rootPId: 1
             }
           },
-          edit: {
-            enable: false
-          },
           callback: {
-            onClick: onNodeSelected
+            onClick: onUserNodeSelected
           }
         }
       }
     },
     ready () {
       initContext(this)
-      initNodeTree()
+      initUserTree()
     }
-  }
-
-  function ajaxNodeDataFilter (treeId, parentNode, responseData) {
-    if (!responseData || responseData.code !== 0 || responseData.data.children === undefined || responseData.data.children.length <= 0) {
-      return null
-    }
-    return responseData.data.children
   }
 
   var context
@@ -109,21 +103,26 @@
     context = c
   }
 
-  function initNodeTree () {
-    Core.Api.NODE.getNodeTreeRoot().then(function (data) {
-      context.nodeList = data.tree_root
-      window.$.fn.zTree.init(window.$('#nodeTree'), context.setting, context.nodeList)
-      var treeObj = window.$.fn.zTree.getZTreeObj('nodeTree')
+  function ajaxUserDataFilter (treeId, parentNode, responseData) {
+    if (!responseData || responseData.code !== 0 || responseData.data.user_list === undefined || responseData.data.user_list.length <= 0) {
+      return null
+    }
+    return responseData.data.user_list
+  }
+
+  function initUserTree () {
+    Core.Api.DEPARTMENT.getTreeList(1).then(function (data) {
+      context.departmentList = data.department_list
+      window.$.fn.zTree.init(window.$('#userTree'), context.user_tree_setting, context.departmentList)
+      var treeObj = window.$.fn.zTree.getZTreeObj('userTree')
       var nodes = treeObj.getNodes()
-      if (data.tree_root) {
+      if (data.department_list.length > 0) {
         treeObj.expandNode(nodes[0], true, false, true)
       }
-    }, function (error) {
-      Core.Log.e(error)
     })
   }
 
-  function onNodeSelected (event, treeId, treeNode, clickFlag) {
+  function onUserNodeSelected (event, treeId, node, clickFlag) {
     Core.Toast.error(context, '暂无统计数据')
   }
 </script>

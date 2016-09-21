@@ -102,7 +102,7 @@ module.exports = [
     children: [
       {
         name: '个人统计',
-        link: '/dashboard/stat/user',
+        link: '/dashboard/stat/personal',
         icon: 'fa-circle-o'
       },
       {

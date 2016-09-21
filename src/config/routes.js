@@ -18,7 +18,7 @@ import PrintPayment from '../components/pages/print/Payment.vue'
 import PrintReport from '../components/pages/print/Report.vue'
 import PrintTemp from '../components/pages/print/Temp.vue'
 import StatisticsInstitution from '../components/pages/statistics/Institution.vue'
-import StatisticsUser from '../components/pages/statistics/User.vue'
+import StatisticsPersonal from '../components/pages/statistics/Personal.vue'
 import StatisticsNode from '../components/pages/statistics/Node.vue'
 import SystemAdmin from '../components/pages/system/Admin.vue'
 import SystemData from '../components/pages/system/Data.vue'
@@ -83,8 +83,8 @@ export function configRouter (router) {
         '/print/temp': {
           component: PrintTemp
         },
-        '/stat/user': {
-          component: StatisticsUser
+        '/stat/personal': {
+          component: StatisticsPersonal
         },
         '/stat/institution': {
           component: StatisticsInstitution
