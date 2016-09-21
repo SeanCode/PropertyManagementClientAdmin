@@ -83,7 +83,9 @@ export default {
       UPLOAD_IMG: '/upload/img',
       UPLOAD_ATTACHMENT: '/upload/attachment',
       INTRODUCTION_LIST: '/org/intro-list',
-      INTRODUCTION_UPDATE: '/org/intro-update'
+      INTRODUCTION_UPDATE: '/org/intro-update',
+      SUGGESTION_LIST_STATUS: '/suggestion/list-by-status',
+      SUGGESTION_REPLY: '/suggestion/reply'
     }
   },
 

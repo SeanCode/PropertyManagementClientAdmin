@@ -1,6 +1,6 @@
 <template>
   <!-- Content Header (Page header) -->
-  <content-header parent="统计" child="本月"></content-header>
+  <content-header parent="统计" child="节点统计"></content-header>
   <!-- Main content -->
   <section class="content">
   </section>

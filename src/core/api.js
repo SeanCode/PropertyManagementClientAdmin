@@ -482,6 +482,14 @@ export default {
     updateIntroduction: function (id, content) {
       return post(Const.NET.API.INTRODUCTION_UPDATE, {id: id, content: content})
     }
+  },
+  SUGGESTION: {
+    getSuggestionListByStatus: function (status, page) {
+      return get(Const.NET.API.SUGGESTION_LIST_STATUS, {status: status, page: page})
+    },
+    reply: function (id, reply) {
+      return post(Const.NET.API.SUGGESTION_REPLY, {id: id, reply: reply})
+    }
   }
 }
 

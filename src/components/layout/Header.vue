@@ -22,6 +22,16 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-envelope-o"></i>
+              <span class="label label-success" v-show="suggestCount != 0">{{suggestCount}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">你有 {{suggestCount}} 条意见或建议待回复</li>
+              <li class="footer"><a v-link="{path: '/dashboard/home/suggestion'}">查看所有</a></li>
+            </ul>
+          </li>
           <!-- Tasks: style can be found in dropdown.less -->
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -29,7 +39,7 @@
               <span class="label label-danger" v-show="recordPendingCount != 0">{{recordPendingCount}}</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">你有{{recordPendingCount}}条待审核记录</li>
+              <li class="header">你有 {{recordPendingCount}} 条待审核记录</li>
               <li class="footer">
                 <a v-link="{ path: '/dashboard/sdq/check/pending'}">查看所有</a>
               </li>
@@ -107,6 +117,7 @@
         admin: {},
         adminEditing: {},
         recordPendingCount: 0,
+        suggestCount: 0,
         showUpdatePassword: false
       }
     },
@@ -114,6 +125,7 @@
       initContext(this)
       this.admin = Core.Data.getAdmin()
       getPendingCount()
+      getSuggestCount()
     },
     events: {
       'login-msg': function () {
@@ -148,6 +160,12 @@
       context.recordPendingCount = data.pending_count
     }, function (error) {
       Core.Toast.error(context, '获取待审核记录失败: ' + error.message)
+    })
+  }
+
+  function getSuggestCount () {
+    Core.Api.SUGGESTION.getSuggestionListByStatus(0).then((data) => {
+      context.suggestCount = data.count
     })
   }
 

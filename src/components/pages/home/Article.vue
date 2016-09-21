@@ -18,8 +18,8 @@
   }
 
   .select_inline {
-    float: left;
     width: auto;
+    margin: 0 6px;
   }
 </style>
 <template>
@@ -32,17 +32,18 @@
           <div class="box-header">
             <h3 class="box-title">文章列表</h3>
             <div class="box-tools">
-              <button class='btn btn-box-tool' title="发布文章" @click="goToAddArticle()">
+              <button class='btn btn-box-tool pull-right' title="发布文章" @click="goToAddArticle()">
                 <i class='fa fa-plus-square'></i>
+                <span>添加文章</span>
               </button>
-              <select class="form-control select_inline" v-model="typeKind">
+              <select class="form-control select_inline pull-right" v-model="typeCategory">
+                <option value='{{category.value}}' v-for='category in categoryList'>{{category.name}}</option>
+              </select>
+              <select class="form-control select_inline pull-right" v-model="typeKind">
                 <option value='all'>请选择分类</option>
                 <option value='guide'>服务指南</option>
                 <option value='news'>新闻公告</option>
                 <option value='log'>安检日志</option>
-              </select>
-              <select class="form-control select_inline" v-model="typeCategory">
-                <option value='{{category.value}}' v-for='category in categoryList'>{{category.name}}</option>
               </select>
             </div>
           </div>

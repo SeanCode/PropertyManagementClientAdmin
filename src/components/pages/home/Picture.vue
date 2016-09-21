@@ -43,6 +43,11 @@
     max-height: 380px;
   }
 
+  .btn_inline {
+    width: auto;
+    margin: 0 6px;
+  }
+
 </style>
 <template>
   <!-- Content Header (Page header) -->
@@ -50,16 +55,17 @@
   <section class="content">
     <div class="row">
       <div class="col-md-4">
-        <div class="box box-info">
+        <div class="box box-solid">
           <div class="box-header">
             <h3 class="box-title">相册({{coverCount}})</h3>
             <div class="box-tools pull-right">
-              <select v-model="type">
+              <button class="btn btn-box-tool btn_inline pull-right" @click="showAddCover = true">
+                <i class="fa fa-plus"></i>
+                <span>添加相册</span>
+              </button>
+              <select class="form-control btn_inline pull-right" v-model="type">
                 <option value="{{type.value}}" v-for="type in typeList">{{type.name}}</option>
               </select>
-              <button class="btn btn-box-tool" @click="showAddCover = true">
-                <i class="fa fa-plus"></i>
-              </button>
             </div>
           </div>
           <div class="box-body table-responsive no-padding" style="display: block;">

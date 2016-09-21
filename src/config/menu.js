@@ -101,13 +101,18 @@ module.exports = [
     link: '/dashboard/stat',
     children: [
       {
-        name: '本月报表',
-        link: '/dashboard/stat/month',
+        name: '个人统计',
+        link: '/dashboard/stat/user',
         icon: 'fa-circle-o'
       },
       {
-        name: '全部',
-        link: '/dashboard/stat/all',
+        name: '机构统计',
+        link: '/dashboard/stat/institution',
+        icon: 'fa-circle-o'
+      },
+      {
+        name: '节点统计',
+        link: '/dashboard/stat/node',
         icon: 'fa-circle-o'
       }
     ]

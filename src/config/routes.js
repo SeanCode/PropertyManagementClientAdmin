@@ -17,8 +17,9 @@ import ManageAdvanced from '../components/pages/manage/Advanced.vue'
 import PrintPayment from '../components/pages/print/Payment.vue'
 import PrintReport from '../components/pages/print/Report.vue'
 import PrintTemp from '../components/pages/print/Temp.vue'
-import StatisticsMonth from '../components/pages/statistics/Month.vue'
-import StatisticsAll from '../components/pages/statistics/All.vue'
+import StatisticsInstitution from '../components/pages/statistics/Institution.vue'
+import StatisticsUser from '../components/pages/statistics/User.vue'
+import StatisticsNode from '../components/pages/statistics/Node.vue'
 import SystemAdmin from '../components/pages/system/Admin.vue'
 import SystemData from '../components/pages/system/Data.vue'
 import HomeBanner from '../components/pages/home/Banner.vue'
@@ -82,11 +83,14 @@ export function configRouter (router) {
         '/print/temp': {
           component: PrintTemp
         },
-        '/stat/month': {
-          component: StatisticsMonth
+        '/stat/user': {
+          component: StatisticsUser
         },
-        '/stat/all': {
-          component: StatisticsAll
+        '/stat/institution': {
+          component: StatisticsInstitution
+        },
+        '/stat/node': {
+          component: StatisticsNode
         },
         '/system/admin': {
           component: SystemAdmin
