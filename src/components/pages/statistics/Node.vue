@@ -22,7 +22,7 @@
             <h4 class="box-title">用水</h4>
           </div>
           <div class="box-body">
-
+            <line-chart :data="waterData" height=200></line-chart>
           </div>
         </div>
         <div class="box box-danger">
@@ -30,7 +30,7 @@
             <h4 class="box-title">用电</h4>
           </div>
           <div class="box-body">
-
+            <line-chart :data="eleData" height=200></line-chart>
           </div>
         </div>
         <div class="box box-success">
@@ -38,7 +38,7 @@
             <h4 class="box-title">用气</h4>
           </div>
           <div class="box-body">
-
+            <line-chart :data="gasData" height=200></line-chart>
           </div>
         </div>
         <div class="box box-warning">
@@ -46,7 +46,7 @@
             <h4 class="box-title">费用比例</h4>
           </div>
           <div class="box-body">
-
+            <doughnut-chart :data="feeData" height=200></doughnut-chart>
           </div>
         </div>
       </div>
@@ -58,13 +58,60 @@
 <script>
   import ContentHeader from '../../widgets/admin/content-header.vue'
   import Core from '../../../core/core'
+  import Line from '../../widgets/chart/Line.vue'
+  import Doughnut from '../../widgets/chart/Doughnut.vue'
 
   export default {
     components: {
-      'content-header': ContentHeader
+      'content-header': ContentHeader,
+      'line-chart': Line,
+      'doughnut-chart': Doughnut
     },
     data () {
       return {
+        waterData: {
+          labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          datasets: [
+            {
+              label: '用水量',
+              backgroundColor: '#00c0ef',
+              data: [40, 39, 10, 40, 39, 80, 40, 50, 60, 40, 40, 30]
+            }
+          ]
+        },
+        eleData: {
+          labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          datasets: [
+            {
+              label: '用电量',
+              backgroundColor: '#dd4b39',
+              data: [40, 39, 80, 40, 39, 80, 40, 50, 60, 40, 40, 30]
+            }
+          ]
+        },
+        gasData: {
+          labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          datasets: [
+            {
+              label: '用气量',
+              backgroundColor: '#00a65a',
+              data: [40, 39, 60, 40, 49, 80, 40, 50, 30, 40, 40, 30]
+            }
+          ]
+        },
+        feeData: {
+          labels: ['水费', '电费', '气费'],
+          datasets: [
+            {
+              backgroundColor: [
+                '#00c0ef',
+                '#dd4b39',
+                '#00a65a'
+              ],
+              data: [40, 20, 80]
+            }
+          ]
+        },
         setting: {
           view: {
             selectedMulti: false

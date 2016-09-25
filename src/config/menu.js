@@ -131,6 +131,11 @@ module.exports = [
         name: '数据管理',
         link: '/dashboard/system/data',
         icon: 'fa-circle-o'
+      },
+      {
+        name: '使用说明',
+        link: '/dashboard/system/command',
+        icon: 'fa-circle-o'
       }
     ]
   },

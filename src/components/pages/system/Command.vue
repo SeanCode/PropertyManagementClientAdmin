@@ -1,22 +1,27 @@
 <template>
   <!-- Content Header (Page header) -->
-  <content-header parent="打印" child="临时施工"></content-header>
+  <content-header parent="系统" child="使用说明"></content-header>
   <!-- Main content -->
   <section class="content">
+    <div class="row">
+      <div class='col-md-12'>
+      </div>
+    </div>
   </section>
 </template>
 <style>
 </style>
 <script>
   import ContentHeader from '../../widgets/admin/content-header.vue'
-  import Core from '../../../core/core'
 
   export default {
     components: {
       'content-header': ContentHeader
     },
-    ready () {
-      Core.Toast.info(this, '暂无数据,无法生成报表')
+    data () {
+      return {
+        msg: 'hello vue'
+      }
     }
   }
 </script>

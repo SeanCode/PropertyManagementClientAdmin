@@ -22,6 +22,7 @@ import StatisticsPersonal from '../components/pages/statistics/Personal.vue'
 import StatisticsNode from '../components/pages/statistics/Node.vue'
 import SystemAdmin from '../components/pages/system/Admin.vue'
 import SystemData from '../components/pages/system/Data.vue'
+import SystemCommand from '../components/pages/system/Command.vue'
 import HomeBanner from '../components/pages/home/Banner.vue'
 import HomePicture from '../components/pages/home/Picture.vue'
 import HomeArticle from '../components/pages/home/Article.vue'
@@ -97,6 +98,9 @@ export function configRouter (router) {
         },
         '/system/data': {
           component: SystemData
+        },
+        '/system/command': {
+          component: SystemCommand
         },
         '/home/banner': {
           component: HomeBanner
