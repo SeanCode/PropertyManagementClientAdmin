@@ -14,6 +14,8 @@ export default {
   setAdmin: setAdmin,
   getAdmin: getAdmin,
   getAdminName: getAdminName,
+  setRecordTime: setRecordTime,
+  getRecordTime: getRecordTime,
   isGuest: isGuest,
   logout: logout,
   getAll: getAll,
@@ -25,6 +27,7 @@ export default {
 var adminData
 var tokenData
 var pathData
+var recordTime // 上次抄表时间
 
 function getKey (key) {
   return Const.DATA.KEY_PREFIX + key
@@ -77,6 +80,22 @@ function getAdmin () {
 
 function getAdminName () {
   return getAdmin()['username']
+}
+
+function setRecordTime (time) {
+  recordTime = time
+  set(Const.DATA.KEY_RECORD_TIME, time)
+}
+
+function getRecordTime () {
+  if (!recordTime) {
+    recordTime = get(Const.DATA.KEY_RECORD_TIME)
+  }
+  // 默认当天的时间戳
+  if (!recordTime) {
+    recordTime = parseInt(new Date().getTime() / 1000, 10)
+  }
+  return recordTime
 }
 
 function isGuest () {

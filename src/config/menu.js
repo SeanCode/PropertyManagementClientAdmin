@@ -12,19 +12,24 @@ module.exports = [
     icon: 'fa-pencil',
     link: '/dashboard/sdq/input',
     children: [
+      //  {
+      //  name: '个人录入',
+      //  link: '/dashboard/sdq/input/personal',
+      //  icon: 'fa-circle-o'
+      //  },
+      //  {
+      //  name: '机构录入',
+      //  link: '/dashboard/sdq/input/institution',
+      //  icon: 'fa-circle-o'
+      //  },
+      //  {
+      //  name: '高级录入',
+      //  link: '/dashboard/sdq/input/advanced',
+      //  icon: 'fa-circle-o'
+      //  },
       {
-        name: '个人录入',
-        link: '/dashboard/sdq/input/personal',
-        icon: 'fa-circle-o'
-      },
-      {
-        name: '机构录入',
-        link: '/dashboard/sdq/input/institution',
-        icon: 'fa-circle-o'
-      },
-      {
-        name: '高级录入',
-        link: '/dashboard/sdq/input/advanced',
+        name: '节点录入',
+        link: '/dashboard/sdq/input/node',
         icon: 'fa-circle-o'
       }
     ]

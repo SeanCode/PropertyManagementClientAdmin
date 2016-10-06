@@ -2,6 +2,10 @@
   .logo {
     position: fixed;
   }
+
+  .navbar-nav>.user-menu>.dropdown-menu>li.user-header {
+    height: auto;
+  }
 </style>
 <template>
   <header class="main-header">
@@ -54,7 +58,6 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="/static/dashboard/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
                 <p>
                   {{admin.name}}
                   <small>{{admin.username}}</small>

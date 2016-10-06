@@ -48,6 +48,7 @@ export default {
       METER_NORMAL_LIST: '/meter/normal-list',
       METER_CHECK_LIST: '/meter/check-list',
       METER_CHILDREN: '/meter/children',
+      METER_LIST: '/meter/list',
       METER_ADD_NORMAL: '/meter/add-normal',
       METER_ADD_CHECK: '/meter/add-check',
       METER_INFO_UPDATE: '/meter/info-update',
@@ -96,7 +97,11 @@ export default {
     ERROR_EXISTS: 2,
     ERROR_NOT_EXISTS: 3,
     ERROR_LOGIN_FAIL: 4,
-    ERROR_WRONG_PASSWORD: 5
+    ERROR_WRONG_PASSWORD: 5,
+    INVALID_PARAMS: 6,
+    NOT_ALLOWED: 7,
+    UPLOAD_FAILED: 8,
+    METER_INPUT_WARNING: 9
   },
 
   SYSTEM: {
@@ -111,7 +116,8 @@ export default {
     KEY_PREFIX: 'cqupt.management.admin.data.',
     KEY_COOKIE: 'cookie',
     KEY_TOKEN: 'token',
-    KEY_ADMIN: 'admin'
+    KEY_ADMIN: 'admin',
+    KEY_RECORD_TIME: 'record.time'
   },
 
   TYPE: {

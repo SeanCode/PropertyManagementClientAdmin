@@ -18,7 +18,7 @@
           <div class="box-body table-responsive no-padding">
             <table class="table table-hover">
               <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>节点</th>
                 <th>表名</th>
                 <th>表编号</th>

@@ -271,6 +271,11 @@ export default {
         node_id: nodeId
       })
     },
+    getList: function (nodeId) {
+      return post(Const.NET.API.METER_LIST, {
+        node_id: nodeId
+      })
+    },
     getChildren: function (nodeId) {
       return post(Const.NET.API.METER_CHILDREN, {
         node_id: nodeId
@@ -382,13 +387,14 @@ export default {
     }
   },
   RECORD: {
-    input: function (meterId, value, time, reader, remark) {
+    input: function (meterId, value, time, reader, remark, force) {
       return post(Const.NET.API.RECORD_INPUT, {
         meter_id: meterId,
         value: value,
         time: time,
         reader: reader,
-        remark: remark
+        remark: remark,
+        force: force
       })
     },
     getTempList: function (nodeId, year, month) {
