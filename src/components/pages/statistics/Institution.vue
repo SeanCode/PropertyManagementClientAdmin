@@ -9,7 +9,7 @@
           <div class="box-header">
             <h3 class="box-title">机构</h3>
           </div>
-          <div class="box-body" style="display: block; padding: 0;">
+          <div class="box-body" style="display: block;">
             <v-client-table :data='institutionList' :columns='tableSetting.columns' :options='tableSetting.options'
                             class='institution-list-table'></v-client-table>
           </div>

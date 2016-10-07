@@ -86,7 +86,9 @@ export default {
       INTRODUCTION_LIST: '/org/intro-list',
       INTRODUCTION_UPDATE: '/org/intro-update',
       SUGGESTION_LIST_STATUS: '/suggestion/list-by-status',
-      SUGGESTION_REPLY: '/suggestion/reply'
+      SUGGESTION_REPLY: '/suggestion/reply',
+      STAT_NODE: '/stat/node',
+      STAT_OWNER: '/stat/owner'
     }
   },
 

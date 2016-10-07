@@ -496,6 +496,21 @@ export default {
     reply: function (id, reply) {
       return post(Const.NET.API.SUGGESTION_REPLY, {id: id, reply: reply})
     }
+  },
+  STAT: {
+    getStatByNode: function (nodeId, type) {
+      return get(Const.NET.API.STAT_NODE, {
+        node_id: nodeId,
+        type: type
+      })
+    },
+    getStatByOwner: function (ownerId, ownerType, type) {
+      return get(Const.NET.API.STAT_OWNER, {
+        owner_id: ownerId,
+        owner_type: ownerType,
+        type: type
+      })
+    }
   }
 }
 

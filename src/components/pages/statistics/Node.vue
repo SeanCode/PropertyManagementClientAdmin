@@ -69,6 +69,9 @@
     },
     data () {
       return {
+        chart: {
+          foo: 'bar'
+        },
         waterData: {
           labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
           datasets: [
@@ -93,9 +96,9 @@
           labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
           datasets: [
             {
-              label: '用气量',
+              label: '用电量',
               backgroundColor: '#00a65a',
-              data: [40, 39, 60, 40, 49, 80, 40, 50, 30, 40, 40, 30]
+              data: [40, 39, 20, 40, 39, 70, 40, 50, 80, 40, 40, 30]
             }
           ]
         },
@@ -171,6 +174,38 @@
   }
 
   function onNodeSelected (event, treeId, treeNode, clickFlag) {
-    Core.Toast.error(context, '暂无统计数据')
+    getStatWaterData(treeNode.id)
+    getStatEleData(treeNode.id)
+    getStatGasData(treeNode.id)
+  }
+
+  function getStatWaterData (nodeId) {
+    Core.Api.STAT.getStatByNode(nodeId, 1).then(function (data) {
+      data.stat_list[0].backgroundColor = '#ecf0f5'
+      data.stat_list[1].backgroundColor = '#00c0ef'
+      context.waterData.datasets = data.stat_list
+    }, function (error) {
+      Core.Toast.error(context, '获取统计数据失败: ' + error.message)
+    })
+  }
+
+  function getStatEleData (nodeId) {
+    Core.Api.STAT.getStatByNode(nodeId, 2).then(function (data) {
+      data.stat_list[0].backgroundColor = '#ecf0f5'
+      data.stat_list[1].backgroundColor = '#dd4b39'
+      context.eleData.datasets = data.stat_list
+    }, function (error) {
+      Core.Toast.error(context, '获取统计数据失败: ' + error.message)
+    })
+  }
+
+  function getStatGasData (nodeId) {
+    Core.Api.STAT.getStatByNode(nodeId, 3).then(function (data) {
+      data.stat_list[0].backgroundColor = '#ecf0f5'
+      data.stat_list[1].backgroundColor = '#00a65a'
+      context.gasData.datasets = data.stat_list
+    }, function (error) {
+      Core.Toast.error(context, '获取统计数据失败: ' + error.message)
+    })
   }
 </script>
