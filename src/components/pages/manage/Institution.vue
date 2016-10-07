@@ -5,7 +5,7 @@
   <section class="content">
     <div class="row">
       <div class="col-md-3">
-        <div class="box box-info">
+        <div class="box box-solid">
           <div class="box-header with-border">
             <h3 class="box-title">机构</h3>
             <div class="box-tools pull-right">
@@ -25,7 +25,7 @@
           <!--  boxbody -->
         </div>
         <!-- boxinfo -->
-        <div class="box box-info">
+        <div class="box box-solid">
           <div class="box-header with-border">
             <h3 class="box-title">机构节点</h3>
             <div class="box-tools pull-right">
@@ -48,8 +48,8 @@
         <!-- boxinfo -->
       </div>
       <div class="col-md-9" id="panel">
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">机构信息</h3>
             <div class="box-tools pull-right">
               <button v-show="institution.id&&node.id" class="btn btn-box-tool" @click="toggleRemoveInstitutionOwner()">
@@ -161,8 +161,8 @@
           </modal>
         </div>
         <!-- boxinfo -->
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">节点信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse">
@@ -277,8 +277,8 @@
           </modal>
         </div>
         <!-- boxinfo -->
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">主表信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" @click="toggleAddNormalMeter()">
@@ -421,6 +421,12 @@
                 <label class="col-sm-2 control-label">初始起度</label>
                 <div class="col-sm-10">
                   <input class="form-control" type="number" disabled v-model="meterEditing.begin">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">当前度数</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" disabled v-model="meterEditing.current">
                 </div>
               </div>
               <div class="form-group">
@@ -759,8 +765,8 @@
             <button type="button" class="btn btn-success" @click='replaceMeter'>确定</button>
           </div>
         </modal>
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">检查表信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse">
@@ -813,8 +819,8 @@
           <div class="box-footer clearfix" style="display: block;"></div>
           <!-- /.box-footer -->
         </div>
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">分表信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse">

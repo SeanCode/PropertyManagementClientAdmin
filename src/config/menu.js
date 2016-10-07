@@ -62,12 +62,12 @@ module.exports = [
     link: '/dashboard/sdq/manage',
     children: [
       {
-        name: '个人管理',
+        name: '个人节点管理',
         link: '/dashboard/sdq/manage/personal',
         icon: 'fa-circle-o'
       },
       {
-        name: '机构管理',
+        name: '机构节点管理',
         link: '/dashboard/sdq/manage/institution',
         icon: 'fa-circle-o'
       },

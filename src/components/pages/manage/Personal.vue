@@ -5,7 +5,7 @@
   <section class="content">
     <div class="row">
       <div class="col-md-3">
-        <div class="box box-info">
+        <div class="box box-solid">
           <div class="box-header with-border">
             <h3 class="box-title">部门与个人</h3>
             <div class="box-tools pull-right">
@@ -26,7 +26,7 @@
           <!--  boxbody -->
         </div>
         <!-- boxinfo -->
-        <div class="box box-info">
+        <div class="box box-solid">
           <div class="box-header with-border">
             <h3 class="box-title">个人节点</h3>
             <div class="box-tools pull-right">
@@ -49,8 +49,8 @@
         <!-- boxinfo -->
       </div>
       <div class="col-md-9" id="panel">
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">个人信息</h3>
             <div class="box-tools pull-right">
               <button v-show="users.length > 0 && node.id" class="btn btn-box-tool">
@@ -68,6 +68,7 @@
           <div class="box-body" style="display: block;">
             <div class="table-responsive">
               <table class="table no-margin">
+                <thead>
                 <tr>
                   <th>姓名</th>
                   <th>部门</th>
@@ -77,6 +78,8 @@
                   <th>备注</th>
                   <th>操作</th>
                 </tr>
+                </thead>
+                <tbody>
                 <tr v-for="user in users">
                   <td>{{user.name}}</td>
                   <td>{{user.department}}</td>
@@ -88,6 +91,7 @@
                     <a class="label label-primary" href="javascript:void(0);" @click="toggleEditUser(user.id)">编辑</a>
                   </td>
                 </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -158,8 +162,8 @@
         </div>
         <!-- boxinfo -->
 
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">节点信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse">
@@ -171,6 +175,7 @@
           <div class="box-body" style="display: block;">
             <div class="table-responsive">
               <table class="table no-margin table200">
+                <thead>
                 <tr>
                   <th>节点名</th>
                   <th>地址编号</th>
@@ -184,6 +189,8 @@
                   <th>备注</th>
                   <th>操作</th>
                 </tr>
+                </thead>
+                <tbody>
                 <tr v-show="node.id">
                   <td>{{node.name}}</td>
                   <td>{{node.code}}</td>
@@ -199,6 +206,7 @@
                     <a class="label label-primary" href="javascript:void(0);" @click="toggleEditNode">编辑</a>
                   </td>
                 </tr>
+                </tbody>
               </table>
             </div>
             <!-- table-->
@@ -274,8 +282,8 @@
           </modal>
         </div>
         <!-- boxinfo -->
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">主表信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" @click="toggleAddNormalMeter()">
@@ -418,6 +426,12 @@
                 <label class="col-sm-2 control-label">初始起度</label>
                 <div class="col-sm-10">
                   <input class="form-control" type="number" disabled v-model="meterEditing.begin">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">当前度数</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" disabled v-model="meterEditing.current">
                 </div>
               </div>
               <div class="form-group">
@@ -756,8 +770,8 @@
             <button type="button" class="btn btn-success" @click='replaceMeter'>确定</button>
           </div>
         </modal>
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">检查表信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse">
@@ -810,8 +824,8 @@
           <div class="box-footer clearfix" style="display: block;"></div>
           <!-- /.box-footer -->
         </div>
-        <div class="box box-solid box-info">
-          <div class="box-header with-border">
+        <div class="box box-info">
+          <div class="box-header">
             <h3 class="box-title">分表信息</h3>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse">
