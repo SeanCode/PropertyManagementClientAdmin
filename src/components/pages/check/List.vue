@@ -28,7 +28,6 @@
                 <th>用度</th>
                 <th>抄表人</th>
                 <th>抄表时间</th>
-                <th>录入人</th>
                 <th>录入时间</th>
                 <th>标记</th>
                 <th>备注</th>
@@ -43,9 +42,8 @@
                 <td>{{record.end}}</td>
                 <td>{{record.end - record.begin}}</td>
                 <td>{{record.reader}}</td>
-                <td>{{new Date(record.time*1000).toLocaleString()}}</td>
-                <td>{{record.operator.username}}</td>
-                <td>{{new Date(record.create_time*1000).toLocaleString()}}</td>
+                <td>{{dateFormat(record.time)}}</td>
+                <td>{{timeFormat(record.create_time)}}</td>
                 <td><span class="label"
                           v-bind:class="{ 'label-warning': record.tag==2, 'label-danger': record.tag==3}"
                           v-show="record.tag !== 0">{{record.tag_name}}</span>
@@ -97,7 +95,13 @@
         }
       },
       refresh: function () {
-        getCheckedList(0)
+        getCheckedList(1)
+      },
+      dateFormat: function (time) {
+        return Core.Util.date('Y/m/d', time)
+      },
+      timeFormat: function (time) {
+        return Core.Util.date('Y/m/d H:i', time)
       }
     }
   }

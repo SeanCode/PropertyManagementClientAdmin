@@ -200,7 +200,7 @@ function dateDiff (dateTimeStamp) {
   var day = hour * 24
   var month = day * 30
   var diffValue = new Date().getTime() - dateTimeStamp * 1000
-  Log.d(new Date().getTime() + '----' + dateTimeStamp)
+  //  Log.d(new Date().getTime() + '----' + dateTimeStamp)
   var monthC = diffValue / month
   var weekC = diffValue / (7 * day)
   var dayC = diffValue / day
@@ -492,14 +492,14 @@ function date (format, timestamp) {
       return jsdate / 1000 | 0
     }
   }
-  this.date = function (format, timestamp) {
+  var ff = function (format, timestamp) {
     jsdate = (timestamp === undefined ? new Date()// Not provided
         : (timestamp instanceof Date) ? new Date(timestamp)  // JS Date()
         : new Date(timestamp * 1000) // UNIX timestamp (auto-convert to int)
     )
     return format.replace(formatChr, formatChrCb)
   }
-  return this.date(format, timestamp)
+  return ff(format, timestamp)
 }
 
 function sprintf () {

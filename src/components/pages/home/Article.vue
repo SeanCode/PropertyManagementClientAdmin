@@ -51,7 +51,7 @@
           <div class="box-body table-responsive no-padding">
             <table class="table table-hover">
               <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>标题</th>
                 <th>作者</th>
                 <th>类型</th>

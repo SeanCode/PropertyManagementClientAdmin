@@ -14,7 +14,7 @@ function error (context, msg) {
   }
   toast(context, {
     error: msg,
-    duration: 5000
+    duration: 3000
   })
 }
 

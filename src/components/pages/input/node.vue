@@ -110,10 +110,10 @@
                     <td>{{meter.type_name}}</td>
                     <td>{{meter.parent ? meter.parent.name : ''}}</td>
                     <td>{{meter.current}}</td>
-                    <td>{{meter.last_input_time == 0 ? '暂无记录' : new Date(meter.last_input_time * 1000).toLocaleString()}}</td>
+                    <td>{{meter.last_input_time == 0 ? '暂无记录' : dateDiff(meter.last_input_time)}}</td>
                     <td><span class="label" v-bind:class="{ 'label-danger': meter.last_input_status == -1, 'label-warning': meter.last_input_status == 1, 'label-success': meter.last_input_status == 2 } ">{{meter.last_input_status_name}}</span></td>
                     <td><input v-on:keyup.enter="submitValue(meter)" type=number v-model="meter.value"/>  <a v-show="meter.value" class="label label-primary" @click="submitValue(meter)">提交</a></td>
-                    <td><a class="label label-danger">换表</a></td>
+                    <td><a class="label label-danger" @click="toggleReplaceMeter(meter)">换表</a></td>
                   </tr>
                 </tbody>
               </table>
@@ -122,11 +122,106 @@
         </div>
         <modal title="录入警告" :show.sync="showForceSubmit" effect="fade">
           <div slot="modal-body" class="modal-body">
-            系统录入警告, 请再次检查, 确认无误后点击强制提交
+            当前数值可能过大, 请再次检查, 确认无误后点击强制提交
           </div>
           <div slot="modal-footer" class="modal-footer">
             <button type="button" class="btn btn-default" @click='showForceSubmit = false'>取消</button>
             <button type="button" class="btn btn-danger" @click='forceSubmit()'>强制提交</button>
+          </div>
+        </modal>
+        <modal title="换表 (请先录入并通过审核旧表数据)" :show.sync="showReplaceMeter" effect="fade" width="800">
+          <div slot="modal-body" class="modal-body">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="meterEditing.name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">编号</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="meterEditing.code">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">类型</label>
+                <div class="col-sm-10">
+                  <select class="form-control" disabled v-model="meterEditing.type">
+                    <option value="1">水表</option>
+                    <option value="2">电表</option>
+                    <option value="3">气表</option>
+                    <option value="4">水表检查表</option>
+                    <option value="5">电表检查表</option>
+                    <option value="6">气表检查表</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">旧表止度 *</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" v-model="meterEditing.end">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">新表起度</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" v-model="meterEditing.begin">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">倍率 *</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="number" v-model="meterEditing.rate">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">铭牌</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="meterEditing.nameplate">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">生产厂家</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="meterEditing.manufacturers">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">生产日期</label>
+                <div class="col-sm-10">
+                  <date-picker :time.sync="meterEditing.product_time"></date-picker>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">采购员</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="meterEditing.purchaser">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">采购日期</label>
+                <div class="col-sm-10">
+                  <date-picker :time.sync="meterEditing.buy_time"></date-picker>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">采购价格</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="meterEditing.cost">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="meterEditing.remark">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click='showReplaceMeter = false'>取消</button>
+            <button type="button" class="btn btn-success" @click='replaceMeter()'>确定</button>
           </div>
         </modal>
       </div>
@@ -149,9 +244,10 @@
     },
     data () {
       return {
-        node: {},
+        // 节点树相关
+        node: {}, // 当前选中节点
         nodeList: [], // 用于显示节点树
-        node_setting: {
+        node_setting: { // 节点树的配置
           async: {
             enable: true,
             url: 'http://202.202.43.93:8080/api/private/v1/node/children',
@@ -168,10 +264,17 @@
             onClick: onNodeSelected
           }
         },
+        // 上次抄表时间
         recordTime: Core.Data.getRecordTime(),
+        // 临时变量,用于提交录入
         meterInput: {},
+        // 所有表List
         meterList: [],
-        showForceSubmit: false
+        // 显示强制提交modal
+        showForceSubmit: false,
+        // 换表modal控制变量
+        meterEditing: {},
+        showReplaceMeter: false
       }
     },
     watch: {
@@ -185,11 +288,28 @@
       initNodeTree()
     },
     methods: {
+      refreshNodeTree: function () {
+        initNodeTree()
+      },
       submitValue: function (meter) {
         submit(meter, false)
       },
       forceSubmit: function () {
         submit(this.meterInput, true)
+      },
+      dateDiff: function (time) {
+        return Core.Util.dateDiff(time)
+      },
+      toggleReplaceMeter: function (meter) {
+        this.meterEditing = meter
+        this.showReplaceMeter = true
+      },
+      replaceMeter: function () {
+        if (this.meterEditing.end === undefined) {
+          Core.Toast.error(this, '请输入旧表止度')
+          return
+        }
+        replaceMeter(this.meterEditing.id, this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.end, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, Core.Util.getTimestamp(this.meterEditing.buy_time), Core.Util.getTimestamp(this.meterEditing.product_time), this.meterEditing.remark)
       }
     }
   }
@@ -256,6 +376,18 @@
       } else {
         Core.Toast.error(context, '提交录入失败: ' + error.message)
       }
+    })
+  }
+
+  // 换表请求
+  function replaceMeter (id, name, type, code, rate, begin, end, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark) {
+    Core.Api.METER.replace(id, name, code, rate, begin, end, nameplate, manufacturers, purchaser, cost, buyTime, productTime, remark).then(function (data) {
+      context.showReplaceMeter = false
+      context.meterEditing = {}
+      getMeterList(context.node.id)
+      Core.Toast.success(context, '换表成功')
+    }, function (error) {
+      Core.Toast.error(context, '换表失败: ' + error.message)
     })
   }
 
