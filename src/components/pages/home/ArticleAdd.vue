@@ -150,7 +150,7 @@
         <div slot="modal-body" class="modal-body">请确认选择的文章类型,若无误则点击确认按钮提交!</div>
         <div slot="modal-footer" class="modal-footer">
           <button type="button" class="btn btn-default" @click='showSaveArticle = false'>取消</button>
-          <button type="button" class="btn label-info" @click="saveArticle()">上传</button>
+          <button type="button" class="btn label-info" @click="saveArticle()">确认</button>
         </div>
       </modal>
     </div>

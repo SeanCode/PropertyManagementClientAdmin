@@ -212,6 +212,9 @@
     Core.Api.ARTICLE.getArticleList(type, page).then((data) => {
       context.articleList = data.article_list
       context.pageAll = Math.ceil(data.count / 10)
+      if (parseInt(data.count) === 0) {
+        context.page = 0
+      }
     }, (error) => {
       Core.Toast.error(context, error.message)
     })

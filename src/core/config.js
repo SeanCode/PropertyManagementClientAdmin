@@ -3,7 +3,7 @@
  */
 export default {
   ROUTE_LIST_GUEST_CAN_VISIT: ['/dashboard/login'],
-  IS_DEBUG: true,
+  IS_DEBUG: false,
   ARTICLE_CATEGORY_LIST: {
     all: [
       {name: '全部', value: 0},
@@ -14,9 +14,10 @@ export default {
       {name: '新闻热点', value: 20001},
       {name: '公示公告', value: 20002},
       {name: '特种设备', value: 30001},
-      {name: '教学巡查', value: 30002},
-      {name: '公寓巡查', value: 30003},
-      {name: '物业巡查', value: 30004}
+      {name: '消防安全', value: 30002},
+      {name: '教学巡查', value: 30003},
+      {name: '公寓巡查', value: 30004},
+      {name: '物业巡查', value: 30005}
     ],
     guide: [
       {name: '全部', value: 10000},
@@ -33,9 +34,10 @@ export default {
     log: [
       {name: '全部', value: 30000},
       {name: '特种设备', value: 30001},
-      {name: '教学巡查', value: 30002},
-      {name: '公寓巡查', value: 30003},
-      {name: '物业巡查', value: 30004}
+      {name: '消防安全', value: 30002},
+      {name: '教学巡查', value: 30003},
+      {name: '公寓巡查', value: 30004},
+      {name: '物业巡查', value: 30005}
     ]
   },
   PHOTO_TYPE_LIST: [
@@ -54,8 +56,9 @@ export default {
     {name: '新闻公告--新闻热点', value: 20001},
     {name: '新闻公告--公示公告', value: 20002},
     {name: '安检日志--特种设备', value: 30001},
-    {name: '安检日志--教学巡查', value: 30002},
-    {name: '安检日志--公寓巡查', value: 30003},
-    {name: '安检日志--物业巡查', value: 30004}
+    {name: '安检日志--消防安全', value: 30002},
+    {name: '安检日志--教学巡查', value: 30003},
+    {name: '安检日志--公寓巡查', value: 30004},
+    {name: '安检日志--物业巡查', value: 30005}
   ]
 }
