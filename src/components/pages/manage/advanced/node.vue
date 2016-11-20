@@ -307,8 +307,24 @@
                 <!--  boxbody -->
                 <modal title="个人入住" :show.sync="showAddUserOwner" effect="fade" width="800">
                   <div slot="modal-body" class="modal-body modal-user-tree">
-                    <div class="user-tree-box">
-                      <ul id="addUserOwnerTree" class="ztree"></ul>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="user-tree-box">
+                          <ul id="addUserOwnerTree" class="ztree"></ul>
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="input-group">
+                          <input type="text" class="form-control" placeholder="请输入用户姓名" v-model="usernameSearching">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-info btn-flat" @click="searchUserByName()">搜索</button>
+                    </span>
+                        </div>
+                        <v-client-table :data='userInList'
+                                        :columns='userInColumns'
+                                        :options='userInOptions'>
+                        </v-client-table>
+                      </div>
                     </div>
                   </div>
                   <div slot="modal-footer" class="modal-footer">
@@ -953,6 +969,7 @@
     data () {
       return {
         // modal
+        usernameSearching: '',
         showEditNode: false,
         showAddNode: false,
         showCopyNode: false,
@@ -969,6 +986,30 @@
         showRemoveUserOwner: false,
         showAddInstitutionOwner: false,
         showRemoveInstitutionOwner: false,
+        userInList: [], //    用来显示在个人入住的界面的个人列表
+        userIn: {},
+        userInColumns: ['id', 'name', 'username', 'remark', 'bind'],
+        userInOptions: {
+          compileTemplates: true,
+          highlightMatches: true,
+          filterByColumn: true,
+          filterable: ['name', 'username', 'remark'],
+          texts: {
+            filter: 'Search:',
+            noResults: '暂无匹配',
+            count: '共 {count} 条记录'
+          },
+          headings: {
+            id: '编号',
+            name: '姓名',
+            username: '用户名',
+            remark: '备注',
+            bind: '操作'
+          },
+          templates: {
+            bind: '<a class="label label-primary" href="javascript:void(0);" @click="$parent.$parent.bindNodeUser({id})">入住</a></i></div>'
+          }
+        },
         // tree setting & table setting
         setting: {
           view: {
@@ -1003,7 +1044,7 @@
         },
         user_tree_setting: {
           async: {
-            enable: true,
+            enable: false, //    暂时关闭树状显示user list,改为旁边列表显示,方便添加搜索
             url: 'http://202.202.43.93:8080/api/private/v1/user/list-by-department',
             autoParam: ['id=department_id'],
             dataType: 'json',
@@ -1187,6 +1228,16 @@
           return
         }
         setParentMeter(this.meterEditing.id, this.meterEditing.node_id, meter.id)
+      },
+      searchUserByName: function () {
+        getUserListByNameLike(this.usernameSearching)
+      },
+      bindNodeUser: function (userId) {
+        if (this.node.id) {
+          bindNodeUser(userId, this.node.id)
+        } else {
+          Core.Toast.error(this, '请先选择节点')
+        }
       }
     }
   }
@@ -1507,10 +1558,33 @@
   }
 
   function onUserNodeSelected (event, treeId, node, clickFlag) {
-    if (node.hasOwnProperty('department_id')) {
-      bindNodeUser(node.id, context.node.id)
-    } else {
+    context.usernameSearching = ''
+    getUserListByDepartment(node.id)
+//    if (node.hasOwnProperty('department_id')) {
+//      bindNodeUser(node.id, context.node.id)
+//    } else {
 //      context.users = []
+//    }
+  }
+
+  function getUserListByDepartment (departmentId) {
+    Core.Api.USER.getUserListByDepartment(departmentId).then(function (data) {
+      context.userInList = data.user_list
+    }, function (error) {
+      Core.Toast.error(context, '获取用户列表失败: ' + error.message)
+    })
+  }
+
+  // 获取按搜索显示需要入住的用户列表
+  function getUserListByNameLike (name) {
+    if (name.length > 0) {
+      Core.Api.USER.searchByName(name).then(function (data) {
+        context.userInList = data.user_list
+      }, function (error) {
+        Core.Toast.error(context, '搜索失败: ' + error.message)
+      })
+    } else {
+      Core.Toast.error(context, '请输入关键字')
     }
   }
 
