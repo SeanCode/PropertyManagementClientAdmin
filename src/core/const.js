@@ -38,6 +38,7 @@ export default {
       USER_ADD: '/user/add',
       USER_AMOUNT: '/user/amount',
       USER_SET_DEPARTMENT: '/user/set-department',
+      USER_SEARCH_BY_NAME: '/user/search-by-name',
       NODE_CHILDREN: '/node/children',
       NODE_DETAIL: '/node/detail',
       NODE_INFO_UPDATE: '/node/info-update',

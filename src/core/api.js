@@ -204,6 +204,11 @@ export default {
         user_id: userId,
         department_id: departmentId
       })
+    },
+    searchByName: function (name) {
+      return post(Const.NET.API.USER_SEARCH_BY_NAME, {
+        name: name
+      })
     }
   },
   NODE: {

@@ -142,10 +142,26 @@
               <button type="button" class="btn btn-success" @click='updateUser'>更新</button>
             </div>
           </modal>
-          <modal title="个人入住" :show.sync="showAddUserOwner" effect="fade" width="800">
+          <modal title="个人入住" :show.sync="showAddUserOwner" effect="fade" large="true">
             <div slot="modal-body" class="modal-body modal-user-tree">
-              <div class="user-tree-box">
-                <ul id="addUserOwnerTree" class="ztree"></ul>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="user-tree-box">
+                    <ul id="addUserOwnerTree" class="ztree"></ul>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="请输入用户姓名" v-model="usernameSearching">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-info btn-flat" @click="searchUserByName()">搜索</button>
+                    </span>
+                  </div>
+                  <v-client-table :data='userInList'
+                                  :columns='userInColumns'
+                                  :options='userInOptions'>
+                  </v-client-table>
+                </div>
               </div>
             </div>
             <div slot="modal-footer" class="modal-footer">
@@ -892,6 +908,7 @@
     },
     data () {
       return {
+        usernameSearching: '',
         showEditUser: false,
         userEditing: {},
         showAddUserOwner: false,
@@ -912,10 +929,34 @@
         showAddCheckMeter: false,
         users: [],
         node: {},
+        userInList: [], //    用来显示在个人入住的界面的个人列表
+        userIn: {},
+        userInColumns: ['id', 'name', 'username', 'remark', 'bind'],
+        userInOptions: {
+          compileTemplates: true,
+          highlightMatches: true,
+          filterByColumn: true,
+          filterable: ['name', 'username', 'remark'],
+          texts: {
+            filter: 'Search:',
+            noResults: '暂无匹配',
+            count: '共 {count} 条记录'
+          },
+          headings: {
+            id: '编号',
+            name: '姓名',
+            username: '用户名',
+            remark: '备注',
+            bind: '操作'
+          },
+          templates: {
+            bind: '<a class="label label-primary" href="javascript:void(0);" @click="$parent.$parent.bindNodeUser({id})">入住</a></i></div>'
+          }
+        },
         userTreeList: [],
         modal_user_tree_setting: {
           async: {
-            enable: true,
+            enable: false, //    暂时关闭树状显示user list,改为旁边列表显示,方便添加搜索
 //            url: 'http://localhost:8080/api/private/v1/user/list-by-department',
             url: 'http://202.202.43.93:8080/api/private/v1/user/list-by-department',
             autoParam: ['id=department_id'],
@@ -979,7 +1020,7 @@
             onClick: onNodeSelected
           }
         },
-        node_tree_setting: {
+        node_tree_setting: { // 设置上级表的时候显示的树状节点
           async: {
             enable: true,
             url: 'http://202.202.43.93:8080/api/private/v1/node/children',
@@ -1023,7 +1064,14 @@
         updateNodeInfo(this.nodeEditing.id, this.nodeEditing.name, this.nodeEditing.code, this.nodeEditing.path, this.nodeEditing.type, this.nodeEditing.area, this.nodeEditing.price, this.nodeEditing.fee, this.nodeEditing.ownership, this.nodeEditing.remark)
       },
       toggleAddUserOwner: function () {
-        getModalUserTree()
+        if (this.node.id) {
+          getModalUserTree()
+        } else {
+          Core.Toast.error(this, '请先选择节点')
+        }
+      },
+      searchUserByName: function () {
+        getUserListByNameLike(this.usernameSearching)
       },
       toggleRemoveUserOwner: function () {
         this.showRemoveUserOwner = true
@@ -1093,6 +1141,13 @@
       },
       addNormalMeter: function () {
         addNormalMeter(this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, Core.Util.getTimestamp(this.meterEditing.buy_time), Core.Util.getTimestamp(this.meterEditing.product_time), this.meterEditing.remark)
+      },
+      bindNodeUser: function (userId) {
+        if (this.node.id) {
+          bindNodeUser(userId, this.node.id)
+        } else {
+          Core.Toast.error(this, '请先选择节点')
+        }
       }
     }
   }
@@ -1292,10 +1347,33 @@
   }
 
   function onModalUserNodeSelected (event, treeId, node, clickFlag) {
-    if (node.hasOwnProperty('department_id')) {
-      bindNodeUser(node.id, context.node.id)
-    } else {
+    context.usernameSearching = ''
+    getUserListByDepartment(node.id)
+//    if (node.hasOwnProperty('department_id')) {
+//      bindNodeUser(node.id, context.node.id)
+//    } else {
 //      context.users = []
+//    }
+  }
+
+  function getUserListByDepartment (departmentId) {
+    Core.Api.USER.getUserListByDepartment(departmentId).then(function (data) {
+      context.userInList = data.user_list
+    }, function (error) {
+      Core.Toast.error(context, '获取用户列表失败: ' + error.message)
+    })
+  }
+
+  // 获取按搜索显示需要入住的用户列表
+  function getUserListByNameLike (name) {
+    if (name.length > 0) {
+      Core.Api.USER.searchByName(name).then(function (data) {
+        context.userInList = data.user_list
+      }, function (error) {
+        Core.Toast.error(context, '搜索失败: ' + error.message)
+      })
+    } else {
+      Core.Toast.error(context, '请输入关键字')
     }
   }
 
