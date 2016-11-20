@@ -149,6 +149,17 @@
             <button type="button" class="btn label-danger" @click="deleteDepartment()">删除</button>
           </div>
         </modal>
+        <modal title="移动至" :show.sync="showMoveUser" effect="fade" width="800">
+          <div slot="modal-body" class="modal-body">
+            <div class='department-box'>
+              <ul id='moveDepartmentTree' class='ztree'></ul>
+            </div>
+          </div>
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click='showMoveUser = false'>取消</button>
+            <button type="button" class="btn btn-success" @click='moveUser()'>确定</button>
+          </div>
+        </modal>
         <modal title="新增用户" :show.sync="showAddUser" effect="fade" width="800">
           <div slot="modal-body" class="modal-body">
             <div class="form-horizontal">
@@ -246,12 +257,14 @@
         // modal data
         showEditUser: false,
         showAddUser: false,
+        showMoveUser: false,
         userEditing: {},
         showDeleteUser: false,
         showEditDepartment: false,
         showDeleteDepartment: false,
         showAddDepartment: false,
         departmentEditing: {},
+        moveDepartmentEditing: {},
         // tree setting
         setting: {
           data: {
@@ -267,6 +280,20 @@
           }
         },
         departmentList: [],
+        moveDepartmentList: [],
+        moveSetting: {
+          data: {
+            simpleData: {
+              enable: true,
+              idKey: 'id',
+              pIdKey: 'parent_id',
+              rootPId: 1
+            }
+          },
+          callback: {
+            onClick: onMoveDepartmentSelected
+          }
+        },
         treeNode: {},
         // table setting
         userList: [],
@@ -290,10 +317,12 @@
             school_card: '一卡通',
             remark: '备注',
             edit: '编辑',
+            move: '移动',
             delete: '删除'
           },
           templates: {
             edit: '<a class="label label-primary" href="javascript:void(0);" @click="$parent.toggleEditUser({id})">编辑</a></i></div>',
+            move: '<a class="label label-primary" href="javascript:void(0);" @click="$parent.toggleMoveUser({id})">移动</a></i></div>',
             delete: '<a class="label label-danger" href="javascript:void(0);" @click="$parent.toggleDeleteUser({id})">删除</a></i></div>'
           }
         }
@@ -314,6 +343,9 @@
       },
       'toggleEditUser': function (id) {
         getUserEditing(id)
+      },
+      'toggleMoveUser': function (id) {
+        getUserMoving(id)
       },
       'deleteDepartmentUser': function () {
         this.showDeleteUser = false
@@ -348,6 +380,9 @@
       },
       'addUser': function () {
         addUser(this.treeNode.id, this.userEditing.name, this.userEditing.username, this.userEditing.phone, this.userEditing.id_card, this.userEditing.school_card, this.userEditing.remark)
+      },
+      'moveUser': function () {
+        moveUser(this.userEditing.id, this.moveDepartmentEditing.id)
       }
     }
   }
@@ -395,6 +430,16 @@
     Core.Api.USER.getUserDetail(id).then(function (data) {
       context.userEditing = data.user
       context.showEditUser = true
+    }, function (error) {
+      Core.Toast.error(context, '获取个人信息失败: ' + error.message)
+    })
+  }
+
+  function getUserMoving (id) {
+    Core.Api.USER.getUserDetail(id).then(function (data) {
+      context.userEditing = data.user
+      context.showMoveUser = true
+      getMoveDepartmentList()
     }, function (error) {
       Core.Toast.error(context, '获取个人信息失败: ' + error.message)
     })
@@ -461,6 +506,34 @@
       refreshUserList()
     }, function (error) {
       Core.Toast.error(context, '新增用户失败: ' + error.message)
+    })
+  }
+
+  function getMoveDepartmentList () {
+    Core.Api.DEPARTMENT.getList(1).then(function (data) {
+      context.moveDepartmentList = data.department_list
+      window.$.fn.zTree.init(window.$('#moveDepartmentTree'), context.moveSetting, context.moveDepartmentList)
+      var treeObj = window.$.fn.zTree.getZTreeObj('moveDepartmentTree')
+      var nodes = treeObj.getNodes()
+      if (data.department_list.length > 0) {
+        treeObj.expandNode(nodes[0], true, false, true)
+      }
+    }, function () {
+      Core.Toast.error(context, '获取部门失败')
+    })
+  }
+
+  function onMoveDepartmentSelected (event, treeId, treeNode, clickFlag) {
+    context.moveDepartmentEditing = treeNode
+  }
+
+  function moveUser (userId, departmentId) {
+    Core.Api.USER.setUserDepartment(userId, departmentId).then(function (data) {
+      context.showMoveUser = false
+      Core.Toast.success(context, '移动成功')
+      refreshUserList()
+    }, function (error) {
+      Core.Toast.error(context, '移动失败: ' + error.message)
     })
   }
 </script>

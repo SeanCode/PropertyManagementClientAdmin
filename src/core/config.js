@@ -3,7 +3,7 @@
  */
 export default {
   ROUTE_LIST_GUEST_CAN_VISIT: ['/dashboard/login'],
-  IS_DEBUG: false,
+  IS_DEBUG: true,
   ARTICLE_CATEGORY_LIST: {
     all: [
       {name: '全部', value: 0},

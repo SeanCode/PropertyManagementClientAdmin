@@ -198,6 +198,12 @@ export default {
     },
     getUserAmount: function () {
       return post(Const.NET.API.USER_AMOUNT, {})
+    },
+    setUserDepartment: function (userId, departmentId) {
+      return post(Const.NET.API.USER_SET_DEPARTMENT, {
+        user_id: userId,
+        department_id: departmentId
+      })
     }
   },
   NODE: {

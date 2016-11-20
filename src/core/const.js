@@ -37,6 +37,7 @@ export default {
       USER_DELETE: '/user/delete',
       USER_ADD: '/user/add',
       USER_AMOUNT: '/user/amount',
+      USER_SET_DEPARTMENT: '/user/set-department',
       NODE_CHILDREN: '/node/children',
       NODE_DETAIL: '/node/detail',
       NODE_INFO_UPDATE: '/node/info-update',
