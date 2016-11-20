@@ -3,7 +3,7 @@
  */
 export default {
   ROUTE_LIST_GUEST_CAN_VISIT: ['/dashboard/login'],
-  IS_DEBUG: true,
+  IS_DEBUG: false,
   ARTICLE_CATEGORY_LIST: {
     all: [
       {name: '全部', value: 0},
@@ -60,5 +60,7 @@ export default {
     {name: '安检日志--教学巡查', value: 30003},
     {name: '安检日志--公寓巡查', value: 30004},
     {name: '安检日志--物业巡查', value: 30005}
-  ]
+  ],
+  USAGE_WARNING: 200,
+  USAGE_ERROR: 1000
 }

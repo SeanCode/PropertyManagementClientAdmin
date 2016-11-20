@@ -75,9 +75,17 @@
           </div>
         </div>
         <div class="box box-info">
-          <div class="box-header">
+          <div class="box-header with-border">
             <h3 class="box-title">录入表格</h3>
-            <div class="box-tools pull-right">
+            <div class="box-tools pull-right" style="top: 0;">
+              <div class="btn btn-box-tool">
+                <select v-model="meterType">
+                  <option value="">全部</option>
+                  <option value="水表">水表</option>
+                  <option value="电表">电表</option>
+                  <option value="气表">气表</option>
+                </select>
+              </div>
               <div class="btn btn-box-tool">
                 <span>抄表时间: &nbsp;</span>
                 <date-picker :time.sync="recordTime"></date-picker>
@@ -88,6 +96,7 @@
             </div>
           </div>
           <div class="box-body" style="display: block;">
+            <!--<strong>主表</strong>-->
             <div class="table-responsive">
               <table class="table no-margin table200">
                 <thead>
@@ -96,23 +105,37 @@
                     <th>编号</th>
                     <th>类型</th>
                     <th>上级表</th>
-                    <th>当前度数</th>
-                    <th>上次录入时间</th>
-                    <th>上次录入结果</th>
+                    <th>当前</th>
+                    <th>上次录入</th>
+                    <th>用度</th>
+                    <th>费用预计</th>
                     <th>录入</th>
                     <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="meter in meterList">
+                  <tr v-for="meter in meterList | filterBy meterType in 'type_name'" v-bind:class="{ 'bg-yellow': checkInputWarning(meter.current, meter.value), 'bg-red': checkInputError(meter.current, meter.value), 'bg-blue': checkInputSuccess(meter.current, meter.value) }">
                     <td>{{meter.name}}</td>
                     <td>{{meter.code}}</td>
                     <td>{{meter.type_name}}</td>
-                    <td>{{meter.parent ? meter.parent.name : ''}}</td>
+                    <td>{{meter.parent ? meter.parent.code : ''}}</td>
                     <td>{{meter.current}}</td>
-                    <td>{{meter.last_input_time == 0 ? '暂无记录' : dateDiff(meter.last_input_time)}}</td>
-                    <td><span class="label" v-bind:class="{ 'label-danger': meter.last_input_status == -1, 'label-warning': meter.last_input_status == 1, 'label-success': meter.last_input_status == 2 } ">{{meter.last_input_status_name}}</span></td>
-                    <td><input v-on:keyup.enter="submitValue(meter)" type=number v-model="meter.value"/>  <a v-show="meter.value" class="label label-primary" @click="submitValue(meter)">提交</a></td>
+                    <td>{{meter.last_input_time == 0 ? '暂无' : dateDiff(meter.last_input_time)}}<span>&nbsp;</span><span class="label" v-bind:class="{ 'label-danger': meter.last_input_status == -1, 'label-warning': meter.last_input_status == 1, 'label-success': meter.last_input_status == 2 } ">{{meter.last_input_status_name}}</span></td>
+                    <td>{{getUsage(meter.current, meter.value)}}</td>
+                    <td>{{getMoney(meter.current, meter.value, meter.type)}}</td>
+                    <td><input style="color:#000;"  v-on:keyup.enter="submitValue(meter)" debounce="500" type=number v-model="meter.value"/><span>&nbsp;</span><a v-show="meter.value" class="label label-primary" @click="submitValue(meter)">提交</a></td>
+                    <td><a class="label label-danger" @click="toggleReplaceMeter(meter)">换表</a></td>
+                  </tr>
+                  <tr v-for="meter in meterChildren | filterBy meterType in 'type_name'" v-bind:class="{ 'bg-yellow': checkInputWarning(meter.current, meter.value), 'bg-red': checkInputError(meter.current, meter.value), 'bg-blue': checkInputSuccess(meter.current, meter.value) }">
+                    <td>{{meter.name}}</td>
+                    <td>{{meter.code}}</td>
+                    <td>{{meter.type_name}}[分]</td>
+                    <td>{{meter.parent ? meter.parent.code : ''}}</td>
+                    <td>{{meter.current}}</td>
+                    <td>{{meter.last_input_time == 0 ? '暂无' : dateDiff(meter.last_input_time)}}<span>&nbsp;</span><span class="label" v-bind:class="{ 'label-danger': meter.last_input_status == -1, 'label-warning': meter.last_input_status == 1, 'label-success': meter.last_input_status == 2 } ">{{meter.last_input_status_name}}</span></td>
+                    <td>{{getUsage(meter.current, meter.value)}}</td>
+                    <td>{{getMoney(meter.current, meter.value, meter.type)}}</td>
+                    <td><input style="color:#000;" v-on:keyup.enter="submitValue(meter)" debounce="500" type=number v-model="meter.value"/><span>&nbsp;</span><a v-show="meter.value" class="label label-primary" @click="submitValue(meter)">提交</a></td>
                     <td><a class="label label-danger" @click="toggleReplaceMeter(meter)">换表</a></td>
                   </tr>
                 </tbody>
@@ -270,11 +293,19 @@
         meterInput: {},
         // 所有表List
         meterList: [],
+        // 分表List
+        meterChildren: [],
         // 显示强制提交modal
         showForceSubmit: false,
         // 换表modal控制变量
         meterEditing: {},
-        showReplaceMeter: false
+        showReplaceMeter: false,
+        meterType: '',
+        price: {
+          water: 0.00,
+          ele: 0.00,
+          gas: 0.00
+        }
       }
     },
     watch: {
@@ -285,6 +316,7 @@
     },
     ready () {
       initContext(this)
+      getPriceConfig()
       initNodeTree()
     },
     methods: {
@@ -310,6 +342,37 @@
           return
         }
         replaceMeter(this.meterEditing.id, this.meterEditing.name, this.meterEditing.type, this.meterEditing.code, this.meterEditing.rate, this.meterEditing.begin, this.meterEditing.end, this.meterEditing.nameplate, this.meterEditing.manufacturers, this.meterEditing.purchaser, this.meterEditing.cost, Core.Util.getTimestamp(this.meterEditing.buy_time), Core.Util.getTimestamp(this.meterEditing.product_time), this.meterEditing.remark)
+      },
+      checkInputSuccess: function (current, input) {
+        var usage = input - current
+        return usage < Core.Config.USAGE_WARNING && usage > 0
+      },
+      checkInputWarning: function (current, input) {
+        var usage = input - current
+        return usage >= Core.Config.USAGE_WARNING && usage < Core.Config.USAGE_ERROR
+      },
+      checkInputError: function (current, input) {
+        input = parseInt(input)
+        if (input === 0) {
+          return false
+        }
+        return input < 0 || input < current || input - current >= Core.Config.USAGE_ERROR
+      },
+      getUsage: function (current, input) {
+        return (!input || input < current) ? 0 : Math.round((input - current) * 100) / 100
+      },
+      getMoney: function (current, input, type) {
+        var usage = (!input || input < current) ? 0 : Math.round((input - current) * 100) / 100
+        switch (parseInt(type) % 3) {
+          case 1:
+            return Math.round(this.price.water * usage * 100) / 100
+          case 2:
+            return Math.round(this.price.ele * usage * 100) / 100
+          case 3:
+            return Math.round(this.price.gas * usage * 100) / 100
+          default:
+            return 0
+        }
       }
     }
   }
@@ -318,6 +381,15 @@
 
   function initContext (c) {
     context = c
+  }
+
+  function getPriceConfig () {
+    var date = new Date()
+    Core.Api.CONFIG.getPrice(date.getFullYear(), date.getMonth() + 1).then(function (data) {
+      context.price = data.config.price
+    }, function (error) {
+      Core.Toast.error(context, '获取价格失败: ' + error.message)
+    })
   }
 
   function ajaxNodeDataFilter (treeId, parentNode, responseData) {
@@ -345,8 +417,10 @@
   function onNodeSelected (event, treeId, treeNode, clickFlag) {
     context.node = treeNode
     context.meterList = []
+    context.meterChildren = []
     if (treeNode.id) {
       getMeterList(treeNode.id)
+      getMeterChildren(treeNode.id)
     }
   }
 
@@ -356,6 +430,15 @@
     }, function (error) {
       context.meterList = []
       Core.Toast.error(context, '获取该节点表信息失败: ' + error.message)
+    })
+  }
+
+  function getMeterChildren (nodeId) {
+    Core.Api.METER.getChildren(nodeId).then(function (data) {
+      context.meterChildren = data.meter_children
+    }, function (error) {
+      context.meterChildren = []
+      Core.Toast.error(context, '获取该节点分表失败: ' + error.message)
     })
   }
 
